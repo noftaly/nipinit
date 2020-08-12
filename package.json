@@ -1,0 +1,35 @@
+{
+  "name": "nipinit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "bin": {
+    "nipinit": "./src/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "common-tags": "^1.8.0",
+    "edit-json-file": "^1.4.1",
+    "inquirer": "^7.3.3",
+    "lowdb": "^1.0.0",
+    "ora": "^5.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.6.0",
+    "eslint-config-noftalint": "^1.7.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-unicorn": "^21.0.0",
+    "nodemon": "^2.0.4"
+  },
+  "engines": {
+    "node": ">= 14.0.0"
+  }
+}

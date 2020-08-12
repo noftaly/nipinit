@@ -1,0 +1,5 @@
+{
+  "verbose": false,
+  "ignore": ["node_modules/*"],
+  "ext": "js,json"
+}
