@@ -5,8 +5,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import chalk from 'chalk';
+import commontags from 'common-tags';
 import editJson from 'edit-json-file';
 import inquirer from 'inquirer';
+import low from 'lowdb';
+import FileSync from 'lowdb/adapters/FileSync.js';
 import ora from 'ora';
 
 import filesContent from '../data/files.js';
@@ -17,6 +20,25 @@ import getLicense from './getLicense.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.join(__dirname, '..', 'data');
+
+const { oneLineTrim } = commontags;
+
+const adapter = new FileSync('../userGenerated/preferences.json');
+const db = low(adapter);
+db.defaults({ configurations: [] })
+  .write();
+
+db._.mixin({
+  findSame: (config1, config2) => {
+    const anonConfig1 = config1.map(({ name, projectName, ...keep }) => keep);
+    const anonConfig2 = [config2].map(({ name, projectName, ...keep }) => keep);
+
+    const stringifiedConfig1 = JSON.stringify(anonConfig1).replace(/\s/g, '');
+    const stringifiedConfig2 = JSON.stringify(anonConfig2).replace(/\s/g, '');
+
+    return stringifiedConfig1 === stringifiedConfig2 ? config1 : false;
+  },
+});
 
 const install = false;
 
@@ -67,6 +89,48 @@ inquirer
       default: 'noftalint',
     },
   ]).then(async (answers) => {
+    const [sameConfig] = db.get('configurations').findSame(answers).value();
+
+    if (!sameConfig) {
+      const preferences = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'save',
+          message: 'Do you want to save this configuration?',
+        }, {
+          type: 'input',
+          name: 'configName',
+          message: 'What name do you want to give to this config?',
+          default: () => {
+            let suffix = 1;
+            let value = db.get('configurations')
+              .find({ name: answers.userName })
+              .value();
+            while (value) {
+              suffix++;
+              value = db.get('configurations')
+                .find({ name: `${answers.userName}-${suffix}` })
+                .value();
+            }
+            return oneLineTrim`
+              ${answers.userName}
+              ${suffix > 1 ? `-${suffix}` : ''}
+            `;
+          },
+          when: prefs => prefs.save,
+        },
+      ]).catch((error) => {
+        console.error('An error occured while prompting questions');
+        throw new Error(error);
+      });
+
+      if (preferences.save) {
+        db.get('configurations')
+          .push(Object.assign(answers, { name: preferences.configName }))
+          .write();
+      }
+    }
+
     const spinner = ora('Creating directory').start();
 
     const projectPath = path.join(process.cwd(), answers.projectName);
@@ -169,7 +233,11 @@ inquirer
 
     spinner.succeed('Finished successfully!');
 
-    console.log('\n'.repeat(3));
+    console.log('\n\n');
+    console.log();
+    console.log(`${chalk.black.bgCyan(' ℹ ')} The exact same config is already saved under the name ${chalk.yellow(sameConfig.name)}.`);
+    console.log(`    Use ${chalk.grey(`nipinit -c ${sameConfig.name}`)} to use it directly, next time!`);
+    console.log();
     console.log(`${chalk.green.bold('➜')} ${chalk.underline.bold('Your project has been created successully!')}`);
     console.log(`You can find it at ${chalk.cyan(`./${answers.projectName}/`)}!`);
     console.log();
