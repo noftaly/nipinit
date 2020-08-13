@@ -11,7 +11,9 @@ A command-line utility to easily create new NPM projects.
 - [ ] Add a "no-modules" option which does not install node modules
 - [ ] Add unit tests
 - [ ] Add a "no-color" option which does not print color in the console.logs
-- [ ] Split code into multiple files
+- [x] Split code into multiple files
 - [ ] Add a logger to manage the output logs
 - [ ] Add a class to manage/query Database
 - [ ] Lower the required node version
+- [ ] Use `commander` for the command-line argument parsing?
+- [ ] Fix crash when creating a new config
