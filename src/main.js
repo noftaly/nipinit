@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { promises as fs } from 'fs';
+import fsSync, { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -9,7 +9,8 @@ import commontags from 'common-tags';
 import editJson from 'edit-json-file';
 import inquirer from 'inquirer';
 import low from 'lowdb';
-import FileSync from 'lowdb/adapters/FileSync.js';
+import FileAsync from 'lowdb/adapters/FileAsync.js';
+import minimist from 'minimist';
 import ora from 'ora';
 
 import filesContent from '../data/files.js';
@@ -18,14 +19,25 @@ import getEslintConfig from './getEslintConfig.js';
 import getLicense from './getLicense.js';
 
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const dataDir = path.join(__dirname, '..', 'data');
-
 const { oneLineTrim } = commontags;
 
-const adapter = new FileSync('../userGenerated/preferences.json');
-const db = low(adapter);
-db.defaults({ configurations: [] })
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const argv = minimist(process.argv.slice(2));
+
+const dataDir = path.join(__dirname, '..', 'data');
+const install = false;
+
+function handleError(error) {
+  console.error('An error occured while prompting questions');
+  const err = new Error(error);
+  err.stack = error.stack;
+  throw err;
+}
+
+if (!fsSync.existsSync('../userGenerated')) await fs.mkdir('../userGenerated').catch(handleError);
+const adapter = new FileAsync('../userGenerated/preferences.json');
+const db = await low(adapter);
+await db.defaults({ configurations: [] })
   .write();
 
 db._.mixin({
@@ -40,10 +52,176 @@ db._.mixin({
   },
 });
 
-const install = false;
+async function generateProject(answers, usedConfig = false) {
+  const sameConfig = await db.get('configurations').findSame(answers).value();
 
-inquirer
-  .prompt([
+  if (!sameConfig) {
+    const preferences = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'save',
+        message: 'Do you want to save this configuration?',
+      }, {
+        type: 'input',
+        name: 'configName',
+        message: 'What name do you want to give to this config?',
+        default: async () => {
+          let suffix = 1;
+          let value = await db.get('configurations')
+            .find({ name: answers.userName })
+            .value();
+          while (value) {
+            suffix++;
+            // eslint-disable-next-line no-await-in-loop
+            value = await db.get('configurations')
+              .find({ name: `${answers.userName}-${suffix}` })
+              .value();
+          }
+          return oneLineTrim`
+            ${answers.userName}
+            ${suffix > 1 ? `-${suffix}` : ''}
+          `;
+        },
+        when: prefs => prefs.save,
+        validate: input => input.length > 0 || 'The config name has to contain at least 1 character.',
+      },
+    ]).catch(handleError);
+
+    if (preferences.save) {
+      const config = Object.assign(answers, { name: preferences.configName });
+      delete config.projectName;
+      await db.get('configurations')
+        .push(config)
+        .write();
+    }
+  }
+
+  const spinner = ora('Creating directory').start();
+
+  const projectPath = path.join(process.cwd(), answers.projectName);
+  const editablePackageJson = editJson(path.join(projectPath, 'package.json'));
+
+  // Create project directory
+  await fs.mkdir(projectPath);
+
+  // Initialise git
+  if (answers.git) {
+    spinner.text = 'Initializing git';
+    await exec('git init', { cwd: projectPath });
+    await fs.writeFile(path.join(projectPath, '.gitignore'), filesContent.gitignore);
+  }
+
+  // Initialise .github folder
+  if (answers.github) {
+    spinner.text = 'Creating github files';
+    const ghFolder = path.join(projectPath, '.github');
+    const issueTemplateFolder = path.join(dataDir, '.github', 'ISSUE_TEMPLATE');
+    await fs.mkdir(ghFolder);
+
+    // Create issue templates
+    await fs.mkdir(path.join(ghFolder, 'ISSUE_TEMPLATE'));
+    await fs.copyFile(
+      path.join(issueTemplateFolder, 'bug_report.md'),
+      path.join(ghFolder, 'ISSUE_TEMPLATE', 'bug_report.md'));
+    await fs.copyFile(
+      path.join(issueTemplateFolder, 'feature_request.md'),
+      path.join(ghFolder, 'ISSUE_TEMPLATE', 'feature_request.md'));
+
+    // Create lint action
+    await fs.mkdir(path.join(ghFolder, 'workflows'));
+    const lintActionFile = path.join(dataDir, '.github', 'workflows', 'lint.yml');
+    const lintActionContent = (await fs.readFile(lintActionFile, { encoding: 'utf-8' }))
+      .replace('<PLUGINS_LIST>', getEslintConfig(answers.eslint).plugins);
+    await fs.writeFile(path.join(ghFolder, 'workflows', 'lint.yml'), lintActionContent);
+
+    // Create CHANGELOG.md
+    await fs.copyFile(
+      path.join(dataDir, 'CHANGELOG.md'),
+      path.join(projectPath, 'CHANGELOG.md'));
+
+    // Create CONTRIBUTING.md
+    await fs.copyFile(
+      path.join(dataDir, 'CONTRIBUTING.md'),
+      path.join(projectPath, 'CONTRIBUTING.md'));
+  }
+
+  // Initialise NPM
+  spinner.text = 'Initializing npm';
+  await exec('npm init -y', { cwd: projectPath });
+  editablePackageJson.set('author', answers.userName);
+
+  // Set license
+  spinner.text = 'Create the license';
+  const license = await getLicense(answers.license, answers.userName, answers.projectName);
+  editablePackageJson.set('license', answers.license);
+  await fs.writeFile(path.join(projectPath, 'LICENSE'), license);
+
+  // Add babel
+  if (answers.babel) {
+    spinner.text = 'Installing babel';
+    if (install) await exec('npm i -D @babel/core @babel/node @babel/preset-env', { cwd: projectPath });
+    await fs.writeFile(path.join(projectPath, '.babelrc'), filesContent.babel);
+  }
+
+  // Add eslint
+  if (answers.eslint !== "I don't want to use ESLint") {
+    spinner.text = 'Installing ESLint';
+    if (install) await exec(`npm i -D eslint ${getEslintConfig(answers.eslint).plugins}`, { cwd: projectPath });
+    await fs.writeFile(
+      path.join(projectPath, '.eslintrc.js'),
+      filesContent.eslint(getEslintConfig(answers.eslint).extends),
+    );
+  }
+
+  // Add other dependencies (nodemon...)
+  spinner.text = 'Installing nodemon';
+  if (install) await exec('npm i -D nodemon', { cwd: projectPath });
+  await fs.writeFile(path.join(projectPath, 'nodemon.json'), filesContent.nodemon);
+
+  // Add other files (editorconfig, README...)
+  spinner.text = 'Adding the last files';
+  await fs.writeFile(path.join(projectPath, '.editorconfig'), filesContent.editorconfig);
+  await fs.writeFile(path.join(projectPath, 'README.md'), filesContent.readme(answers.projectName, answers.userName));
+  editablePackageJson.set('main', './src/main.js');
+
+  // Update module type
+  if (answers.module) {
+    editablePackageJson.set('type', 'module');
+    editablePackageJson.set('engines', { node: '>= 14.0.0' });
+  }
+
+  // Set the scripts
+  editablePackageJson.set('scripts.start', `${answers.babel && 'babel-'}node ./src/main.js`);
+  editablePackageJson.set('scripts.dev', `nodemon --exec ${answers.babel && 'babel-'}node ./src/main.js`);
+  editablePackageJson.set('scripts.lint', 'eslint .');
+  editablePackageJson.set('scripts.lint:fix', 'eslint . --fix');
+
+  spinner.succeed('Finished successfully!');
+
+  console.log('\n\n');
+  if (sameConfig && !usedConfig) {
+    console.log();
+    console.log(`${chalk.black.bgCyan(' ℹ ')} The exact same config is already saved under the name ${chalk.yellow(sameConfig[0].name)}.`);
+    console.log(`    Use ${chalk.grey(`nipinit -c ${sameConfig[0].name}`)} to use it directly, next time!`);
+    console.log();
+  }
+  console.log(`${chalk.green.bold('➜')} ${chalk.underline.bold('Your project has been created successully!')}`);
+  console.log(`You can find it at ${chalk.cyan(`./${answers.projectName}/`)}!`);
+  console.log();
+  console.log(chalk.bold('There is a few more things you may want to do to be ready...'));
+  console.log(`    ${chalk.grey('-')} Set the contact method in CONTRIBUTING.md (search for "[INSERT CONTACT METHOD]")`);
+  console.log(`    ${chalk.grey('-')} Update the scripts in package.json to your linking or to use module you want`);
+  console.log(`    ${chalk.grey('-')} Add/fill/update some package.json entries, such as the repo, the description, keywords...`);
+  console.log(`    ${chalk.grey('-')} Update the TO-DO in README.md`);
+  console.log();
+  console.log(chalk.green('Have fun!'));
+}
+
+if (argv._[0] === 'config') {
+  console.log('🚧 Work in progress');
+} else {
+  const configArgument = argv.c ?? argv.config;
+  const questions = [
     {
       type: 'input',
       name: 'projectName',
@@ -88,167 +266,30 @@ inquirer
       choices: ['noftalint', 'airbnb', 'standard', 'recommended', "I don't want to use ESLint"],
       default: 'noftalint',
     },
-  ]).then(async (answers) => {
-    const [sameConfig] = db.get('configurations').findSame(answers).value();
+  ];
 
-    if (!sameConfig) {
-      const preferences = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'save',
-          message: 'Do you want to save this configuration?',
-        }, {
-          type: 'input',
-          name: 'configName',
-          message: 'What name do you want to give to this config?',
-          default: () => {
-            let suffix = 1;
-            let value = db.get('configurations')
-              .find({ name: answers.userName })
-              .value();
-            while (value) {
-              suffix++;
-              value = db.get('configurations')
-                .find({ name: `${answers.userName}-${suffix}` })
-                .value();
-            }
-            return oneLineTrim`
-              ${answers.userName}
-              ${suffix > 1 ? `-${suffix}` : ''}
-            `;
-          },
-          when: prefs => prefs.save,
-        },
-      ]).catch((error) => {
-        console.error('An error occured while prompting questions');
-        throw new Error(error);
-      });
+  if (configArgument) {
+    const config = await db.get('configurations')
+      .find({ name: configArgument })
+      .value();
 
-      if (preferences.save) {
-        db.get('configurations')
-          .push(Object.assign(answers, { name: preferences.configName }))
-          .write();
-      }
+    const projectName = await inquirer
+      .prompt(questions[0])
+      .then(answers => answers.projectName)
+      .catch(handleError);
+    config.projectName = projectName;
+
+    if (!config) {
+      console.log(`${chalk.bgRed(' ✗ ')} This configuration does not exist!`);
+      console.log(`    Run ${chalk.grey('nipinit config ls')} to see all available configurations.`);
+      process.exit(0);
+    } else {
+      generateProject(config, true);
     }
-
-    const spinner = ora('Creating directory').start();
-
-    const projectPath = path.join(process.cwd(), answers.projectName);
-    const editablePackageJson = editJson(path.join(projectPath, 'package.json'));
-
-    // Create project directory
-    await fs.mkdir(projectPath);
-
-    // Initialise git
-    if (answers.git) {
-      spinner.text = 'Initializing git';
-      await exec('git init', { cwd: projectPath });
-      await fs.writeFile(path.join(projectPath, '.gitignore'), filesContent.gitignore);
-    }
-
-    // Initialise .github folder
-    if (answers.github) {
-      spinner.text = 'Creating github files';
-      const ghFolder = path.join(projectPath, '.github');
-      const issueTemplateFolder = path.join(dataDir, '.github', 'ISSUE_TEMPLATE');
-      await fs.mkdir(ghFolder);
-
-      // Create issue templates
-      await fs.mkdir(path.join(ghFolder, 'ISSUE_TEMPLATE'));
-      await fs.copyFile(
-        path.join(issueTemplateFolder, 'bug_report.md'),
-        path.join(ghFolder, 'ISSUE_TEMPLATE', 'bug_report.md'));
-      await fs.copyFile(
-        path.join(issueTemplateFolder, 'feature_request.md'),
-        path.join(ghFolder, 'ISSUE_TEMPLATE', 'feature_request.md'));
-
-      // Create lint action
-      await fs.mkdir(path.join(ghFolder, 'workflows'));
-      const lintActionFile = path.join(dataDir, '.github', 'workflows', 'lint.yml');
-      const lintActionContent = (await fs.readFile(lintActionFile, { encoding: 'utf-8' }))
-        .replace('<PLUGINS_LIST>', getEslintConfig(answers.eslint).plugins);
-      await fs.writeFile(path.join(ghFolder, 'workflows', 'lint.yml'), lintActionContent);
-
-      // Create CHANGELOG.md
-      await fs.copyFile(
-        path.join(dataDir, 'CHANGELOG.md'),
-        path.join(projectPath, 'CHANGELOG.md'));
-
-      // Create CONTRIBUTING.md
-      await fs.copyFile(
-        path.join(dataDir, 'CONTRIBUTING.md'),
-        path.join(projectPath, 'CONTRIBUTING.md'));
-    }
-
-    // Initialise NPM
-    spinner.text = 'Initializing npm';
-    await exec('npm init -y', { cwd: projectPath });
-    editablePackageJson.set('author', answers.userName);
-
-    // Set license
-    spinner.text = 'Create the license';
-    const license = await getLicense(answers.license, answers.userName, answers.projectName);
-    editablePackageJson.set('license', answers.license);
-    await fs.writeFile(path.join(projectPath, 'LICENSE'), license);
-
-    // Add babel
-    if (answers.babel) {
-      spinner.text = 'Installing babel';
-      if (install) await exec('npm i -D @babel/core @babel/node @babel/preset-env', { cwd: projectPath });
-      await fs.writeFile(path.join(projectPath, '.babelrc'), filesContent.babel);
-    }
-
-    // Add eslint
-    if (answers.eslint !== "I don't want to use ESLint") {
-      spinner.text = 'Installing ESLint';
-      if (install) await exec(`npm i -D eslint ${getEslintConfig(answers.eslint).plugins}`, { cwd: projectPath });
-      await fs.writeFile(
-        path.join(projectPath, '.eslintrc.js'),
-        filesContent.eslint(getEslintConfig(answers.eslint).extends),
-      );
-    }
-
-    // Add other dependencies (nodemon...)
-    spinner.text = 'Installing nodemon';
-    if (install) await exec('npm i -D nodemon', { cwd: projectPath });
-    await fs.writeFile(path.join(projectPath, 'nodemon.json'), filesContent.nodemon);
-
-    // Add other files (editorconfig, README...)
-    spinner.text = 'Adding the last files';
-    await fs.writeFile(path.join(projectPath, '.editorconfig'), filesContent.editorconfig);
-    await fs.writeFile(path.join(projectPath, 'README.md'), filesContent.readme(answers.projectName, answers.userName));
-    editablePackageJson.set('main', './src/main.js');
-
-    // Update module type
-    if (answers.module) {
-      editablePackageJson.set('type', 'module');
-      editablePackageJson.set('engines', { node: '>= 14.0.0' });
-    }
-
-    // Set the scripts
-    editablePackageJson.set('scripts.start', `${answers.babel && 'babel-'}node ./src/main.js`);
-    editablePackageJson.set('scripts.dev', `nodemon --exec ${answers.babel && 'babel-'}node ./src/main.js`);
-    editablePackageJson.set('scripts.lint', 'eslint .');
-    editablePackageJson.set('scripts.lint:fix', 'eslint . --fix');
-
-    spinner.succeed('Finished successfully!');
-
-    console.log('\n\n');
-    console.log();
-    console.log(`${chalk.black.bgCyan(' ℹ ')} The exact same config is already saved under the name ${chalk.yellow(sameConfig.name)}.`);
-    console.log(`    Use ${chalk.grey(`nipinit -c ${sameConfig.name}`)} to use it directly, next time!`);
-    console.log();
-    console.log(`${chalk.green.bold('➜')} ${chalk.underline.bold('Your project has been created successully!')}`);
-    console.log(`You can find it at ${chalk.cyan(`./${answers.projectName}/`)}!`);
-    console.log();
-    console.log(chalk.bold('There is a few more things you may want to do to be ready...'));
-    console.log(`    ${chalk.grey('-')} Set the contact method in CONTRIBUTING.md (search for "[INSERT CONTACT METHOD]")`);
-    console.log(`    ${chalk.grey('-')} Update the scripts in package.json to your linking or to use module you want`);
-    console.log(`    ${chalk.grey('-')} Add/fill/update some package.json entries, such as the repo, the description, keywords...`);
-    console.log(`    ${chalk.grey('-')} Update the TO-DO in README.md`);
-    console.log();
-    console.log(chalk.green('Have fun!'));
-  }).catch((error) => {
-    console.error('An error occured while prompting questions');
-    throw new Error(error);
-  });
+  } else {
+    inquirer
+      .prompt(questions)
+      .then(generateProject)
+      .catch(handleError);
+  }
+}
