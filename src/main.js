@@ -218,7 +218,56 @@ async function generateProject(answers, usedConfig = false) {
 }
 
 if (argv._[0] === 'config') {
-  console.log('🚧 Work in progress');
+  if (argv._[1] === 'ls') {
+    const configurations = await db.get('configurations').value();
+    if (configurations.length === 0) {
+      console.log(`${chalk.bgRed(' ✗ ')} No configuration found for nipinit.`);
+    } else {
+      console.log(chalk.bold.underline(`Found ${configurations.length} configurations for nipinit:`));
+      for (const config of configurations) {
+        console.log(`  ${chalk.grey('-')} ${config.name}`);
+      }
+      console.log(chalk.italic(`You can have more informations about a config with ${chalk.grey('nipinit config info <config>')}`));
+    }
+  } else if (argv._[1] === 'remove') {
+    const config = await db.get('configurations')
+      .find({ name: argv._[2] })
+      .value();
+    if (!config) {
+      console.log(`${chalk.bgRed(' ✗ ')} The configuration ${argv._[2]} does not exist.`);
+    } else {
+      await db.get('configurations')
+        .remove({ name: config.name })
+        .write();
+      console.log(`${chalk.bgGreen(' ✔ ')} The configuration ${config.name} was deleted successfully!`);
+    }
+  } else if (argv._[1] === 'info') {
+    const config = await db.get('configurations')
+      .find({ name: argv._[2] })
+      .value();
+    if (!config) {
+      console.log(`${chalk.bgRed(' ✗ ')} The configuration ${argv._[2]} does not exist.`);
+    } else {
+      console.log(chalk.bold.underline(`Informations about the configuration ${chalk.cyan(config.name)}:`));
+      console.log(`    ${chalk.grey('-')} User Name: ${chalk.cyan(config.userName)}`);
+      console.log(`    ${chalk.grey('-')} Init Git: ${config.git ? chalk.green('Yes') : chalk.red('No')}`);
+      if (config.git) console.log(`      ${chalk.grey('-')} Init Github files: ${config.github ? chalk.green('Yes') : chalk.red('No')}`);
+      console.log(`    ${chalk.grey('-')} License: ${chalk.cyan(config.license)}`);
+      console.log(`    ${chalk.grey('-')} Use ES Modules: ${config.module ? chalk.green('Yes') : chalk.red('No')}`);
+      console.log(`    ${chalk.grey('-')} Use babel: ${config.babel ? chalk.green('Yes') : chalk.red('No')}`);
+      console.log(`    ${chalk.grey('-')} Use ESLint: ${config.eslint !== "I don't want to use ESLint" ? chalk.green('Yes') : chalk.red('No')}`);
+      if (config.eslint !== "I don't want to use ESLint") console.log(`      ${chalk.grey('-')} ESLint configuration: ${chalk.cyan(config.eslint)}`);
+    }
+  } else if (argv.h || argv.help) {
+    console.log(`${chalk.bold('nipinit config')} allows you to manage the configurations.`);
+    console.log();
+    console.log('Available commands:');
+    console.log(`  ${chalk.grey('-')} ${chalk.bold('nipinit config ls')} ${chalk.italic.grey('List all existing configurations')}`);
+    console.log(`  ${chalk.grey('-')} ${chalk.bold('nipinit config info <config>')} ${chalk.italic.grey('Get informations about a configuration')}`);
+    console.log(`  ${chalk.grey('-')} ${chalk.bold('nipinit config remove <config>')} ${chalk.italic.grey('Remove a configuration')}`);
+  } else {
+    console.log(`${chalk.bgRed(' ✗ ')} Unkown argument: "${argv._[1]}". Use ${chalk.grey('nipinit config --help')} for help`);
+  }
 } else {
   const configArgument = argv.c ?? argv.config;
   const questions = [
