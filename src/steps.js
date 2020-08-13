@@ -11,6 +11,7 @@ import exec from './exec.js';
 import getEslintConfig from './getEslintConfig.js';
 import getLicense from './getLicense.js';
 import handleError from './handleError.js';
+import structuredClone from './structuredClone.js';
 
 
 const { oneLineTrim } = commontags;
@@ -52,7 +53,8 @@ export async function searchForSameConfig(answers) {
     ]).catch(handleError);
 
     if (preferences.save) {
-      const config = Object.assign(answers, { name: preferences.configName });
+      const clonedAnswers = structuredClone(answers);
+      const config = Object.assign(clonedAnswers, { name: preferences.configName });
       delete config.projectName;
       await db.get('configurations')
         .push(config)

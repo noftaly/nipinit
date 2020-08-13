@@ -16,4 +16,4 @@ A command-line utility to easily create new NPM projects.
 - [ ] Add a class to manage/query Database
 - [ ] Lower the required node version
 - [ ] Use `commander` for the command-line argument parsing?
-- [ ] Fix crash when creating a new config
+- [x] Fix crash when creating a new config
