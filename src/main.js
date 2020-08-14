@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { promises as fs } from 'fs';
+import fsSync, { promises as fs } from 'fs';
 import path from 'path';
 
 import chalk from 'chalk';
@@ -182,7 +182,14 @@ if (argv._[0] === 'config') {
       type: 'input',
       name: 'projectName',
       message: 'What is your project name?',
-      validate: input => input.length > 0 || 'The project name has to contain at least 1 character.',
+      validate(input) {
+        const done = this.async();
+        if (input.length === 0)
+          return done('The project name has to contain at least 1 character.');
+        if (fsSync.existsSync(path.join(process.cwd(), input)))
+          return done('This folder already exist.');
+        return done(null, true);
+      },
     }, {
       type: 'input',
       name: 'userName',

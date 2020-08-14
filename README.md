@@ -10,9 +10,9 @@ A command-line utility to easily create new NPM projects.
 - [x] Add a logger to manage the output logs
 - [x] Add a "help" page (`nipinit help` or `nipinit --help`?)
 - [x] If babel and ESLint are used, use the babel-eslint parser for ESLint
+- [x] Show an Error message when the entered project is already a directory
 - [ ] Install different ESLint/plugins version based on the config (use peerDeps?)
 - [ ] Improve error handling
-- [ ] Show an Error message when the entered project is already a directory
 - [ ] Add a "no-modules" option which does not install node modules
 - [ ] Add unit tests
 - [ ] Add a class to manage/query Database
