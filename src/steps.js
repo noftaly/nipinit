@@ -134,12 +134,30 @@ export async function installESLint(answers, paths, install) {
   const useBabelParser = answers.babel;
   const useModules = answers.module;
 
-  if (install) await exec(oneLine`
-    npm i -D
-    eslint
-    ${getEslintConfig(answers.eslint).plugins}
-    ${useBabelParser ? '@babel/eslint-parser' : ''}
-  `, { cwd: paths.project });
+  if (install) {
+    if (getEslintConfig(answers.eslint).extends === 'eslint:recommended') {
+      await exec('npm i -D eslint');
+    } else {
+      const fullName = `eslint-config-${getEslintConfig(answers.eslint).extends}`;
+
+      if (process.platform === 'win32') {
+        // FIXME: Find a better way to do this
+        // FIXME: This won't work in npm < 5
+        await exec(oneLine`
+          npm i -D install-peerdeps
+          && npx install-peerdeps --dev ${fullName}
+          && npm uninstall install-peerdeps
+        `);
+      } else {
+        await exec(oneLine`
+          npm info "${fullName}@latest" peerDependencies --json
+          | command sed 's/[\{\},]//g ; s/: /@/g'
+          | xargs npm install --save-dev "${fullName}@latest"
+        `, { cwd: paths.project });
+      }
+    }
+    if (useBabelParser) await exec('npm i -D @babel/eslint-parser', { cwd: paths.project });
+  }
 
   await fs.writeFile(
     path.join(paths.project, `.eslintrc.${useModules ? 'c' : ''}js`),
