@@ -1,10 +1,19 @@
 # Nipinit
 
+![David](https://img.shields.io/david/noftaly/nipinit)
+![npm-dl](https://img.shields.io/npm/dm/nipinit)
+![npm-ver](https://img.shields.io/npm/v/nipinit)
+![node-current](https://img.shields.io/node/v/nipinit)
+
 > 💻 A command-line utility to easily create new NPM projects.
 
+⚠️ **Attention:** This package is not published to NPM yet, so clone this repo to use it!
+Also it is still in "beta" so there might be some unwanted behaviour or some bugs. Please
+file an issue if you encounter any!
 
 ## Table of Contents
 - [Installation](#installation)
+- [Features](#features)
 - [Usage](#usage)
   - [Fresh start](#fresh-start)
   - [Presets](#presets)
@@ -18,6 +27,21 @@
 ```shell
 $ npm i -g nipinit
 ```
+
+
+## Features
+
+- Initialize NPM
+- Initialize Git & .gitignore
+- Create Github's file (templates, changelog, contributing, and if you set a linter, a lint action)
+- Set a license (choose between, MIT, ISC and GPL-v3)
+- Use ES Modules (real ES Modules, not babel)
+- Install & configure Babel
+- Install & configure ESLint (choose between my configuration (noftalint), airbnb,
+and standard)
+- Install & configure nodemon
+- Create a README and a .editorconfig
+- Save & use presets
 
 
 ## Usage
@@ -64,6 +88,7 @@ Add the `--help` option to see all available arguments.
 - [x] Add a "help" page (`nipinit help` or `nipinit --help`?)
 - [x] If babel and ESLint are used, use the babel-eslint parser for ESLint
 - [x] Show an Error message when the entered project is already a directory
+- [ ] Create a /src/ directory and initialise it with main.js
 - [ ] Install different ESLint/plugins version based on the config (use peerDeps?)
 - [ ] Add a class to manage/query Database
 - [ ] Add a "no-modules" option which does not install node modules
