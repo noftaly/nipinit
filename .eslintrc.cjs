@@ -1,7 +1,7 @@
 module.exports = {
   parser: '@babel/eslint-parser',
   extends: 'noftalint',
-  ignorePatterns: ['.eslintrc.js', 'node_modules/', 'playground/'],
+  ignorePatterns: ['.eslintrc.cjs', 'node_modules/', 'playground/'],
   rules: {
     'function-paren-newline': 'off',
 
