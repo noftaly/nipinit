@@ -66,4 +66,7 @@ export default {
     ## License
     Copyright © ${new Date().getFullYear()} ${user}. Licensed under the MIT license, see [the license](./LICENSE)
   `,
+  mainjs: stripIndent`
+    // main.js
+  `,
 };

@@ -88,7 +88,7 @@ Add the `--help` option to see all available arguments.
 - [x] Add a "help" page (`nipinit help` or `nipinit --help`?)
 - [x] If babel and ESLint are used, use the babel-eslint parser for ESLint
 - [x] Show an Error message when the entered project is already a directory
-- [ ] Create a /src/ directory and initialise it with main.js
+- [x] Create a /src/ directory and initialize it with main.js
 - [ ] Install different ESLint/plugins version based on the config (use peerDeps?)
 - [ ] Add a class to manage/query Database
 - [ ] Add a "no-modules" option which does not install node modules
