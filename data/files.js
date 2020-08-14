@@ -11,10 +11,11 @@ export default {
       "presets": ["@babel/preset-env"]
     }
   `,
-  eslint: config => stripIndent`
+  eslint: (config, useBabelParser, useModules) => stripIndent`
     module.exports = {
       extends: '${config}',
-      ignorePatterns: ['.eslintrc.js', 'node_modules/'],
+      ${useBabelParser ? "parser: '@babel/eslint-parser'," : ''}
+      ignorePatterns: ['.eslintrc.${useModules ? 'c' : ''}js', 'node_modules/'],
       rules: {},
       env: {
         node: true,

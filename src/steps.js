@@ -14,7 +14,7 @@ import handleError from './handleError.js';
 import structuredClone from './structuredClone.js';
 
 
-const { oneLineTrim } = commontags;
+const { oneLineTrim, oneLine } = commontags;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export async function searchForSameConfig(answers) {
@@ -131,10 +131,19 @@ export async function installBabel(paths, install) {
 }
 
 export async function installESLint(answers, paths, install) {
-  if (install) await exec(`npm i -D eslint ${getEslintConfig(answers.eslint).plugins}`, { cwd: paths.project });
+  const useBabelParser = answers.babel;
+  const useModules = answers.module;
+
+  if (install) await exec(oneLine`
+    npm i -D
+    eslint
+    ${getEslintConfig(answers.eslint).plugins}
+    ${useBabelParser ? '@babel/eslint-parser' : ''}
+  `, { cwd: paths.project });
+
   await fs.writeFile(
-    path.join(paths.project, '.eslintrc.js'),
-    filesContent.eslint(getEslintConfig(answers.eslint).extends),
+    path.join(paths.project, `.eslintrc.${useModules ? 'c' : ''}js`),
+    filesContent.eslint(getEslintConfig(answers.eslint).extends, useBabelParser, useModules),
   );
 }
 
