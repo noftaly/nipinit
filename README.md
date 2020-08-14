@@ -8,6 +8,7 @@ A command-line utility to easily create new NPM projects.
 - [x] Fix crash when creating a new config
 - [x] Add a "no-color" option which does not print color in the console.logs
 - [x] Add a logger to manage the output logs
+- [x] Add a "help" page (`nipinit help` or `nipinit --help`?)
 - [ ] Install different ESLint/plugins version based on the config (use peerDeps?)
 - [ ] Improve error handling
 - [ ] If babel and ESLint are used, use the babel-eslint parser for ESLint
@@ -16,6 +17,4 @@ A command-line utility to easily create new NPM projects.
 - [ ] Add unit tests
 - [ ] Add a class to manage/query Database
 - [ ] Lower the required node version
-- [ ] Use `commander` for the command-line argument parsing?
-- [ ] Add a "help" page (`nipinit help` or `nipinit --help`?)
-- [ ] Fix same configs not being detected
+- [ ] Use `commander` (or `meow`) for the command-line argument parsing?
