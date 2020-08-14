@@ -17,28 +17,28 @@ import structuredClone from './structuredClone.js';
 const { oneLineTrim, oneLine } = commontags;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export async function searchForSameConfig(answers) {
-  const sameConfig = await db.get('configurations').findSame(answers).value();
+export async function searchForSamePreset(answers) {
+  const samePreset = await db.get('presets').findSame(answers).value();
 
-  if (!sameConfig) {
+  if (!samePreset) {
     const preferences = await inquirer.prompt([
       {
         type: 'confirm',
         name: 'save',
-        message: 'Do you want to save this configuration?',
+        message: 'Do you want to save this preset?',
       }, {
         type: 'input',
-        name: 'configName',
-        message: 'What name do you want to give to this config?',
+        name: 'presetName',
+        message: 'What name do you want to give to this preset?',
         default: async () => {
           let suffix = 1;
-          let value = await db.get('configurations')
+          let value = await db.get('presets')
             .find({ name: answers.userName })
             .value();
           while (value) {
             suffix++;
             // eslint-disable-next-line no-await-in-loop
-            value = await db.get('configurations')
+            value = await db.get('presets')
               .find({ name: `${answers.userName}-${suffix}` })
               .value();
           }
@@ -48,21 +48,21 @@ export async function searchForSameConfig(answers) {
           `;
         },
         when: prefs => prefs.save,
-        validate: input => input.length > 0 || 'The config name has to contain at least 1 character.',
+        validate: input => input.length > 0 || 'The preset name has to contain at least 1 character.',
       },
     ]).catch(handleError);
 
     if (preferences.save) {
       const clonedAnswers = structuredClone(answers);
-      const config = Object.assign(clonedAnswers, { name: preferences.configName });
-      delete config.projectName;
-      await db.get('configurations')
-        .push(config)
+      const preset = Object.assign(clonedAnswers, { name: preferences.presetName });
+      delete preset.projectName;
+      await db.get('presets')
+        .push(preset)
         .write()
         .catch(handleError);
     }
   }
-  return sameConfig;
+  return samePreset;
 }
 
 export function getPaths(projectName) {

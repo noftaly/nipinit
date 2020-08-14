@@ -7,7 +7,7 @@
 - [Installation](#installation)
 - [Usage](#usage)
   - [Fresh start](#fresh-start)
-  - [Configurations](#configurations)
+  - [Presets](#presets)
 - [Screenshots](#screenshots)
 - [TO-DO](#to-do)
 - [License](#license)
@@ -31,21 +31,21 @@ $ nipinit
 You will be prompts some questions to generate the boilerplate that fits you the most, and
 you will be good to go!
 
-### Configs
+### Presets
 
-You can create configurations (presets) when creating a new project. (answer 'Yes' to the prompt
-`Do you want to save this configuration?`).
-After that, you can generate a new project using this config just by adding the `--config config_name` argument to nipinit. (it has an alias: `-c`)
+You can create presets when creating a new project. (answer 'Yes' to the prompt
+`Do you want to save this preset?`).
+After that, you can generate a new project using this preset just by adding the `--preset preset_name` argument to nipinit. (it has an alias: `-p`)
 ```shell
-$ nipinit -c myCoolConfig
+$ nipinit -preset myCoolPreset
 ```
 
-If you create a project without using a config, but it happens that the exact same preset is already
+If you create a project without using a prest, but it happens that the exact same preset is already
 saved, nipinit will tell you so you can use it next time!
 
-You can also manage your configs with
+You can also manage your presets with
 ```shell
-$ nipinit config
+$ nipinit preset
 ```
 Add the `--help` option to see all available arguments.
 

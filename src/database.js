@@ -9,18 +9,18 @@ import handleError from './handleError.js';
 if (!fsSync.existsSync('../userGenerated')) await fs.mkdir('../userGenerated').catch(handleError);
 const adapter = new FileAsync('../userGenerated/preferences.json');
 const db = await low(adapter);
-await db.defaults({ configurations: [] })
+await db.defaults({ presets: [] })
   .write();
 
 db._.mixin({
-  findSame: (config1, config2) => {
-    const anonConfig1 = config1.map(({ name, projectName, ...keep }) => keep);
-    const anonConfig2 = [config2].map(({ name, projectName, ...keep }) => keep);
+  findSame: (preset1, preset2) => {
+    const anonPreset1 = preset1.map(({ name, projectName, ...keep }) => keep);
+    const anonPreset2 = [preset2].map(({ name, projectName, ...keep }) => keep);
 
-    const stringifiedConfig1 = JSON.stringify(anonConfig1).replace(/\s/g, '');
-    const stringifiedConfig2 = JSON.stringify(anonConfig2).replace(/\s/g, '');
+    const stringifiedPreset1 = JSON.stringify(anonPreset1).replace(/\s/g, '');
+    const stringifiedPreset2 = JSON.stringify(anonPreset2).replace(/\s/g, '');
 
-    return stringifiedConfig1 === stringifiedConfig2 ? config1 : false;
+    return stringifiedPreset1 === stringifiedPreset2 ? preset1 : false;
   },
 });
 
