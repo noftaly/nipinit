@@ -37,7 +37,7 @@ async function generateProject(answers, usedPreset = false) {
   const spinner = ora('Creating directory').start();
 
   const paths = getPaths(answers.projectName);
-  const editablePackageJson = editJson(path.join(paths.project, 'package.json'));
+  const editablePackageJson = editJson(path.join(paths.project, 'package.json'), { autosave: true });
 
   // Create project directory
   await fs.mkdir(paths.project);
