@@ -159,6 +159,22 @@ if (argv._[0] === 'config') {
   } else {
     logger.log(`${chalk.bgRed(' ✗ ')} Unkown argument: "${argv._[1]}". Use ${chalk.grey('nipinit config --help')} for help`);
   }
+} else if (argv._[0] === 'help') {
+  logger.log(`${chalk.bold('Usage:')} nipinit`);
+  logger.log('');
+  logger.log(chalk.bold('Arguments:'));
+  logger.log('  config [string]         Manage configurations');
+  logger.log('  help                    Print this page');
+  logger.log('');
+  logger.log(chalk.bold('Options:'));
+  logger.log('  --config, -c [string]   Create a new project with a preset');
+  logger.log('  --no-color              Create a new project without showing colors in the CLI');
+  logger.log('');
+  logger.log(chalk.bold('Examples:'));
+  logger.log('  $ nipinit');
+  logger.log('  $ nipinit --config myConfig --no-color');
+  logger.log('  $ nipinit config --help');
+  logger.log('  $ nipinit config remove myConfig');
 } else {
   const configArgument = argv.c ?? argv.config;
   const questions = [
