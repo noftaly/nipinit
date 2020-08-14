@@ -1,4 +1,5 @@
 {
   "presets": ["@babel/preset-env"],
-  "plugins": ["@babel/plugin-syntax-top-level-await"]
+  "plugins": ["@babel/plugin-syntax-top-level-await"],
+  "ignore": ["playground/"]
 }
