@@ -4,6 +4,7 @@ import fsSync, { promises as fs } from 'fs';
 import path from 'path';
 
 import chalk from 'chalk';
+import commontags from 'common-tags';
 import editJson from 'edit-json-file';
 import inquirer from 'inquirer';
 import minimist from 'minimist';
@@ -27,7 +28,10 @@ import {
   configureScripts,
 } from './steps.js';
 
+
+const { stripIndent } = commontags;
 const argv = minimist(process.argv.slice(2));
+
 const logger = new Logger();
 const install = false;
 
@@ -92,19 +96,21 @@ async function generateProject(answers, usedPreset = false) {
   logger.log('\n\n');
   if (samePreset && !usedPreset) {
     logger.log('');
-    logger.log(`${chalk.black.bgCyan(' ℹ ')} The exact same preset is already saved under the name ${chalk.yellow(samePreset[0].name)}.`);
+    logger.info(`The exact same preset is already saved under the name ${chalk.yellow(samePreset[0].name)}.`);
     logger.log(`    Use ${chalk.grey(`nipinit -p ${samePreset[0].name}`)} to use it directly, next time!`);
     logger.log('');
   }
-  logger.log(`${chalk.green.bold('➜')} ${chalk.underline.bold('Your project has been created successully!')}`);
-  logger.log(`You can find it at ${chalk.cyan(`./${answers.projectName}/`)}!`);
-  logger.log('');
-  logger.log(chalk.bold('There is a few more things you may want to do to be ready...'));
-  logger.log(`    ${chalk.grey('-')} Set the contact method in CONTRIBUTING.md (search for "[INSERT CONTACT METHOD]")`);
-  logger.log(`    ${chalk.grey('-')} Update the scripts in package.json to your linking or to use module you want`);
-  logger.log(`    ${chalk.grey('-')} Add/fill/update some package.json entries, such as the repo, the description, keywords...`);
-  logger.log(`    ${chalk.grey('-')} Update the TO-DO in README.md`);
-  logger.log('');
+  logger.log(stripIndent`
+    ${chalk.green.bold('➜')} ${chalk.underline.bold('Your project has been created successully!')}
+    You can find it at ${chalk.cyan(`./${answers.projectName}/`)}!
+
+    ${chalk.bold('There is a few more things you may want to do to be ready...')}
+        ${chalk.grey('-')} Set the contact method in CONTRIBUTING.md (search for "[INSERT CONTACT METHOD]")
+        ${chalk.grey('-')} Update the scripts in package.json to your linking or to use module you want
+        ${chalk.grey('-')} Add/fill/update some package.json entries, such as the repo, the description, keywords...
+        ${chalk.grey('-')} Update the TO-DO in README.md
+  `);
+
   logger.log(chalk.green('Have fun!'));
 }
 
@@ -112,7 +118,7 @@ if (argv._[0] === 'presets') {
   if (argv._[1] === 'ls') {
     const presets = await db.get('presets').value();
     if (presets.length === 0) {
-      logger.log(`${chalk.bgRed(' ✗ ')} No presets found for nipinit.`);
+      logger.error('No presets found for nipinit.');
     } else {
       logger.log(chalk.bold.underline(`Found ${presets.length} presets for nipinit:`));
       for (const preset of presets) {
@@ -125,56 +131,62 @@ if (argv._[0] === 'presets') {
       .find({ name: argv._[2] })
       .value();
     if (!preset) {
-      logger.log(`${chalk.bgRed(' ✗ ')} The preset ${argv._[2]} does not exist.`);
+      logger.error(`The preset ${argv._[2]} does not exist.`);
     } else {
       await db.get('presets')
         .remove({ name: preset.name })
         .write();
-      logger.log(`${chalk.bgGreen(' ✔ ')} The presets ${preset.name} was deleted successfully!`);
+      logger.success(`The presets ${preset.name} was deleted successfully!`);
     }
   } else if (argv._[1] === 'info') {
     const preset = await db.get('presets')
       .find({ name: argv._[2] })
       .value();
     if (!preset) {
-      logger.log(`${chalk.bgRed(' ✗ ')} The preset ${argv._[2]} does not exist.`);
+      logger.error(`The preset ${argv._[2]} does not exist.`);
     } else {
-      logger.log(chalk.bold.underline(`Informations about the preset ${chalk.cyan(preset.name)}:`));
-      logger.log(`    ${chalk.grey('-')} User Name: ${chalk.cyan(preset.userName)}`);
-      logger.log(`    ${chalk.grey('-')} Init Git: ${preset.git ? chalk.green('Yes') : chalk.red('No')}`);
-      if (preset.git) logger.log(`      ${chalk.grey('-')} Init Github files: ${preset.github ? chalk.green('Yes') : chalk.red('No')}`);
-      logger.log(`    ${chalk.grey('-')} License: ${chalk.cyan(preset.license)}`);
-      logger.log(`    ${chalk.grey('-')} Use ES Modules: ${preset.module ? chalk.green('Yes') : chalk.red('No')}`);
-      logger.log(`    ${chalk.grey('-')} Use babel: ${preset.babel ? chalk.green('Yes') : chalk.red('No')}`);
-      logger.log(`    ${chalk.grey('-')} Use ESLint: ${preset.eslint !== "I don't want to use ESLint" ? chalk.green('Yes') : chalk.red('No')}`);
-      if (preset.eslint !== "I don't want to use ESLint") logger.log(`      ${chalk.grey('-')} ESLint preseturation: ${chalk.cyan(preset.eslint)}`);
+      logger.log(stripIndent`
+        ${chalk.bold.underline(`Informations about the preset ${chalk.cyan(preset.name)}:`)}
+          ${chalk.grey('-')} User Name: ${chalk.cyan(preset.userName)}
+          ${chalk.grey('-')} Init Git: ${preset.git ? chalk.green('Yes') : chalk.red('No')}
+            ${preset.git ? `${chalk.grey('-')} Init Github files: ${preset.github ? chalk.green('Yes') : chalk.red('No')}` : ''}
+          ${chalk.grey('-')} License: ${chalk.cyan(preset.license)}
+          ${chalk.grey('-')} Use ES Modules: ${preset.module ? chalk.green('Yes') : chalk.red('No')}
+          ${chalk.grey('-')} Use babel: ${preset.babel ? chalk.green('Yes') : chalk.red('No')}
+          ${chalk.grey('-')} Use ESLint: ${preset.eslint !== "I don't want to use ESLint" ? chalk.green('Yes') : chalk.red('No')}
+            ${preset.eslint !== "I don't want to use ESLint" ? `${chalk.grey('-')} ESLint preseturation: ${chalk.cyan(preset.eslint)}` : ''}
+      `);
     }
   } else if (argv.h || argv.help) {
-    logger.log(`${chalk.bold('nipinit presets')} allows you to manage the presets.`);
-    logger.log('');
-    logger.log('Available commands:');
-    logger.log(`  ${chalk.grey('-')} ${chalk.bold('nipinit presets ls')} ${chalk.italic.grey('List all existing presets')}`);
-    logger.log(`  ${chalk.grey('-')} ${chalk.bold('nipinit presets info <preset>')} ${chalk.italic.grey('Get informations about a preset')}`);
-    logger.log(`  ${chalk.grey('-')} ${chalk.bold('nipinit presets remove <preset>')} ${chalk.italic.grey('Remove a preset')}`);
+    logger.log(stripIndent`
+      ${chalk.bold('nipinit presets')} allows you to manage the presets.
+
+      Available commands:
+        ${chalk.grey('-')} ${chalk.bold('nipinit presets ls')} ${chalk.italic.grey('List all existing presets')}
+        ${chalk.grey('-')} ${chalk.bold('nipinit presets info <preset>')} ${chalk.italic.grey('Get informations about a preset')}
+        ${chalk.grey('-')} ${chalk.bold('nipinit presets remove <preset>')} ${chalk.italic.grey('Remove a preset')}
+    `);
   } else {
-    logger.log(`${chalk.bgRed(' ✗ ')} Unkown argument: "${argv._[1]}". Use ${chalk.grey('nipinit presets --help')} for help`);
+    logger.error(`Unkown argument: "${argv._[1]}". Use ${chalk.grey('nipinit presets --help')} for help`);
   }
 } else if (argv._[0] === 'help') {
-  logger.log(`${chalk.bold('Usage:')} nipinit`);
-  logger.log('');
-  logger.log(chalk.bold('Arguments:'));
-  logger.log('  presets [string]         Manage presets');
-  logger.log('  help                     Print this page');
-  logger.log('');
-  logger.log(chalk.bold('Options:'));
-  logger.log('  --presets, -p [string]   Create a new project with a preset');
-  logger.log('  --no-color               Create a new project without showing colors in the CLI');
-  logger.log('');
-  logger.log(chalk.bold('Examples:'));
-  logger.log('  $ nipinit');
-  logger.log('  $ nipinit --preset myPreset --no-color');
-  logger.log('  $ nipinit presets --help');
-  logger.log('  $ nipinit presets remove myPresets');
+  logger.log(stripIndent`
+    ${chalk.bold('Usage:')} nipinit
+
+    ${chalk.bold('Arguments:')}
+      presets [string]         Manage presets
+      help                     Print this page
+
+    ${chalk.bold('Options:')}
+      --presets, -p [string]   Create a new project with a preset
+      --no-color               Create a new project without showing colors in the CLI
+
+    ${chalk.bold('Examples:')}
+      $ nipinit
+      $ nipinit --preset myPreset --no-color
+      $ nipinit presets --help
+      $ nipinit presets remove myPreset
+  `);
 } else {
   const presetArgument = argv.p ?? argv.preset;
   const questions = [
@@ -242,7 +254,7 @@ if (argv._[0] === 'presets') {
     preset.projectName = projectName;
 
     if (!preset) {
-      logger.log(`${chalk.bgRed(' ✗ ')} This preset does not exist!`);
+      logger.error('This preset does not exist!');
       logger.log(`    Run ${chalk.grey('nipinit presets ls')} to see all available presets.`);
     } else {
       generateProject(preset, true);
