@@ -91,10 +91,13 @@ Add the `--help` option to see all available arguments.
 - [x] Create a /src/ directory and initialize it with main.js
 - [x] Install different ESLint/plugins version based on the config (use peerDeps?)
 - [x] Add a "no-modules" option which does not install node modules
+- [x] Use `commander` (or `meow`) for the command-line argument parsing?
 - [ ] Add a class to manage/query Database
-- [ ] Use `commander` (or `meow`) for the command-line argument parsing?
 - [ ] Improve error handling
-- [ ] Lower the required node version (currently >=14.8.0, if we can lower it down to 14.0.0 or even 12.x.x it would be nice)
+- [ ] Lower the required node version (currently >=14.8.0, if we can lower it down to 14.0.0 or
+even 12.x.x it would be nice). If we use babel, we will have to wait for a "transform top level
+await plugin, the current one only parses it. Otherwise we can use rollup and
+its "experimentalTopLevelAwait" option.
 - [ ] Add unit tests
 
 
