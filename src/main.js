@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
 import fsSync, { promises as fs } from 'fs';
+import { createRequire } from 'module';
 import path from 'path';
 
 import chalk from 'chalk';
+import commander from 'commander';
 import commontags from 'common-tags';
 import editJson from 'edit-json-file';
 import inquirer from 'inquirer';
-import minimist from 'minimist';
 import ora from 'ora';
 
 import Logger from './Logger.js';
@@ -30,7 +31,11 @@ import {
 
 
 const { stripIndent } = commontags;
-const argv = minimist(process.argv.slice(2));
+const { program } = commander;
+const require = createRequire(import.meta.url);
+
+// eslint-disable-next-line import/no-commonjs
+const pkg = require('../package.json');
 
 const logger = new Logger();
 
@@ -113,83 +118,55 @@ async function generateProject(answers, install, usedPreset) {
   logger.log(chalk.green('Have fun!'));
 }
 
-if (argv._[0] === 'presets') {
-  if (argv._[1] === 'ls') {
-    const presets = await db.get('presets').value();
-    if (presets.length === 0) {
-      logger.error('No presets found for nipinit.');
-    } else {
-      logger.log(chalk.bold.underline(`Found ${presets.length} presets for nipinit:`));
-      for (const preset of presets) {
-        logger.log(`  ${chalk.grey('-')} ${preset.name}`);
-      }
-      logger.log(chalk.italic(`You can have more informations about a preset with ${chalk.grey('nipinit presets info <preset>')}`));
-    }
-  } else if (argv._[1] === 'remove') {
-    const preset = await db.get('presets')
-      .find({ name: argv._[2] })
-      .value();
-    if (!preset) {
-      logger.error(`The preset ${argv._[2]} does not exist.`);
-    } else {
-      await db.get('presets')
-        .remove({ name: preset.name })
-        .write();
-      logger.success(`The presets ${preset.name} was deleted successfully!`);
-    }
-  } else if (argv._[1] === 'info') {
-    const preset = await db.get('presets')
-      .find({ name: argv._[2] })
-      .value();
-    if (!preset) {
-      logger.error(`The preset ${argv._[2]} does not exist.`);
-    } else {
-      logger.log(stripIndent`
-        ${chalk.bold.underline(`Informations about the preset ${chalk.cyan(preset.name)}:`)}
-          ${chalk.grey('-')} User Name: ${chalk.cyan(preset.userName)}
-          ${chalk.grey('-')} Init Git: ${preset.git ? chalk.green('Yes') : chalk.red('No')}
-            ${preset.git ? `${chalk.grey('-')} Init Github files: ${preset.github ? chalk.green('Yes') : chalk.red('No')}` : ''}
-          ${chalk.grey('-')} License: ${chalk.cyan(preset.license)}
-          ${chalk.grey('-')} Use ES Modules: ${preset.module ? chalk.green('Yes') : chalk.red('No')}
-          ${chalk.grey('-')} Use babel: ${preset.babel ? chalk.green('Yes') : chalk.red('No')}
-          ${chalk.grey('-')} Use ESLint: ${preset.eslint !== "I don't want to use ESLint" ? chalk.green('Yes') : chalk.red('No')}
-            ${preset.eslint !== "I don't want to use ESLint" ? `${chalk.grey('-')} ESLint preseturation: ${chalk.cyan(preset.eslint)}` : ''}
-      `);
-    }
-  } else if (argv.h || argv.help) {
-    logger.log(stripIndent`
-      ${chalk.bold('nipinit presets')} allows you to manage the presets.
-
-      Available commands:
-        ${chalk.grey('-')} ${chalk.bold('nipinit presets ls')} ${chalk.italic.grey('List all existing presets')}
-        ${chalk.grey('-')} ${chalk.bold('nipinit presets info <preset>')} ${chalk.italic.grey('Get informations about a preset')}
-        ${chalk.grey('-')} ${chalk.bold('nipinit presets remove <preset>')} ${chalk.italic.grey('Remove a preset')}
-    `);
+async function presetList() {
+  const presets = await db.get('presets').value();
+  if (presets.length === 0) {
+    logger.error('No presets found for nipinit.');
   } else {
-    logger.error(`Unkown argument: "${argv._[1]}". Use ${chalk.grey('nipinit presets --help')} for help`);
+    logger.log(chalk.bold.underline(`Found ${presets.length} presets for nipinit:`));
+    for (const preset of presets) {
+      logger.log(`  ${chalk.grey('-')} ${preset.name}`);
+    }
+    logger.log(chalk.italic(`You can have more informations about a preset with ${chalk.grey('nipinit presets info <preset>')}`));
   }
-} else if (argv._[0] === 'help') {
-  logger.log(stripIndent`
-    ${chalk.bold('Usage:')} nipinit
+}
 
-    ${chalk.bold('Arguments:')}
-      presets [string]         Manage presets
-      help                     Print this page
+async function presetRemove(name) {
+  const preset = await db.get('presets')
+    .find({ name })
+    .value();
+  if (!preset) {
+    logger.error(`The preset ${name} does not exist.`);
+  } else {
+    await db.get('presets')
+      .remove({ name: preset.name })
+      .write();
+    logger.success(`The presets ${preset.name} was deleted successfully!`);
+  }
+}
 
-    ${chalk.bold('Options:')}
-      --presets, -p [string]   Create a new project with a preset
-      --no-modules             Create a new project without installing node modules
-      --no-color               Create a new project without showing colors in the CLI
+async function presetInfo(name) {
+  const preset = await db.get('presets')
+    .find({ name })
+    .value();
+  if (!preset) {
+    logger.error(`The preset ${name} does not exist.`);
+  } else {
+    logger.log(stripIndent`
+      ${chalk.bold.underline(`Informations about the preset ${chalk.cyan(preset.name)}:`)}
+        ${chalk.grey('-')} User Name: ${chalk.cyan(preset.userName)}
+        ${chalk.grey('-')} Init Git: ${preset.git ? chalk.green('Yes') : chalk.red('No')}
+          ${preset.git ? `${chalk.grey('-')} Init Github files: ${preset.github ? chalk.green('Yes') : chalk.red('No')}` : ''}
+        ${chalk.grey('-')} License: ${chalk.cyan(preset.license)}
+        ${chalk.grey('-')} Use ES Modules: ${preset.module ? chalk.green('Yes') : chalk.red('No')}
+        ${chalk.grey('-')} Use babel: ${preset.babel ? chalk.green('Yes') : chalk.red('No')}
+        ${chalk.grey('-')} Use ESLint: ${preset.eslint !== "I don't want to use ESLint" ? chalk.green('Yes') : chalk.red('No')}
+          ${preset.eslint !== "I don't want to use ESLint" ? `${chalk.grey('-')} ESLint preseturation: ${chalk.cyan(preset.eslint)}` : ''}
+    `);
+  }
+}
 
-    ${chalk.bold('Examples:')}
-      $ nipinit
-      $ nipinit --preset myPreset --no-color
-      $ nipinit presets --help
-      $ nipinit presets remove myPreset
-  `);
-} else {
-  const presetArgument = argv.p ?? argv.preset;
-  const installArgument = argv.modules;
+async function startPrompting(presetArgument, installArgument) {
   const questions = [
     {
       type: 'input',
@@ -267,3 +244,33 @@ if (argv._[0] === 'presets') {
       .catch(handleError);
   }
 }
+
+program
+  .version(pkg.version, '-v, --version', 'Output the nipinit version')
+  .option('-p, --presets <string>', 'Create a new project with a preset')
+  .option('--no-modules', 'Create a new project without installing node modules')
+  .option('--no-color', 'Create a new project without showing colors in the CLI')
+  .action((options, command) => {
+    if (!command) {
+      const preset = options.presets;
+      const install = options.modules;
+      startPrompting(preset, install);
+    }
+  });
+
+const presetsCmd = program.command('presets').description('Manage presets');
+presetsCmd
+  .command('ls')
+  .description('List all existing presets')
+  .action(presetList);
+presetsCmd
+  .command('info <preset>')
+  .description('Get informations about a preset')
+  .action(presetInfo);
+presetsCmd
+  .command('remove <preset>')
+  .alias('rem')
+  .description('Remove a preset')
+  .action(presetRemove);
+
+program.parse(process.argv);
