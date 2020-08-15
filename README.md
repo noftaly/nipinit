@@ -90,8 +90,8 @@ Add the `--help` option to see all available arguments.
 - [x] Show an Error message when the entered project is already a directory
 - [x] Create a /src/ directory and initialize it with main.js
 - [x] Install different ESLint/plugins version based on the config (use peerDeps?)
+- [x] Add a "no-modules" option which does not install node modules
 - [ ] Add a class to manage/query Database
-- [ ] Add a "no-modules" option which does not install node modules
 - [ ] Use `commander` (or `meow`) for the command-line argument parsing?
 - [ ] Improve error handling
 - [ ] Lower the required node version (currently >=14.8.0, if we can lower it down to 14.0.0 or even 12.x.x it would be nice)

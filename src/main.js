@@ -33,9 +33,8 @@ const { stripIndent } = commontags;
 const argv = minimist(process.argv.slice(2));
 
 const logger = new Logger();
-const install = false;
 
-async function generateProject(answers, usedPreset = false) {
+async function generateProject(answers, install, usedPreset) {
   const samePreset = await searchForSamePreset(answers);
 
   const spinner = ora('Creating directory').start();
@@ -179,6 +178,7 @@ if (argv._[0] === 'presets') {
 
     ${chalk.bold('Options:')}
       --presets, -p [string]   Create a new project with a preset
+      --no-modules             Create a new project without installing node modules
       --no-color               Create a new project without showing colors in the CLI
 
     ${chalk.bold('Examples:')}
@@ -189,6 +189,7 @@ if (argv._[0] === 'presets') {
   `);
 } else {
   const presetArgument = argv.p ?? argv.preset;
+  const installArgument = argv.modules;
   const questions = [
     {
       type: 'input',
@@ -257,12 +258,12 @@ if (argv._[0] === 'presets') {
       logger.error('This preset does not exist!');
       logger.log(`    Run ${chalk.grey('nipinit presets ls')} to see all available presets.`);
     } else {
-      generateProject(preset, true);
+      generateProject(preset, installArgument, true);
     }
   } else {
     inquirer
       .prompt(questions)
-      .then(generateProject)
+      .then(answers => generateProject(answers, installArgument, false))
       .catch(handleError);
   }
 }
