@@ -180,6 +180,8 @@ export async function createOtherFiles(answers, paths, editablePackageJson) {
   await fs.mkdir(path.join(paths.project, 'src'));
   await fs.writeFile(path.join(paths.project, 'src', 'main.js'), filesContent.mainjs);
   editablePackageJson.set('main', './src/main.js');
+  await fs.writeFile(path.join(paths.project, '.env'), '');
+  await fs.writeFile(path.join(paths.project, '.env.example'), '');
 }
 
 export function configureModule(editablePackageJson) {
