@@ -39,7 +39,7 @@ $ npm i -g nipinit
 - Install & configure Babel
 - Install & configure ESLint (choose between my configuration (noftalint), airbnb,
 and standard)
-- Install & configure nodemon
+- Install & configure nodemon, cross-env and concurrently
 - Create a README and a .editorconfig
 - Save & use presets
 
@@ -99,6 +99,7 @@ even 12.x.x it would be nice). If we use babel, we will have to wait for a "tran
 await plugin, the current one only parses it. Otherwise we can use rollup and
 its "experimentalTopLevelAwait" option.
 - [ ] Add unit tests
+- [ ] Change the bdd type (move from JSON? Just change the lib?)
 
 
 ## License
