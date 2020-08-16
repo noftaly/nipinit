@@ -76,11 +76,11 @@ async function generateProject(answers, install, usedPreset) {
   // Add eslint
   spinner.text = 'Installing ESLint';
   if (answers.eslint !== "I don't want to use ESLint")
-    installESLint(answers, paths, install);
+    await installESLint(answers, paths, install);
 
   // Add other dependencies (nodemon...)
   spinner.text = 'Installing other dependencies';
-  await installOtherDeps(paths, install);
+  await installOtherDeps(paths, answers, install);
 
   // Add other files (editorconfig, README...)
   spinner.text = 'Adding the last files';
@@ -218,6 +218,12 @@ async function startPrompting(presetArgument, installArgument) {
       message: 'What ESLint configuration do you want?',
       choices: ['noftalint', 'airbnb', 'standard', 'recommended', "I don't want to use ESLint"],
       default: 'noftalint',
+    }, {
+      type: 'checkbox',
+      name: 'extras',
+      message: 'What other modules would you like to install?',
+      choices: ['nodemon', 'cross-env', 'concurrently'],
+      default: ['nodemon', 'cross-env'],
     },
   ];
 
