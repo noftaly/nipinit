@@ -7,10 +7,6 @@
 
 > 💻 A command-line utility to easily create new NPM projects.
 
-⚠️ **Attention:** This package is not published to NPM yet, so clone this repo to use it!
-Also it is still in "beta" so there might be some unwanted behaviour or some bugs. Please
-file an issue if you encounter any!
-
 ## Table of Contents
 - [Installation](#installation)
 - [Features](#features)
