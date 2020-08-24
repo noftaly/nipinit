@@ -61,7 +61,7 @@ You can create presets when creating a new project. (answer 'Yes' to the prompt
 `Do you want to save this preset?`).
 After that, you can generate a new project using this preset just by adding the `--preset preset_name` argument to nipinit. (it has an alias: `-p`)
 ```shell
-$ nipinit -preset myCoolPreset
+$ nipinit --preset myCoolPreset
 ```
 
 If you create a project without using a prest, but it happens that the exact same preset is already
