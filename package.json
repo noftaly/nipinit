@@ -10,9 +10,17 @@
   "bin": {
     "nipinit": "./src/main.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "nipinit",
+    "cli",
+    "boilerplate",
+    "generator",
+    "noftaly"
+  ],
+  "author": "Elliot 'noftaly' Maisl",
   "license": "MIT",
+  "homepage": "https://github.com/noftaly/nipinit#readme",
+  "repository": "https://github.com/noftaly/nipinit",
   "dependencies": {
     "chalk": "^4.1.0",
     "commander": "^6.0.0",
