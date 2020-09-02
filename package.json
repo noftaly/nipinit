@@ -31,12 +31,12 @@
     "ora": "^5.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.1",
-    "@babel/eslint-parser": "^7.11.3",
+    "@babel/core": "^7.11.5",
+    "@babel/eslint-parser": "^7.11.5",
     "@babel/plugin-syntax-top-level-await": "^7.10.4",
-    "@babel/preset-env": "^7.11.0",
-    "eslint": "^7.6.0",
-    "eslint-config-noftalint": "^1.7.0",
+    "@babel/preset-env": "^7.11.5",
+    "eslint": "^7.8.1",
+    "eslint-config-noftalint": "^1.8.2",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-unicorn": "^21.0.0",
