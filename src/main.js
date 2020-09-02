@@ -124,9 +124,9 @@ async function presetList() {
     logger.error('No presets found for nipinit.');
   } else {
     logger.log(chalk.bold.underline(`Found ${presets.length} presets for nipinit:`));
-    for (const preset of presets) {
+    for (const preset of presets)
       logger.log(`  ${chalk.grey('-')} ${preset.name}`);
-    }
+
     logger.log(chalk.italic(`You can have more informations about a preset with ${chalk.grey('nipinit presets info <preset>')}`));
   }
 }

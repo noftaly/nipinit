@@ -126,7 +126,8 @@ export async function createLicense(answers, editablePackageJson, paths) {
 }
 
 export async function installBabel(paths, install) {
-  if (install) await exec('npm i -D @babel/core @babel/node @babel/preset-env', { cwd: paths.project });
+  if (install)
+    await exec('npm i -D @babel/core @babel/node @babel/preset-env', { cwd: paths.project });
   await fs.writeFile(path.join(paths.project, '.babelrc'), filesContent.babel);
 }
 
@@ -156,7 +157,8 @@ export async function installESLint(answers, paths, install) {
         `, { cwd: paths.project });
       }
     }
-    if (useBabelParser) await exec('npm i -D @babel/eslint-parser', { cwd: paths.project });
+    if (useBabelParser)
+      await exec('npm i -D @babel/eslint-parser', { cwd: paths.project });
   }
 
   await fs.writeFile(
@@ -167,11 +169,14 @@ export async function installESLint(answers, paths, install) {
 
 export async function installOtherDeps(paths, install, answers) {
   if (answers.nodemon) {
-    if (install) await exec('npm i -D nodemon', { cwd: paths.project });
+    if (install)
+      await exec('npm i -D nodemon', { cwd: paths.project });
     await fs.writeFile(path.join(paths.project, 'nodemon.json'), filesContent.nodemon);
   }
-  if (answers['cross-env'] && install) await exec('npm i -D cross-env', { cwd: paths.project });
-  if (answers.concurrently && install) await exec('npm i -D nodemon', { cwd: paths.project });
+  if (answers['cross-env'] && install)
+    await exec('npm i -D cross-env', { cwd: paths.project });
+  if (answers.concurrently && install)
+    await exec('npm i -D nodemon', { cwd: paths.project });
 }
 
 export async function createOtherFiles(answers, paths, editablePackageJson) {

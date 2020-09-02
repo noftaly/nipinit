@@ -10,7 +10,8 @@ import handleError from './handleError.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const folder = path.join(__dirname, '..', 'userGenerated');
 
-if (!fsSync.existsSync(folder)) await fs.mkdir(folder).catch(handleError);
+if (!fsSync.existsSync(folder))
+  await fs.mkdir(folder).catch(handleError);
 const adapter = new FileAsync(`${folder}/preferences.json`);
 const db = await low(adapter);
 await db.defaults({ presets: [] })
