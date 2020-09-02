@@ -1,13 +1,17 @@
 import fsSync, { promises as fs } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import low from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync.js';
 
 import handleError from './handleError.js';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const folder = path.join(__dirname, '..', 'userGenerated');
 
-if (!fsSync.existsSync('../userGenerated')) await fs.mkdir('../userGenerated').catch(handleError);
-const adapter = new FileAsync('../userGenerated/preferences.json');
+if (!fsSync.existsSync(folder)) await fs.mkdir(folder).catch(handleError);
+const adapter = new FileAsync(`${folder}/preferences.json`);
 const db = await low(adapter);
 await db.defaults({ presets: [] })
   .write();
