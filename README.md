@@ -77,9 +77,10 @@ Add the `--help` option to see all available arguments.
 
 ## TO-DO
 
-- [ ] Fix bug with overwriting of package.json causing to not having dependencies field
+- [x] Fix bug with overwriting of package.json causing to not having dependencies field
+- [x] Don't use babel-node in production, build the project instead.
+- [x] Use cross-env in scripts if selected
 - [ ] Better split the project into multiple files/directory
-- [ ] Don't use babel-node in production, build the project instead.
 - [ ] Add a class to manage/query Database
 - [ ] Improve error handling
 - [ ] Lower the required node version (currently >=14.8.0, if we can lower it down to 14.0.0 or
