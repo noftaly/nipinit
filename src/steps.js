@@ -210,7 +210,10 @@ export function configureScripts(editablePackageJson, answers) {
   } else {
     editablePackageJson.set('scripts.start', `${prod} node ./src/main.js`.trim());
   }
-  editablePackageJson.set('scripts.dev', `nodemon --exec ${dev} ${answers.babel && 'babel-'}node ./src/main.js`);
+
+  if (answers.extras.includes('nodemon'))
+    editablePackageJson.set('scripts.dev:watch', `nodemon --exec ${dev} ${answers.babel ? 'babel-' : ''}node ./src/main.js`);
+  editablePackageJson.set('scripts.dev', `${dev} ${answers.babel ? 'babel-' : ''}node ./src/main.js`);
   editablePackageJson.set('scripts.lint', 'eslint .');
   editablePackageJson.set('scripts.lint:fix', 'eslint . --fix');
 }
