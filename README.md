@@ -77,17 +77,9 @@ Add the `--help` option to see all available arguments.
 
 ## TO-DO
 
-- [x] Save configurations and use them
-- [x] Split code into multiple files
-- [x] Add a "no-color" option which does not print color in the console.logs
-- [x] Add a logger to manage the output logs
-- [x] Add a "help" page (`nipinit help` or `nipinit --help`?)
-- [x] If babel and ESLint are used, use the babel-eslint parser for ESLint
-- [x] Show an Error message when the entered project is already a directory
-- [x] Create a /src/ directory and initialize it with main.js
-- [x] Install different ESLint/plugins version based on the config (use peerDeps?)
-- [x] Add a "no-modules" option which does not install node modules
-- [x] Use `commander` (or `meow`) for the command-line argument parsing?
+- [ ] Fix bug with overwriting of package.json causing to not having dependencies field
+- [ ] Better split the project into multiple files/directory
+- [ ] Don't use babel-node in production, build the project instead.
 - [ ] Add a class to manage/query Database
 - [ ] Improve error handling
 - [ ] Lower the required node version (currently >=14.8.0, if we can lower it down to 14.0.0 or
@@ -95,7 +87,7 @@ even 12.x.x it would be nice). If we use babel, we will have to wait for a "tran
 await plugin, the current one only parses it. Otherwise we can use rollup and
 its "experimentalTopLevelAwait" option.
 - [ ] Add unit tests
-- [ ] Change the bdd type (move from JSON? Just change the lib?)
+- [ ] Change the db type (move from JSON? Just change the lib?)
 
 
 ## License
