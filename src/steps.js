@@ -98,10 +98,12 @@ export async function initGithub(paths, answers) {
     path.join(paths.dest.issueTemplateFolder, 'feature_request.md'));
 
   // Create lint action
-  await fs.mkdir(path.join(paths.dest.ghFolder, 'workflows'));
-  const lintActionContent = (await fs.readFile(paths.data.lintAction, { encoding: 'utf-8' }))
-    .replace('<PLUGINS_LIST>', getEslintConfig(answers.eslint).plugins);
-  await fs.writeFile(paths.dest.lintAction, lintActionContent);
+  if (answers.eslint !== "I don't want to use ESLint") {
+    await fs.mkdir(path.join(paths.dest.ghFolder, 'workflows'));
+    const lintActionContent = (await fs.readFile(paths.data.lintAction, { encoding: 'utf-8' }))
+      .replace('<PLUGINS_LIST>', getEslintConfig(answers.eslint).plugins);
+    await fs.writeFile(paths.dest.lintAction, lintActionContent);
+  }
 
   // Create CHANGELOG.md
   await fs.copyFile(
