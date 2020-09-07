@@ -45,7 +45,6 @@ async function generateProject(answers, install, usedPreset) {
   const spinner = ora('Creating directory').start();
 
   const paths = getPaths(answers.projectName);
-  const editablePackageJson = editJson(path.join(paths.project, 'package.json'), { autosave: true });
 
   // Create project directory
   await fs.mkdir(paths.project);
@@ -62,7 +61,7 @@ async function generateProject(answers, install, usedPreset) {
 
   // Initialise NPM
   spinner.text = 'Initializing npm';
-  await initNpm(paths, answers, editablePackageJson);
+  let editablePackageJson = await initNpm(paths, answers);
 
   // Set license
   spinner.text = 'Create the license';
@@ -81,6 +80,8 @@ async function generateProject(answers, install, usedPreset) {
   // Add other dependencies (nodemon...)
   spinner.text = 'Installing other dependencies';
   await installOtherDeps(paths, answers, install);
+
+  editablePackageJson = editJson(path.join(paths.project, 'package.json'), { autosave: true });
 
   // Add other files (editorconfig, README...)
   spinner.text = 'Adding the last files';

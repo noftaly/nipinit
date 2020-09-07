@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import commontags from 'common-tags';
+import editJson from 'edit-json-file';
 import inquirer from 'inquirer';
 
 import filesContent from '../data/files.js';
@@ -116,9 +117,11 @@ export async function initGithub(paths, answers) {
     path.join(paths.project, 'CONTRIBUTING.md'));
 }
 
-export async function initNpm(paths, answers, editablePackageJson) {
+export async function initNpm(paths, answers) {
   await exec('npm init -y', { cwd: paths.project });
+  const editablePackageJson = editJson(path.join(paths.project, 'package.json'), { autosave: true });
   editablePackageJson.set('author', answers.userName);
+  return editablePackageJson;
 }
 
 export async function createLicense(answers, editablePackageJson, paths) {
