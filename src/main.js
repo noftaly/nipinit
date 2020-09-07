@@ -161,7 +161,8 @@ async function presetInfo(name) {
         ${chalk.grey('-')} Use ES Modules: ${preset.module ? chalk.green('Yes') : chalk.red('No')}
         ${chalk.grey('-')} Use babel: ${preset.babel ? chalk.green('Yes') : chalk.red('No')}
         ${chalk.grey('-')} Use ESLint: ${preset.eslint !== "I don't want to use ESLint" ? chalk.green('Yes') : chalk.red('No')}
-          ${preset.eslint !== "I don't want to use ESLint" ? `${chalk.grey('-')} ESLint preseturation: ${chalk.cyan(preset.eslint)}` : ''}
+          ${preset.eslint !== "I don't want to use ESLint" ? `${chalk.grey('-')} ESLint preset: ${chalk.cyan(preset.eslint)}` : ''}
+        ${chalk.grey('-')} Other dependencies: ${chalk.cyan(preset.extras.join(', ')) || chalk.red('None')}
     `);
   }
 }
