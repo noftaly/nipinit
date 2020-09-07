@@ -200,6 +200,7 @@ export function configureModule(editablePackageJson) {
 }
 
 export function configureScripts(editablePackageJson, answers) {
+  editablePackageJson.unset('scripts.test');
   editablePackageJson.set('scripts.start', `${answers.babel && 'babel-'}node ./src/main.js`);
   editablePackageJson.set('scripts.dev', `nodemon --exec ${answers.babel && 'babel-'}node ./src/main.js`);
   editablePackageJson.set('scripts.lint', 'eslint .');
