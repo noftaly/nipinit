@@ -40,7 +40,7 @@ const pkg = require('../package.json');
 const logger = new Logger();
 
 async function generateProject(answers, install, usedPreset) {
-  const samePreset = await searchForSamePreset(answers);
+  const samePreset = usedPreset ? false : await searchForSamePreset(answers);
 
   const spinner = ora('Creating directory').start();
 
@@ -98,7 +98,7 @@ async function generateProject(answers, install, usedPreset) {
   spinner.succeed('Finished successfully!');
 
   logger.log('\n\n');
-  if (samePreset && !usedPreset) {
+  if (samePreset) {
     logger.log('');
     logger.info(`The exact same preset is already saved under the name ${chalk.yellow(samePreset[0].name)}.`);
     logger.log(`    Use ${chalk.grey(`nipinit -p ${samePreset[0].name}`)} to use it directly, next time!`);
@@ -232,18 +232,18 @@ async function startPrompting(presetArgument, installArgument) {
     const preset = await db.get('presets')
       .find({ name: presetArgument })
       .value();
+    if (!preset) {
+      logger.error('This preset does not exist!');
+      logger.log(`    Run ${chalk.grey('nipinit presets ls')} to see all available presets.`);
+      return;
+    }
 
     const { projectName } = await inquirer
       .prompt(questions[0])
       .catch(handleError);
     preset.projectName = projectName;
 
-    if (!preset) {
-      logger.error('This preset does not exist!');
-      logger.log(`    Run ${chalk.grey('nipinit presets ls')} to see all available presets.`);
-    } else {
-      generateProject(preset, installArgument, true);
-    }
+    generateProject(preset, installArgument, true);
   } else {
     inquirer
       .prompt(questions)
