@@ -52,7 +52,7 @@ async function generateProject(answers, install, usedPreset) {
   // Initialise git
   spinner.text = 'Initializing git';
   if (answers.git)
-    await initGit(paths);
+    await initGit(paths, answers);
 
   // Initialise .github folder
   spinner.text = 'Creating github files';

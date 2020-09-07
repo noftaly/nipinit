@@ -81,9 +81,9 @@ export function getPaths(projectName) {
   return paths;
 }
 
-export async function initGit(paths) {
+export async function initGit(paths, answers) {
   await exec('git init', { cwd: paths.project });
-  await fs.writeFile(paths.dest.gitignore, filesContent.gitignore);
+  await fs.writeFile(paths.dest.gitignore, filesContent.gitignore(answers.babel));
 }
 
 export async function initGithub(paths, answers) {
@@ -201,7 +201,12 @@ export function configureModule(editablePackageJson) {
 
 export function configureScripts(editablePackageJson, answers) {
   editablePackageJson.unset('scripts.test');
-  editablePackageJson.set('scripts.start', `${answers.babel && 'babel-'}node ./src/main.js`);
+  if (answers.babel) {
+    editablePackageJson.set('scripts.build', 'babel src -d dist/');
+    editablePackageJson.set('scripts.start', 'npm run build && node ./dist/main.js');
+  } else {
+    editablePackageJson.set('scripts.start', 'node ./src/main.js');
+  }
   editablePackageJson.set('scripts.dev', `nodemon --exec ${answers.babel && 'babel-'}node ./src/main.js`);
   editablePackageJson.set('scripts.lint', 'eslint .');
   editablePackageJson.set('scripts.lint:fix', 'eslint . --fix');

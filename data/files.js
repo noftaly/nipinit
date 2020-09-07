@@ -3,8 +3,9 @@ import commontags from 'common-tags';
 const { stripIndent } = commontags;
 
 export default {
-  gitignore: stripIndent`
+  gitignore: babel => stripIndent`
     node_modules/
+    ${babel && 'dist/'}
   `,
   babel: stripIndent`
     {
