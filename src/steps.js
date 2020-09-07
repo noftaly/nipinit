@@ -213,7 +213,7 @@ export function configureScripts(editablePackageJson, answers) {
 
   if (answers.extras.includes('nodemon'))
     editablePackageJson.set('scripts.dev:watch', `nodemon --exec ${dev} ${answers.babel ? 'babel-' : ''}node ./src/main.js`);
-  editablePackageJson.set('scripts.dev', `${dev} ${answers.babel ? 'babel-' : ''}node ./src/main.js`);
+  editablePackageJson.set('scripts.dev', `${dev} ${answers.babel ? 'babel-' : ''}node ./src/main.js`.trim());
   editablePackageJson.set('scripts.lint', 'eslint .');
   editablePackageJson.set('scripts.lint:fix', 'eslint . --fix');
 }
