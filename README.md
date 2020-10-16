@@ -9,10 +9,12 @@
 
 :warning: Please note that at the moment, you need NodeJS v14.8.0 or higher, to support top-level-await.
 
+
 ## Table of Contents
 - [Installation](#installation)
 - [Features](#features)
 - [Usage](#usage)
+  - [Requirements](#requirements)
   - [Fresh start](#fresh-start)
   - [Presets](#presets)
 - [Screenshots](#screenshots)
@@ -32,11 +34,10 @@ $ npm i -g nipinit
 - Initialize NPM
 - Initialize Git & .gitignore
 - Create Github's file (templates, changelog, contributing, and if you set a linter, a lint action)
-- Set a license (choose between, MIT, ISC and GPL-v3)
+- Set a license (choose between MIT, ISC and GPL-v3)
 - Use ES Modules (real ES Modules, not babel)
 - Install & configure Babel
-- Install & configure ESLint (choose between my configuration (noftalint), airbnb,
-and standard)
+- Install & configure ESLint (choose between my configuration (noftalint), airbnb, recommended and standard)
 - Install & configure nodemon, cross-env and concurrently
 - Create a README and a .editorconfig
 - Save & use presets
@@ -44,10 +45,9 @@ and standard)
 
 ## Usage
 
-### Requirement
+### Requirements
 
-- You need to have NodeJS v14.8.0 or newer to use nipinit. You can check your nodejs' version
-with `node -v`
+- You need to have NodeJS v14.8.0 or newer to use nipinit. You can check your nodejs' version with `node -v`
 
 ### Fresh start
 
@@ -55,8 +55,7 @@ To start a new NPM project, go to the directory you want in your terminal, and t
 ```shell
 $ nipinit
 ```
-You will be prompts some questions to generate the boilerplate that fits you the most, and
-you will be good to go!
+You will be prompts some questions to generate the boilerplate that fits you the most, and you will be good to go!
 
 ### Presets
 
@@ -67,8 +66,7 @@ After that, you can generate a new project using this preset just by adding the 
 $ nipinit --preset myCoolPreset
 ```
 
-If you create a project without using a prest, but it happens that the exact same preset is already
-saved, nipinit will tell you so you can use it next time!
+If you create a project without using a prest, but it happens that the exact same preset is already saved, nipinit will tell you so you can use it next time!
 
 You can also manage your presets with
 ```shell
@@ -79,7 +77,7 @@ Add the `--help` option to see all available arguments.
 
 ## Screenshots
 
-![Nipinit Screenshot where we can see all the prompts asked and the success messages](./assets/nipinit_screenshot.jpg)
+![Nipinit Screenshot where we can see all the prompts asked and the success messages](./assets/nipinit-screenshot.svg)
 
 
 ## TO-DO
@@ -87,13 +85,10 @@ Add the `--help` option to see all available arguments.
 - [x] Fix bug with overwriting of package.json causing to not having dependencies field
 - [x] Don't use babel-node in production, build the project instead.
 - [x] Use cross-env in scripts if selected
-- [ ] Better split the project into multiple files/directory
+- [x] Better split the project into multiple files/directory
 - [ ] Add a class to manage/query Database
 - [ ] Improve error handling
-- [ ] Lower the required node version (currently >=14.8.0, if we can lower it down to 14.0.0 or
-even 12.x.x it would be nice). If we use babel, we will have to wait for a "transform top level
-await plugin, the current one only parses it. Otherwise we can use rollup and
-its "experimentalTopLevelAwait" option.
+- [ ] Lower the required node version (currently >=14.8.0, if we can lower it down to 14.0.0 or even 12.x.x it would be nice). If we use babel, we will have to wait for a "transform top level await plugin, the current one only parses it. Otherwise we can use rollup and its "experimentalTopLevelAwait" option.
 - [ ] Add unit tests
 - [ ] Change the db type (move from JSON? Just change the lib?)
 
