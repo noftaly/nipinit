@@ -11,10 +11,12 @@ async function initGithub(paths, answers) {
   await fs.mkdir(paths.dest.issueTemplateFolder);
   await fs.copyFile(
     path.join(paths.data.issueTemplateFolder, 'bug_report.md'),
-    path.join(paths.dest.issueTemplateFolder, 'bug_report.md'));
+    path.join(paths.dest.issueTemplateFolder, 'bug_report.md'),
+  );
   await fs.copyFile(
     path.join(paths.data.issueTemplateFolder, 'feature_request.md'),
-    path.join(paths.dest.issueTemplateFolder, 'feature_request.md'));
+    path.join(paths.dest.issueTemplateFolder, 'feature_request.md'),
+  );
 
   // Create lint action
   if (answers.eslint !== "I don't want to use ESLint") {
@@ -27,12 +29,14 @@ async function initGithub(paths, answers) {
   // Create CHANGELOG.md
   await fs.copyFile(
     path.join(paths.dataDir, 'CHANGELOG.md'),
-    path.join(paths.project, 'CHANGELOG.md'));
+    path.join(paths.project, 'CHANGELOG.md'),
+  );
 
   // Create CONTRIBUTING.md
   await fs.copyFile(
     path.join(paths.dataDir, 'CONTRIBUTING.md'),
-    path.join(paths.project, 'CONTRIBUTING.md'));
+    path.join(paths.project, 'CONTRIBUTING.md'),
+  );
 }
 
 export default initGithub;

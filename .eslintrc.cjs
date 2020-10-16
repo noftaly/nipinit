@@ -3,8 +3,6 @@ module.exports = {
   extends: 'noftalint',
   ignorePatterns: ['.eslintrc.cjs', 'node_modules/', 'playground/'],
   rules: {
-    'function-paren-newline': 'off',
-
     // Rule we disable because it is a CLT
     'node/no-process-exit': 'off',
     'node/no-sync': 'off',
