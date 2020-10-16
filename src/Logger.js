@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 
+
 class Logger {
   /**
    * Logs a message with a prefix and the date
@@ -34,4 +35,6 @@ class Logger {
   }
 }
 
-export default Logger;
+const logger = new Logger();
+
+export default logger;

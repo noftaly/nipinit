@@ -1,0 +1,11 @@
+export { default as configureModule } from './configureModule.js';
+export { default as configureScripts } from './configureScripts.js';
+export { default as createLicense } from './createLicense.js';
+export { default as createOtherFiles } from './createOtherFiles.js';
+export { default as getPaths } from './getPaths.js';
+export { default as initGit } from './initGit.js';
+export { default as initGithub } from './initGithub.js';
+export { default as initNpm } from './initNpm.js';
+export { default as installBabel } from './installBabel.js';
+export { default as installEslint } from './installEslint.js';
+export { default as installOtherDependencies } from './installOtherDependencies.js';

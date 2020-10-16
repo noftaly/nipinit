@@ -5,7 +5,8 @@ import { fileURLToPath } from 'url';
 import low from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync.js';
 
-import handleError from './handleError.js';
+import handleError from './utils/handleError.js';
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const folder = path.join(__dirname, '..', 'userGenerated');

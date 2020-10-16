@@ -11,36 +11,82 @@ import editJson from 'edit-json-file';
 import inquirer from 'inquirer';
 import ora from 'ora';
 
-import Logger from './Logger.js';
+import logger from './Logger.js';
+import Preset from './Preset.js';
 import db from './database.js';
-import handleError from './handleError.js';
 import {
-  searchForSamePreset,
   getPaths,
   initGit,
   initGithub,
   initNpm,
   createLicense,
   installBabel,
-  installESLint,
-  installOtherDeps,
+  installEslint,
+  installOtherDependencies,
   createOtherFiles,
   configureModule,
   configureScripts,
-} from './steps.js';
+} from './steps/index.js';
+import handleError from './utils/handleError.js';
+import structuredClone from './utils/structuredClone.js';
 
 
-const { stripIndent } = commontags;
+const { oneLineTrim, stripIndent } = commontags;
 const { program } = commander;
 const require = createRequire(import.meta.url);
 
 // eslint-disable-next-line import/no-commonjs
 const pkg = require('../package.json');
 
-const logger = new Logger();
+
+async function createNewPreset(answers) {
+  const preferences = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'save',
+      message: 'Do you want to save this preset?',
+    }, {
+      type: 'input',
+      name: 'presetName',
+      message: 'What name do you want to give to this preset?',
+      default: async () => {
+        let suffix = 1;
+        let value = await db.get('presets')
+          .find({ name: answers.userName })
+          .value();
+        while (value) {
+          suffix++;
+          // eslint-disable-next-line no-await-in-loop
+          value = await db.get('presets')
+            .find({ name: `${answers.userName}-${suffix}` })
+            .value();
+        }
+        return oneLineTrim`
+          ${answers.userName}
+          ${suffix > 1 ? `-${suffix}` : ''}
+        `;
+      },
+      when: prefs => prefs.save,
+      validate: input => input.length > 0 || 'The preset name has to contain at least 1 character.',
+    },
+  ]).catch(handleError);
+
+  if (preferences.save) {
+    const clonedAnswers = structuredClone(answers);
+    const preset = Object.assign(clonedAnswers, { name: preferences.presetName });
+    delete preset.projectName;
+    await db.get('presets')
+      .push(preset)
+      .write()
+      .catch(handleError);
+  }
+  return true;
+}
 
 async function generateProject(answers, install, usedPreset) {
-  const samePreset = usedPreset ? false : await searchForSamePreset(answers);
+  const samePresetExists = usedPreset ? false : await Preset.findSame(answers);
+  if (!samePresetExists && !usedPreset)
+    await createNewPreset(answers);
 
   const spinner = ora('Creating directory').start();
 
@@ -75,11 +121,11 @@ async function generateProject(answers, install, usedPreset) {
   // Add eslint
   spinner.text = 'Installing ESLint';
   if (answers.eslint !== "I don't want to use ESLint")
-    await installESLint(answers, paths, install);
+    await installEslint(answers, paths, install);
 
   // Add other dependencies (nodemon...)
   spinner.text = 'Installing other dependencies';
-  await installOtherDeps(paths, answers, install);
+  await installOtherDependencies(paths, answers, install);
 
   editablePackageJson = editJson(path.join(paths.project, 'package.json'), { autosave: true });
 
@@ -99,10 +145,10 @@ async function generateProject(answers, install, usedPreset) {
   spinner.succeed('Finished successfully!');
 
   logger.log('\n\n');
-  if (samePreset) {
+  if (samePresetExists) {
     logger.log('');
-    logger.info(`The exact same preset is already saved under the name ${chalk.yellow(samePreset[0].name)}.`);
-    logger.log(`    Use ${chalk.grey(`nipinit -p ${samePreset[0].name}`)} to use it directly, next time!`);
+    logger.info(`The exact same preset is already saved under the name ${chalk.yellow(samePresetExists[0].name)}.`);
+    logger.log(`    Use ${chalk.grey(`nipinit -p ${samePresetExists[0].name}`)} to use it directly, next time!`);
     logger.log('');
   }
   logger.log(stripIndent`
@@ -111,61 +157,12 @@ async function generateProject(answers, install, usedPreset) {
 
     ${chalk.bold('There is a few more things you may want to do to be ready...')}
         ${chalk.grey('-')} Set the contact method in CONTRIBUTING.md (search for "[INSERT CONTACT METHOD]")
-        ${chalk.grey('-')} Update the scripts in package.json to your linking or to use module you want
+        ${chalk.grey('-')} Update the scripts in package.json to your liking or to use modules you want
         ${chalk.grey('-')} Add/fill/update some package.json entries, such as the repo, the description, keywords...
         ${chalk.grey('-')} Update the TO-DO in README.md
   `);
 
   logger.log(chalk.green('Have fun!'));
-}
-
-async function presetList() {
-  const presets = await db.get('presets').value();
-  if (presets.length === 0) {
-    logger.error('No presets found for nipinit.');
-  } else {
-    logger.log(chalk.bold.underline(`Found ${presets.length} presets for nipinit:`));
-    for (const preset of presets)
-      logger.log(`  ${chalk.grey('-')} ${preset.name}`);
-
-    logger.log(chalk.italic(`You can have more informations about a preset with ${chalk.grey('nipinit presets info <preset>')}`));
-  }
-}
-
-async function presetRemove(name) {
-  const preset = await db.get('presets')
-    .find({ name })
-    .value();
-  if (!preset) {
-    logger.error(`The preset ${name} does not exist.`);
-  } else {
-    await db.get('presets')
-      .remove({ name: preset.name })
-      .write();
-    logger.success(`The presets ${preset.name} was deleted successfully!`);
-  }
-}
-
-async function presetInfo(name) {
-  const preset = await db.get('presets')
-    .find({ name })
-    .value();
-  if (!preset) {
-    logger.error(`The preset ${name} does not exist.`);
-  } else {
-    logger.log(stripIndent`
-      ${chalk.bold.underline(`Informations about the preset ${chalk.cyan(preset.name)}:`)}
-        ${chalk.grey('-')} User Name: ${chalk.cyan(preset.userName)}
-        ${chalk.grey('-')} Init Git: ${preset.git ? chalk.green('Yes') : chalk.red('No')}
-          ${preset.git ? `${chalk.grey('-')} Init Github files: ${preset.github ? chalk.green('Yes') : chalk.red('No')}` : ''}
-        ${chalk.grey('-')} License: ${chalk.cyan(preset.license)}
-        ${chalk.grey('-')} Use ES Modules: ${preset.module ? chalk.green('Yes') : chalk.red('No')}
-        ${chalk.grey('-')} Use babel: ${preset.babel ? chalk.green('Yes') : chalk.red('No')}
-        ${chalk.grey('-')} Use ESLint: ${preset.eslint !== "I don't want to use ESLint" ? chalk.green('Yes') : chalk.red('No')}
-          ${preset.eslint !== "I don't want to use ESLint" ? `${chalk.grey('-')} ESLint preset: ${chalk.cyan(preset.eslint)}` : ''}
-        ${chalk.grey('-')} Other dependencies: ${chalk.cyan(preset.extras.join(', ')) || chalk.red('None')}
-    `);
-  }
 }
 
 async function startPrompting(presetArgument, installArgument) {
@@ -259,26 +256,26 @@ program
   .option('--no-modules', 'Create a new project without installing node modules')
   .option('--no-color', 'Create a new project without showing colors in the CLI')
   .action((options, command) => {
-    if (!command) {
-      const preset = options.presets;
-      const install = options.modules;
-      startPrompting(preset, install);
-    }
+    if (command) return;
+
+    const preset = options.presets;
+    const install = options.modules;
+    startPrompting(preset, install);
   });
 
 const presetsCmd = program.command('presets').description('Manage presets');
 presetsCmd
   .command('ls')
   .description('List all existing presets')
-  .action(presetList);
+  .action(Preset.getList);
 presetsCmd
   .command('info <preset>')
   .description('Get informations about a preset')
-  .action(presetInfo);
+  .action(Preset.getInfo);
 presetsCmd
   .command('remove <preset>')
   .alias('rem')
   .description('Remove a preset')
-  .action(presetRemove);
+  .action(Preset.remove);
 
 program.parse(process.argv);
