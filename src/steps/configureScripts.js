@@ -5,14 +5,14 @@ function configureScripts(editablePackageJson, answers) {
   editablePackageJson.unset('scripts.test');
   if (answers.babel) {
     editablePackageJson.set('scripts.build', 'babel src -d dist/');
-    editablePackageJson.set('scripts.start', `npm run build && ${prod} node ./dist/main.js`);
+    editablePackageJson.set('scripts.start', `npm run build && ${prod} node ./dist/main.js`.replace(/\s+/g, ' '));
   } else {
-    editablePackageJson.set('scripts.start', `${prod} node ./src/main.js`.trim());
+    editablePackageJson.set('scripts.start', `${prod} node ./src/main.js`.replace(/\s+/g, ' ').trim());
   }
 
   if (answers.extras.includes('nodemon'))
-    editablePackageJson.set('scripts.dev:watch', `nodemon --exec ${dev} ${answers.babel ? 'babel-' : ''}node ./src/main.js`);
-  editablePackageJson.set('scripts.dev', `${dev} ${answers.babel ? 'babel-' : ''}node ./src/main.js`.trim());
+    editablePackageJson.set('scripts.dev:watch', `nodemon --exec ${dev} ${answers.babel ? 'babel-' : ''}node ./src/main.js`.replace(/\s+/g, ' '));
+  editablePackageJson.set('scripts.dev', `${dev} ${answers.babel ? 'babel-' : ''}node ./src/main.js`.replace(/\s+/g, ' ').trim());
   editablePackageJson.set('scripts.lint', 'eslint .');
   editablePackageJson.set('scripts.lint:fix', 'eslint . --fix');
 }
