@@ -6,7 +6,7 @@ import filesContent from '../../data/files.js';
 
 async function createOtherFiles(answers, paths, editablePackageJson) {
   await fs.writeFile(path.join(paths.project, '.editorconfig'), filesContent.editorconfig);
-  await fs.writeFile(path.join(paths.project, 'README.md'), filesContent.readme(answers.projectName, answers.userName));
+  await fs.writeFile(path.join(paths.project, 'README.md'), filesContent.readme(answers.projectName, answers.userName, answers.license));
   await fs.mkdir(path.join(paths.project, 'src'));
   await fs.writeFile(path.join(paths.project, 'src', 'main.js'), filesContent.mainjs);
   editablePackageJson.set('main', './src/main.js');

@@ -43,7 +43,7 @@ export default {
     trim_trailing_whitespace = true
     insert_final_newline = true
   `,
-  readme: (project, user) => stripIndent`
+  readme: (project, user, license) => stripIndent`
     # ${project}
 
     A NodeJS Program made by ${user}
@@ -65,7 +65,7 @@ export default {
     - [x] Initialise the needed file
 
     ## License
-    Copyright © ${new Date().getFullYear()} ${user}. Licensed under the MIT license, see [the license](./LICENSE)
+    Copyright © ${new Date().getFullYear()} ${user}. Licensed under the ${license} license, see [the license](./LICENSE)
   `,
   mainjs: stripIndent`
     // main.js
