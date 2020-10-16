@@ -31,11 +31,11 @@ $ npm i -g nipinit
 
 ## Features
 
-- Initialize NPM
+- Initialize an NPM project
 - Initialize Git & .gitignore
 - Create Github's file (templates, changelog, contributing, and if you set a linter, a lint action)
 - Set a license (choose between MIT, ISC and GPL-v3)
-- Use ES Modules (real ES Modules, not babel)
+- Use ES Modules (NodeJS' ES Modules, not Babel's)
 - Install & configure Babel
 - Install & configure ESLint (choose between my configuration (noftalint), airbnb, recommended and standard)
 - Install & configure nodemon, cross-env and concurrently
@@ -55,12 +55,11 @@ To start a new NPM project, go to the directory you want in your terminal, and t
 ```shell
 $ nipinit
 ```
-You will be prompts some questions to generate the boilerplate that fits you the most, and you will be good to go!
+You will be prompted some questions to generate the boilerplate that fits you the most, and you will be good to go!
 
 ### Presets
 
-You can create presets when creating a new project. (answer 'Yes' to the prompt
-`Do you want to save this preset?`).
+You can create presets when creating a new project. (answer 'Yes' to the question `Do you want to save this preset?`).
 After that, you can generate a new project using this preset just by adding the `--preset preset_name` argument to nipinit. (it has an alias: `-p`)
 ```shell
 $ nipinit --preset myCoolPreset
@@ -91,6 +90,7 @@ Add the `--help` option to see all available arguments.
 - [ ] Lower the required node version (currently >=14.8.0, if we can lower it down to 14.0.0 or even 12.x.x it would be nice). If we use babel, we will have to wait for a "transform top level await plugin, the current one only parses it. Otherwise we can use rollup and its "experimentalTopLevelAwait" option.
 - [ ] Add unit tests
 - [ ] Change the db type (move from JSON? Just change the lib?)
+- [ ] Change the project to TypeScript
 
 
 ## License
