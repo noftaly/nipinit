@@ -1,5 +1,5 @@
 name: Lint
-on: [push]
+on: [push, pull_request]
 
 jobs:
   lint:
@@ -30,7 +30,7 @@ jobs:
 
       - name: Install ESLint Configs and Plugins
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm install -D @babel/core @babel/eslint-parser @babel/preset-env eslint-config-noftalint eslint-plugin-import eslint-plugin-node eslint-plugin-unicorn
+        run: npm install -D @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-config-noftalint eslint-plugin-import eslint-plugin-node eslint-plugin-unicorn
 
       - name: Run ESLint
         run: npm run lint
