@@ -1,28 +1,32 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import commontags from 'common-tags';
+import { oneLine } from 'common-tags';
 
-import filesContent from '../../data/files.js';
-import getEslintConfig from '../getEslintConfig.js';
-import exec from '../utils/exec.js';
+import FilesData from '../FilesData';
+import getEslintConfigInfo from '../getEslintConfig';
+import { GeneralAnswers } from '../models/answerChoice';
+import { Paths } from '../models/paths';
+import exec from '../utils/exec';
 
 
-const { oneLine } = commontags;
-
-async function installEsLint(answers, paths, install) {
+async function installEsLint(
+  answers: GeneralAnswers,
+  paths: Paths,
+  install: boolean,
+  filesData: FilesData,
+): Promise<void> {
   const useBabelParser = answers.babel;
   const useModules = answers.module;
 
   if (install) {
-    if (getEslintConfig(answers.eslint).extends === 'eslint:recommended') {
+    if (getEslintConfigInfo(answers.eslint).extends === 'eslint:recommended') {
       await exec('npm i -D eslint');
     } else {
-      const fullName = `eslint-config-${getEslintConfig(answers.eslint).extends}`;
+      const fullName = `eslint-config-${getEslintConfigInfo(answers.eslint).extends}`;
 
+      // FIXME: Find a better way to do all of this
       if (process.platform === 'win32') {
-        // FIXME: Find a better way to do this
-        // FIXME: This won't work in npm < 5
         await exec(oneLine`
           npm i -D install-peerdeps
           && npx install-peerdeps --dev ${fullName}
@@ -42,7 +46,7 @@ async function installEsLint(answers, paths, install) {
 
   await fs.writeFile(
     path.join(paths.project, `.eslintrc.${useModules ? 'c' : ''}js`),
-    filesContent.eslint(getEslintConfig(answers.eslint).extends, useBabelParser, useModules),
+    filesData.getEslintConfig(),
   );
 }
 

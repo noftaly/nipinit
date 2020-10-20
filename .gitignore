@@ -4,3 +4,4 @@ node_modules/
 playground/
 userGenerated/
 .DS_Store
+build/

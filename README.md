@@ -85,12 +85,12 @@ Add the `--help` option to see all available arguments.
 - [x] Don't use babel-node in production, build the project instead.
 - [x] Use cross-env in scripts if selected
 - [x] Better split the project into multiple files/directory
-- [ ] Add a class to manage/query Database
+- [x] Change the project to TypeScript
+- [x] Add a class to manage/query Database
+- [x] Change the db type (move from JSON? Just change the lib?) (moved from 'lowdb' to 'conf')
+- [x] Lower the required node version (from >=14.8.0, to 14.0.0 or even 12.x.x).
 - [ ] Improve error handling
-- [ ] Lower the required node version (currently >=14.8.0, if we can lower it down to 14.0.0 or even 12.x.x it would be nice). If we use babel, we will have to wait for a "transform top level await plugin, the current one only parses it. Otherwise we can use rollup and its "experimentalTopLevelAwait" option.
 - [ ] Add unit tests
-- [ ] Change the db type (move from JSON? Just change the lib?)
-- [ ] Change the project to TypeScript
 
 
 ## License

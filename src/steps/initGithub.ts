@@ -1,11 +1,14 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import getEslintConfig from '../getEslintConfig.js';
+import getEslintConfigInfo from '../getEslintConfig';
+import { EslintConfigAnswer } from '../models/Answers';
+import { GeneralAnswers } from '../models/answerChoice';
+import { Paths } from '../models/paths';
 
 
-async function initGithub(paths, answers) {
-  await fs.mkdir(paths.dest.ghFolder);
+async function initGithub(paths: Paths, answers: GeneralAnswers): Promise<void> {
+  await fs.mkdir(paths.dest.githubFolder);
 
   // Create issue templates
   await fs.mkdir(paths.dest.issueTemplateFolder);
@@ -19,10 +22,10 @@ async function initGithub(paths, answers) {
   );
 
   // Create lint action
-  if (answers.eslint !== "I don't want to use ESLint") {
-    await fs.mkdir(path.join(paths.dest.ghFolder, 'workflows'));
+  if (answers.eslint !== EslintConfigAnswer.None) {
+    await fs.mkdir(path.join(paths.dest.githubFolder, 'workflows'));
     const lintActionContent = (await fs.readFile(paths.data.lintAction, { encoding: 'utf-8' }))
-      .replace('<PLUGINS_LIST>', getEslintConfig(answers.eslint).plugins);
+      .replace('<PLUGINS_LIST>', getEslintConfigInfo(answers.eslint).plugins);
     await fs.writeFile(paths.dest.lintAction, lintActionContent);
   }
 
