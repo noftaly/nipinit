@@ -5,11 +5,11 @@ export enum LicenseAnswer {
 }
 
 export enum EslintConfigAnswer {
-  Noftalint,
-  Airbnb,
-  Standard,
-  Recommended,
-  None,
+  Noftalint = 'noftalint',
+  Airbnb = 'airbnb',
+  Standard = 'standard',
+  Recommended = 'recommended',
+  None = 'none',
 }
 
 export enum ExtraModulesAnswer {
