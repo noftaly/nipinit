@@ -5,22 +5,22 @@ import logger from './Logger';
 import PresetManager from './PresetManager';
 import { EslintConfigAnswer } from './models/Answers';
 
-export async function getPresetList(presetManager: PresetManager): Promise<void> {
-  const presets = await presetManager.getList();
+export function getPresetList(presetManager: PresetManager): void {
+  const presets = presetManager.getNames();
 
   if (presets.length === 0) {
     logger.error('No presets found for nipinit.');
   } else {
     logger.log(chalk.bold.underline(`Found ${presets.length} presets for nipinit:`));
     for (const preset of presets)
-      logger.log(`  ${chalk.grey('-')} ${preset.name}`);
+      logger.log(`  ${chalk.grey('-')} ${preset}`);
 
     logger.log(chalk.italic(`You can have more informations about a preset with ${chalk.grey('nipinit presets info <preset>')}`));
   }
 }
 
-export async function getPresetInfo(name: string, presetManager: PresetManager): Promise<void> {
-  const preset = await presetManager.findFromName(name);
+export function getPresetInfo(name: string, presetManager: PresetManager): void {
+  const preset = presetManager.findByName(name);
 
   if (!preset) {
     logger.error(`The preset ${name} does not exist.`);
@@ -43,8 +43,8 @@ export async function getPresetInfo(name: string, presetManager: PresetManager):
   }
 }
 
-export async function removePreset(name: string, presetManager: PresetManager): Promise<void> {
-  const existed = await presetManager.remove(name);
+export function removePreset(name: string, presetManager: PresetManager): void {
+  const existed = presetManager.remove(name);
   if (existed)
     logger.success(`The presets ${name} was deleted successfully!`);
   else

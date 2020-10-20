@@ -150,7 +150,7 @@ async function generateProject(answers: GeneralAnswers, install: boolean) {
 async function startPrompting(presetArgument: string, installArgument: boolean) {
   // If a preset is provided, we try to find it and create the project with it
   if (presetArgument) {
-    const preset = await presetManager.findFromName(presetArgument);
+    const preset = presetManager.findByName(presetArgument);
     if (!preset) {
       logger.error('This preset does not exist!');
       logger.log(`    Run ${chalk.grey('nipinit presets ls')} to see all available presets.`);
@@ -174,7 +174,7 @@ async function startPrompting(presetArgument: string, installArgument: boolean) 
 
     const answers: GeneralAnswers = await inquirer.prompt(questions);
 
-    const samePresetExists: StoredPreset = await presetManager.findSame(answers);
+    const samePresetExists: StoredPreset = presetManager.findSame(answers);
     if (!samePresetExists) {
       await createNewPreset(answers);
     } else {

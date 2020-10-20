@@ -25,14 +25,13 @@
     "chalk": "^4.1.0",
     "commander": "^6.1.0",
     "common-tags": "^1.8.0",
+    "conf": "^7.1.2",
     "delete": "^1.1.0",
     "edit-json-file": "^1.5.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "inquirer": "^7.3.3",
-    "keyv": "^4.0.3",
-    "keyv-file": "^0.2.0",
     "ora": "^5.1.0"
   },
   "devDependencies": {
@@ -43,7 +42,6 @@
     "@types/common-tags": "^1.8.0",
     "@types/edit-json-file": "^1.4.0",
     "@types/inquirer": "^7.3.1",
-    "@types/keyv": "^3.1.1",
     "@types/node": "^14.11.8",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",

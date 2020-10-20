@@ -14,7 +14,7 @@ export const presetName = (presetManager: PresetManager, answers: GeneralAnswers
   type: 'input',
   name: 'presetName',
   message: 'What name do you want to give to this preset?',
-  default: async () => await presetManager.createName(answers.userName),
+  default: () => presetManager.createName(answers.userName),
   when: prefs => prefs.save,
   validate: input => input.length > 0 || 'The preset name has to contain at least 1 character.',
 });

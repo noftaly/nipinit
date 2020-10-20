@@ -1,56 +1,26 @@
-import os from 'os';
-import path from 'path';
-
-import Keyv from 'keyv';
-import { KeyvFile } from 'keyv-file';
+import Conf from 'conf';
 
 import { StoredPreset, AnonymousPreset } from './models/StoredPreset';
 import { GeneralAnswers } from './models/answerChoice';
 
 
 class PresetManager {
-  db: Keyv<StoredPreset>;
-  list: Keyv<string[]>;
+  public readonly conf: Conf<Record<string, StoredPreset>>;
 
   constructor() {
-    const base = path.join(os.tmpdir(), 'nipinit');
-    this.db = new Keyv<StoredPreset>({
-      store: new KeyvFile({
-        filename: path.join(base, 'preferences.json'),
-      }),
-    });
-
-    // Keyv only expose get/set/delete of a specific value, so we need another
-    // db to keep track of all the preset's name
-    this.list = new Keyv<string[]>({
-      store: new KeyvFile({
-        filename: path.join(base, 'all.json'),
-      }),
-    });
-    this.init();
+    this.conf = new Conf<Record<string, StoredPreset>>();
   }
 
-  async init(): Promise<void> {
-    const list = await this.list.get('presetsList');
-    if (!list)
-      this.list.set('presetsList', []);
+  addPreset(preset: StoredPreset): void {
+    this.conf.set(preset.name, preset);
   }
 
-  async addPreset(preset: StoredPreset): Promise<void> {
-    await this.db.set(preset.name, preset);
-
-    const allNames = await this.getAllNames();
-    allNames.push(preset.name);
-    await this.list.set('presetsList', allNames);
+  findByName(name: string): StoredPreset {
+    return this.conf.get(name);
   }
 
-  async findFromName(name: string): Promise<StoredPreset> {
-    const preset = await this.db.get(name);
-    return preset;
-  }
-
-  async findSame(answers: GeneralAnswers): Promise<StoredPreset | null> {
-    const allPresets: StoredPreset[] = await this.getList();
+  findSame(answers: GeneralAnswers): StoredPreset | null {
+    const allPresets: StoredPreset[] = this.getList();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const allAnonymousPreset: AnonymousPreset[] = allPresets.map(({ userName, name, ...keep }) => keep);
 
@@ -74,38 +44,24 @@ class PresetManager {
     return null;
   }
 
-  async getAllNames(): Promise<string[]> {
-    const allNames = await this.list.get('presetsList');
-    return allNames;
+  getList(): StoredPreset[] {
+    return Object.values(this.conf.store);
   }
 
-  async getList(): Promise<StoredPreset[]> {
-    const allNames = await this.getAllNames();
-    if (!allNames)
-      return [];
-
-    const allPresetsPromises: Promise<StoredPreset>[] = [];
-
-    for (const name of allNames)
-      allPresetsPromises.push(this.db.get(name));
-
-    const allPresets: StoredPreset[] = (await Promise.all(allPresetsPromises));
-    return allPresets;
+  getNames(): string[] {
+    return Object.keys(this.conf.store);
   }
 
-  async remove(name: string): Promise<boolean> {
-    const existed = await this.db.delete(name);
+  remove(name: string): boolean {
+    if (!this.conf.get(name))
+      return false;
 
-    if (existed) {
-      const allNames = await this.getAllNames();
-      allNames.splice(allNames.indexOf(name), 1);
-      await this.list.set('presetsList', allNames);
-    }
-    return existed;
+    this.conf.delete(name);
+    return true;
   }
 
-  async createName(userName: string): Promise<string> {
-    const allNames = await this.getAllNames();
+  createName(userName: string): string {
+    const allNames = this.getNames();
 
     let suffix = 1;
     let possibleName = userName;
