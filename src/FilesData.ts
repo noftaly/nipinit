@@ -7,7 +7,6 @@ import { EslintPluginEntry } from './models/EslintPluginEntry';
 export default class FilesData {
   public eslintConfig: EslintPluginEntry;
 
-  // eslint-disable-next-line max-params
   constructor(
     eslintConfigAnswer: EslintConfigAnswer,
     private useBabel: boolean,
@@ -102,8 +101,6 @@ export default class FilesData {
   }
 
   getMainjs(): string {
-    return stripIndent`
-      // main.js
-    `;
+    return '// main.js';
   }
 }
