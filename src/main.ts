@@ -47,15 +47,13 @@ const presetManager = new PresetManager();
 
 async function createNewPreset(generalAnswers: GeneralAnswers) {
   const save = (presetName: string): void => {
+    // FIXME: Improve this. (with destructuring?)
     const clonedAnswers = structuredClone<GeneralAnswers>(generalAnswers);
-    // const preset = Object.assign(clonedAnswers, { name: presetName });
-    // presetManager.addPreset(preset);
     delete clonedAnswers.projectName;
     const preset: StoredPreset = {
       ...clonedAnswers,
       name: presetName,
     };
-    clonedAnswers.name = presetName;
     presetManager.addPreset(preset);
   };
 
@@ -196,9 +194,6 @@ program
   .option('--no-modules', 'Create a new project without installing node modules')
   .option('--no-color', 'Create a new project without showing colors in the CLI')
   .action((options: CliOptions, command?: string) => {
-    // When the CLT is run, setup the database
-    // const db = await setupDatabase();
-
     // If it is a subcommand, then stop here and let the other actions take care of it
     if (command) return;
 
