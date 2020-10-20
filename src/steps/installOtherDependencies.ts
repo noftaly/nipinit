@@ -21,8 +21,8 @@ async function installOtherDependencies(
   }
   if (answers.extras.includes(ExtraModulesAnswer.Crossenv) && install)
     await exec('npm i -D cross-env', { cwd: paths.project });
-  if (answers.extras.includes(ExtraModulesAnswer.Nodemon) && install)
-    await exec('npm i -D nodemon', { cwd: paths.project });
+  if (answers.extras.includes(ExtraModulesAnswer.Concurrently) && install)
+    await exec('npm i -D concurrently', { cwd: paths.project });
 }
 
 export default installOtherDependencies;
