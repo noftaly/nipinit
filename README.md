@@ -7,7 +7,7 @@
 
 > 💻 A command-line utility to easily create new NPM projects.
 
-:warning: Please note that at the moment, you need NodeJS v14.8.0 or higher, to support top-level-await.
+:warning: As of 2.0.0, you can use nipinit with need NodeJS v10.17.0 or higher. If you're still using v1.x.x, you have to use NodeJS v14.8.9 or higher.
 
 
 ## Table of Contents
@@ -47,7 +47,7 @@ $ npm i -g nipinit
 
 ### Requirements
 
-- You need to have NodeJS v14.8.0 or newer to use nipinit. You can check your nodejs' version with `node -v`
+- You need to have NodeJS v10.17.0 or newer to use nipinit. You can check your nodejs' version with `node -v`
 
 ### Fresh start
 
