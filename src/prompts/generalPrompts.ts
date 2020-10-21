@@ -6,7 +6,7 @@ import {
   ListQuestion,
   Question,
 } from 'inquirer';
-import { LicenseAnswer, EslintConfigAnswer, ExtraModulesAnswer } from '../models/Answers';
+import { LicenseAnswer, EslintConfigAnswer, ExtraModulesAnswer } from '../models/ChoiceAnswers';
 
 export const projectName: Question = {
   type: 'input',

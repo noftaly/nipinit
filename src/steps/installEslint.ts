@@ -5,8 +5,8 @@ import { oneLine } from 'common-tags';
 
 import FilesData from '../FilesData';
 import getEslintConfigInfo from '../getEslintConfig';
-import { GeneralAnswers } from '../models/answerChoice';
-import { Paths } from '../models/paths';
+import { Paths } from '../models/Paths';
+import { GeneralAnswers } from '../models/PromptAnswers';
 import exec from '../utils/exec';
 
 

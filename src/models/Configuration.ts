@@ -1,4 +1,4 @@
-import { EslintConfigAnswer, ExtraModulesAnswer, LicenseAnswer } from './Answers';
+import { EslintConfigAnswer, ExtraModulesAnswer, LicenseAnswer } from './ChoiceAnswers';
 
 // A configuration is what the user responded, but without project-specific informations
 // (the project's name). It is used to be extended by GeneralAnswers an StoredPreset,

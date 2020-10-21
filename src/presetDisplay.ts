@@ -3,7 +3,7 @@ import { stripIndent } from 'common-tags';
 
 import logger from './Logger';
 import PresetManager from './PresetManager';
-import { EslintConfigAnswer } from './models/Answers';
+import { EslintConfigAnswer } from './models/ChoiceAnswers';
 
 export function getPresetList(presetManager: PresetManager): void {
   const presets = presetManager.getNames();

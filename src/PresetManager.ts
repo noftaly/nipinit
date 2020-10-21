@@ -1,7 +1,7 @@
 import Conf from 'conf';
 
-import { StoredPreset, AnonymousPreset } from './models/StoredPreset';
-import { GeneralAnswers } from './models/answerChoice';
+import { StoredPreset, AnonymousPreset } from './models/Preset';
+import { GeneralAnswers } from './models/PromptAnswers';
 
 
 class PresetManager {

@@ -2,8 +2,8 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import editJson from 'edit-json-file';
 import getLicense from '../getLicense';
-import { GeneralAnswers } from '../models/answerChoice';
-import { Paths } from '../models/paths';
+import { Paths } from '../models/Paths';
+import { GeneralAnswers } from '../models/PromptAnswers';
 
 
 async function createLicense(

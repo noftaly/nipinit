@@ -1,5 +1,5 @@
 import path from 'path';
-import { Paths } from '../models/paths';
+import { Paths } from '../models/Paths';
 
 
 function getPaths(projectName: string): Paths {

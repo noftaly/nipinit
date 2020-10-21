@@ -14,11 +14,11 @@ import ora from 'ora';
 import FilesData from './FilesData';
 import logger from './Logger';
 import PresetManager from './PresetManager';
-import { EslintConfigAnswer } from './models/Answers';
-import { StoredPreset } from './models/StoredPreset';
-import { GeneralAnswers, PresetCreationAnswers } from './models/answerChoice';
-import { CliOptions } from './models/cli';
-import { Paths } from './models/paths';
+import { CLIOptions } from './models/CLIOptions';
+import { EslintConfigAnswer } from './models/ChoiceAnswers';
+import { Paths } from './models/Paths';
+import { StoredPreset } from './models/Preset';
+import { GeneralAnswers, PresetCreationAnswers } from './models/PromptAnswers';
 import { getPresetList, getPresetInfo, removePreset } from './presetDisplay';
 import * as generalPrompts from './prompts/generalPrompts';
 import * as presetPrompts from './prompts/presetPrompts';
@@ -193,7 +193,7 @@ program
   .option('-p, --preset <string>', 'Create a new project with a preset')
   .option('--no-modules', 'Create a new project without installing node modules')
   .option('--no-color', 'Create a new project without showing colors in the CLI')
-  .action((options: CliOptions, command?: string) => {
+  .action((options: CLIOptions, command?: string) => {
     // If it is a subcommand, then stop here and let the other actions take care of it
     if (command) return;
 

@@ -1,6 +1,6 @@
 import { Question } from 'inquirer';
 import PresetManager from '../PresetManager';
-import { GeneralAnswers } from '../models/answerChoice';
+import { GeneralAnswers } from '../models/PromptAnswers';
 
 
 export const save: Question = {

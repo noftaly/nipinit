@@ -1,4 +1,4 @@
-import { EslintConfigAnswer } from './models/Answers';
+import { EslintConfigAnswer } from './models/ChoiceAnswers';
 import { EslintPluginEntry } from './models/EslintPluginEntry';
 
 const eslintConfigs: Record<EslintConfigAnswer, EslintPluginEntry> = {

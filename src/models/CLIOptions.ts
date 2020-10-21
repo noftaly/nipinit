@@ -1,4 +1,4 @@
-export type CliOptions = {
+export type CLIOptions = {
   preset: string,
   modules: boolean,
 };
