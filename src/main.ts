@@ -10,6 +10,7 @@ import { stripIndent } from 'common-tags';
 import editJson from 'edit-json-file';
 import inquirer, { QuestionCollection } from 'inquirer';
 import ora from 'ora';
+import updateNotifier from 'update-notifier';
 
 import * as pkg from '../package.json';
 import FilesData from './FilesData';
@@ -41,6 +42,7 @@ import structuredClone from './utils/structuredClone';
 
 
 const presetManager = new PresetManager();
+updateNotifier({ pkg }).notify();
 
 
 async function createNewPreset(generalAnswers: GeneralAnswers) {
