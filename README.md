@@ -89,8 +89,10 @@ Add the `--help` option to see all available arguments.
 - [x] Add a class to manage/query Database
 - [x] Change the db type (move from JSON? Just change the lib?) (moved from 'lowdb' to 'conf')
 - [x] Lower the required node version (from >=14.8.0, to 14.0.0 or even 12.x.x).
-- [ ] Improve error handling
+- [x] Improve error handling
 - [ ] Add unit tests
+- [ ] New screenshot in the README (smaller, less "bugged")
+- [ ] Fix build action
 
 
 ## License
