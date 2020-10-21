@@ -4,11 +4,11 @@
   "description": "A command-line utility to easily create new NPM projects.",
   "main": "build/main.ts",
   "scripts": {
-    "build": "npx gulp",
+    "build": "rm -rf ./build && npx tsc",
     "lint": "eslint ."
   },
   "bin": {
-    "nipinit": "./build/src/main.js"
+    "nipinit": "./build/main.js"
   },
   "keywords": [
     "nipinit",
@@ -28,18 +28,11 @@
     "conf": "^7.1.2",
     "delete": "^1.1.0",
     "edit-json-file": "^1.5.0",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-typescript": "^6.0.0-alpha.1",
     "inquirer": "^7.3.3",
     "ora": "^5.1.0",
     "update-notifier": "^5.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/eslint-parser": "^7.12.1",
-    "@babel/preset-env": "^7.12.1",
-    "@babel/register": "^7.12.1",
     "@types/common-tags": "^1.8.0",
     "@types/edit-json-file": "^1.4.0",
     "@types/inquirer": "^7.3.1",

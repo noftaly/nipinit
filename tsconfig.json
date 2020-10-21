@@ -6,8 +6,7 @@
     "moduleResolution": "node",
     "module": "CommonJS",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true
+    "esModuleInterop": true
   },
-  "include": ["./src/**/*.ts", "data/**/*.ts"]
+  "include": ["./src/**/*.ts"]
 }
