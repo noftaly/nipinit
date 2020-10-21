@@ -5,26 +5,33 @@ import logger from './Logger';
 import PresetManager from './PresetManager';
 import { EslintConfigAnswer } from './models/ChoiceAnswers';
 
-export function getPresetList(presetManager: PresetManager): void {
-  const presets = presetManager.getNames();
 
-  if (presets.length === 0) {
-    logger.error('No presets found for nipinit.');
-  } else {
+export default class PresetCommand {
+  constructor(private presetManager: PresetManager) {}
+
+  showPresetList(): void {
+    const presets = this.presetManager.getNames();
+
+    if (presets.length === 0) {
+      logger.error('No presets found for nipinit.');
+      return;
+    }
+
     logger.log(chalk.bold.underline(`Found ${presets.length} presets for nipinit:`));
     for (const preset of presets)
       logger.log(`  ${chalk.grey('-')} ${preset}`);
 
     logger.log(chalk.italic(`You can have more informations about a preset with ${chalk.grey('nipinit presets info <preset>')}`));
   }
-}
 
-export function getPresetInfo(name: string, presetManager: PresetManager): void {
-  const preset = presetManager.findByName(name);
+  showPresetInfo(name: string): void {
+    const preset = this.presetManager.findByName(name);
 
-  if (!preset) {
-    logger.error(`The preset ${name} does not exist.`);
-  } else {
+    if (!preset) {
+      logger.error(`The preset ${name} does not exist.`);
+      return;
+    }
+
     const useEslint = preset.eslint !== EslintConfigAnswer.None;
     const yn = (val: unknown): string => (val ? chalk.green('Yes') : chalk.red('No'));
 
@@ -41,12 +48,12 @@ export function getPresetInfo(name: string, presetManager: PresetManager): void 
         ${chalk.grey('-')} Other dependencies: ${chalk.cyan(preset.extras.join(', ')) || chalk.red('None')}
     `);
   }
-}
 
-export function removePreset(name: string, presetManager: PresetManager): void {
-  const existed = presetManager.remove(name);
-  if (existed)
-    logger.success(`The presets ${name} was deleted successfully!`);
-  else
-    logger.error(`The preset ${name} does not exist.`);
+  removePreset(name: string): void {
+    const existed = this.presetManager.remove(name);
+    if (existed)
+      logger.success(`The presets ${name} was deleted successfully!`);
+    else
+      logger.error(`The preset ${name} does not exist.`);
+  }
 }

@@ -4,23 +4,23 @@ import { EslintPluginEntry } from './models/EslintPluginEntry';
 const eslintConfigs: Record<EslintConfigAnswer, EslintPluginEntry> = {
   [EslintConfigAnswer.Noftalint]: {
     extends: 'noftalint',
-    plugins: 'eslint-config-noftalint eslint-plugin-import eslint-plugin-node eslint-plugin-unicorn',
+    plugins: ['eslint-config-noftalint', 'eslint-plugin-import', 'eslint-plugin-node', 'eslint-plugin-unicorn'],
   },
   [EslintConfigAnswer.Airbnb]: {
     extends: 'airbnb-base',
-    plugins: 'eslint-config-airbnb-base eslint-plugin-import',
+    plugins: ['eslint-config-airbnb-base', 'eslint-plugin-import'],
   },
   [EslintConfigAnswer.Standard]: {
     extends: 'standard',
-    plugins: 'eslint-config-standard eslint-plugin-import eslint-plugin-standard eslint-plugin-promise eslint-plugin-node',
+    plugins: ['eslint-config-standard', 'eslint-plugin-import', 'eslint-plugin-standard', 'eslint-plugin-promise', 'eslint-plugin-node'],
   },
   [EslintConfigAnswer.Recommended]: {
     extends: 'eslint:recommended',
-    plugins: '',
+    plugins: [],
   },
   [EslintConfigAnswer.None]: {
     extends: '',
-    plugins: '',
+    plugins: [],
   },
 };
 

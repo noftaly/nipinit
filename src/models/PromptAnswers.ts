@@ -1,9 +1,12 @@
 import { Answers } from 'inquirer';
 import { Configuration } from './Configuration';
 
-export interface GeneralAnswers extends Configuration, Answers {
+
+export interface ProjectNameAnswers extends Answers {
   projectName: string;
 }
+
+export interface GeneralAnswers extends Configuration, ProjectNameAnswers {}
 
 export interface PresetCreationAnswers extends Answers {
   save: boolean;
