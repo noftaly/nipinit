@@ -45,14 +45,8 @@ const presetManager = new PresetManager();
 
 async function createNewPreset(generalAnswers: GeneralAnswers) {
   const save = (presetName: string): void => {
-    // FIXME: Improve this. (with destructuring?)
-    const clonedAnswers = structuredClone<GeneralAnswers>(generalAnswers);
-    delete clonedAnswers.projectName;
-    const preset: StoredPreset = {
-      ...clonedAnswers,
-      name: presetName,
-    };
-    presetManager.addPreset(preset);
+    const { projectName, ...keep } = structuredClone<GeneralAnswers>(generalAnswers);
+    presetManager.addPreset({ ...keep, name: presetName });
   };
 
   const questions: QuestionCollection = [
