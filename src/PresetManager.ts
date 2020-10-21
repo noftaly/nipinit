@@ -21,7 +21,6 @@ class PresetManager {
 
   findSame(answers: GeneralAnswers): StoredPreset | null {
     const allPresets: StoredPreset[] = this.getList();
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const allAnonymousPreset: AnonymousPreset[] = allPresets.map(({ userName, name, ...keep }) => keep);
 
     const currentConfiguration: AnonymousPreset = {

@@ -25,6 +25,14 @@ module.exports = {
 
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': 'error',
+
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', {
+      vars: 'all',
+      args: 'after-used',
+      argsIgnorePattern: '^_',
+      ignoreRestSiblings: true,
+    }],
   },
   env: {
     node: true,
