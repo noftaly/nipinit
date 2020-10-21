@@ -11,6 +11,7 @@ import editJson from 'edit-json-file';
 import inquirer, { QuestionCollection } from 'inquirer';
 import ora from 'ora';
 
+import * as pkg from '../package.json';
 import FilesData from './FilesData';
 import logger from './Logger';
 import PresetManager from './PresetManager';
@@ -38,9 +39,6 @@ import {
 import handleError from './utils/handleError';
 import structuredClone from './utils/structuredClone';
 
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const pkg = require('../package.json');
 
 const presetManager = new PresetManager();
 
