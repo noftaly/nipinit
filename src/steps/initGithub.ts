@@ -24,8 +24,16 @@ async function initGithub(paths: Paths, answers: GeneralAnswers): Promise<void> 
   // Create lint action
   if (answers.eslint !== EslintConfigAnswer.None) {
     await fs.mkdir(path.join(paths.dest.githubFolder, 'workflows'));
-    const lintActionContent = (await fs.readFile(paths.data.lintAction, { encoding: 'utf-8' }))
-      .replace('<PLUGINS_LIST>', getEslintConfigInfo(answers.eslint).plugins);
+
+    const dependencies = [
+      ...getEslintConfigInfo(answers.eslint).plugins,
+      ...(answers.babel ? ['@babel/eslint-parser', '@babel/core'] : []),
+    ];
+
+    let lintActionContent: string = await fs.readFile(paths.data.lintAction, { encoding: 'utf-8' });
+    lintActionContent = dependencies.length > 0
+      ? lintActionContent.replace('<PLUGINS_LIST>', dependencies.join(' '))
+      : lintActionContent.replace(/^ *- name: Install ESLint Configs and Plugins(.|\n)*<PLUGINS_LIST>\n\n/gimu, '');
     await fs.writeFile(paths.dest.lintAction, lintActionContent);
   }
 
