@@ -33,6 +33,12 @@ module.exports = {
       argsIgnorePattern: '^_',
       ignoreRestSiblings: true,
     }],
+
+    'node/shebang': ['error', {
+      convertPath: {
+        'src/main.ts': ['^src/main.ts$', 'build/main.js'],
+      },
+    }],
   },
   env: {
     node: true,

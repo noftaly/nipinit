@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable node/shebang */
 
 import { program } from 'commander';
 import updateNotifier from 'update-notifier';
