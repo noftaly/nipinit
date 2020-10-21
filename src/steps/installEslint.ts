@@ -5,6 +5,7 @@ import { oneLine } from 'common-tags';
 
 import FilesData from '../FilesData';
 import getEslintConfigInfo from '../getEslintConfig';
+import { EslintConfigAnswer } from '../models/ChoiceAnswers';
 import { Paths } from '../models/Paths';
 import { GeneralAnswers } from '../models/PromptAnswers';
 import exec from '../utils/exec';
@@ -20,7 +21,7 @@ async function installEsLint(
   const useModules = answers.module;
 
   if (install) {
-    if (getEslintConfigInfo(answers.eslint).extends === 'eslint:recommended') {
+    if (answers.eslint === EslintConfigAnswer.Recommended) {
       await exec('npm i -D eslint');
     } else {
       const fullName = `eslint-config-${getEslintConfigInfo(answers.eslint).extends}`;
