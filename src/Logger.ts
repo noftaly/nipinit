@@ -2,6 +2,10 @@ import chalk from 'chalk';
 
 
 class Logger {
+  empty(lines: number = 1) {
+    console.log('\n'.repeat(lines));
+  }
+
   /**
    * Logs a message with a prefix and the date
    * @param {string} msg - The message to log

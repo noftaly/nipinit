@@ -136,7 +136,7 @@ export default class CLI {
       }
 
       const answers: ProjectNameAnswers = await inquirer.prompt(this.projectNameQuestions);
-      this.generateProject({ ...preset, projectName: answers.projectName }, installArgument);
+      await this.generateProject({ ...preset, projectName: answers.projectName }, installArgument);
     } else {
       const answers: GeneralAnswers = await inquirer.prompt(this.generalQuestions);
 
@@ -150,7 +150,7 @@ export default class CLI {
         await this.createNewPreset(answers);
       }
 
-      this.generateProject(answers, installArgument);
+      await this.generateProject(answers, installArgument);
     }
   }
 }
