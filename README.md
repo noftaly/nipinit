@@ -17,6 +17,7 @@
   - [Requirements](#requirements)
   - [Fresh start](#fresh-start)
   - [Presets](#presets)
+  - [Other options](#other-options)
 - [Screenshots](#screenshots)
 - [TO-DO](#to-do)
 - [License](#license)
@@ -73,6 +74,14 @@ $ nipinit preset
 ```
 Add the `--help` option to see all available arguments.
 
+### Other options
+
+There are multiple options (flags) you can add when running nipinit.
+- `--preset`, `-p`: see the [section about presets](#presets)
+- `--no-modules`: Create a new project without installing node modules
+- `--dump-error`, `-d`: Show the full error when one occurs.
+- `--no-color`: Create a new project without showing colors in the CLI
+
 
 ## Screenshots
 
@@ -91,6 +100,7 @@ Add the `--help` option to see all available arguments.
 - [x] Lower the required node version (from >=14.8.0, to 14.0.0 or even 12.x.x).
 - [x] Improve error handling
 - [ ] Add unit tests
+- [ ] Make `--no-modules` add dependencies to the package.json (without installing them)
 - [ ] New screenshot in the README (smaller, less "bugged")
 - [ ] Fix build action
 
