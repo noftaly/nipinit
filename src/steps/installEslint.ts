@@ -26,19 +26,28 @@ async function installEsLint(
       const fullName = `eslint-config-${getEslintConfigInfo(answers.eslint).extends}`;
 
       // FIXME: Find a better way to do all of this
-      if (process.platform === 'win32') {
-        await exec(oneLine`
+      const command = process.platform === 'win32'
+        ? oneLine`
+            npm i -D install-peerdeps
+            && npx install-peerdeps --dev ${fullName}
+            && npm uninstall install-peerdeps
+          `
+        : oneLine`
+            npm info "${fullName}@latest" peerDependencies --json
+            | command sed 's/[\{\},]//g ; s/: /@/g'
+            | xargs npm install --save-dev "${fullName}@latest"
+          `;
+      exec(command, { cwd: paths.project });
+
+      await (process.platform === 'win32' ? exec(oneLine`
           npm i -D install-peerdeps
           && npx install-peerdeps --dev ${fullName}
           && npm uninstall install-peerdeps
-        `);
-      } else {
-        await exec(oneLine`
+        `, { cwd: paths.project }) : exec(oneLine`
           npm info "${fullName}@latest" peerDependencies --json
           | command sed 's/[\{\},]//g ; s/: /@/g'
           | xargs npm install --save-dev "${fullName}@latest"
-        `, { cwd: paths.project });
-      }
+        `, { cwd: paths.project }));
     }
     if (useBabelParser)
       await exec('npm i -D @babel/eslint-parser', { cwd: paths.project });
