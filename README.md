@@ -7,10 +7,10 @@
 
 > 💻 A command-line utility to easily create new NPM projects.
 
-:warning: As of 2.0.0, you can use nipinit with need NodeJS v10.17.0 or higher. If you're still using v1.x.x, you have to use NodeJS v14.8.9 or higher.
+:warning: As of 2.0.0, you can use nipinit with NodeJS v10.17.0 or higher. If you're still using v1.x.x, you have to use NodeJS v14.8.0 or higher.
 
 
-## Table of Contents
+## Table of Content
 - [Installation](#installation)
 - [Features](#features)
 - [Usage](#usage)
