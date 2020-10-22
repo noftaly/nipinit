@@ -3,14 +3,14 @@
 import { program } from 'commander';
 import updateNotifier from 'update-notifier';
 
+import * as pkg from '../package.json';
 import CLI from './CLI';
 import logger from './Logger';
 import { CLIOptions } from './models/CLIOptions';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
-const pkg = require('../package.json');
 
 updateNotifier({ pkg }).notify();
+
 const cli = new CLI();
 
 program

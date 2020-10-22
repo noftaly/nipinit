@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 
 class Logger {
-  empty(lines: number = 1) {
+  empty(lines = 1) {
     console.log('\n'.repeat(lines));
   }
 

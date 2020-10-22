@@ -1,23 +1,21 @@
 module.exports = {
-  root: true,
   parser: '@typescript-eslint/parser',
-  plugins: [
-    '@typescript-eslint',
-  ],
+  plugins: ['@typescript-eslint'],
   extends: [
     'noftalint',
     'plugin:@typescript-eslint/recommended',
+    'plugin:import/typescript',
   ],
-  ignorePatterns: ['node_modules/', 'playground/', 'build/', '**/*.d.ts', 'gulpfile.babel.js'],
+  ignorePatterns: ['node_modules/', 'playground/', 'build/', './**/*.d.ts'],
   rules: {
+    'node/file-extension-in-import': 'off',
+    'import/extensions': 'off',
+
     // We have disable these rules because it is a CLT
     'node/no-sync': 'off',
+    'node/no-process-exit': 'off',
 
     // We have to disable/change all these rules because we are using TypeScript
-    'node/file-extension-in-import': 'off',
-    'node/no-missing-import': 'off',
-    'import/extensions': 'off',
-    'import/no-unresolved': 'off',
     'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
 
     'no-shadow': 'off',
@@ -43,12 +41,13 @@ module.exports = {
   env: {
     node: true,
   },
-  overrides: [
-    {
-      files: ['.eslintrc.js'],
-      rules: {
-        'import/no-commonjs': 'off',
-      },
+  overrides: [{
+    files: ['.eslintrc.js'],
+    rules: {
+      'import/no-commonjs': 'off',
     },
-  ],
+  }],
+  settings: {
+    node: { tryExtensions: ['.ts', '.d.ts', '.js'] },
+  },
 };
