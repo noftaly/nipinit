@@ -2,13 +2,13 @@
   "name": "nipinit",
   "version": "2.0.0-beta",
   "description": "A command-line utility to easily create new NPM projects.",
-  "main": "build/main.ts",
+  "main": "src/main.ts",
   "scripts": {
     "build": "rm -rf ./build && npx tsc",
     "lint": "eslint ."
   },
   "bin": {
-    "nipinit": "./build/main.js"
+    "nipinit": "./build/src/main.js"
   },
   "keywords": [
     "nipinit",
