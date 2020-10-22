@@ -7,6 +7,7 @@ import {
   Question,
 } from 'inquirer';
 import { LicenseAnswer, EslintConfigAnswer, ExtraModulesAnswer } from '../models/ChoiceAnswers';
+import getNodeVersion from '../utils/getNodeVersion';
 
 export const projectName: Question = {
   type: 'input',
@@ -62,6 +63,7 @@ export const module: Question = {
   type: 'confirm',
   name: 'module',
   message: 'Would you like to use modules (import/export)?',
+  when: () => getNodeVersion().major >= 14,
   default: true,
 };
 
@@ -69,7 +71,7 @@ export const babel: Question = {
   type: 'confirm',
   name: 'babel',
   message: 'Would you like to use babel?',
-  default: false,
+  default: getNodeVersion().major < 14,
 };
 
 const eslintConfigChoice: ChoiceOptions[] = [

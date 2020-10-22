@@ -94,7 +94,7 @@ There are multiple options (flags) you can add when running nipinit.
 - [x] Add a class to manage/query Database
 - [x] Lower the required node version (from >=14.8.0, to 14.0.0 or even 12.x.x).
 - [x] Improve error handling
-- [ ] Take into account the Node's version before asking for some features (ESModules in particular)
+- [x] Take into account the Node's version before asking for some features (ESModules in particular)
 - [ ] Add unit tests
 - [ ] Make `--no-modules` add dependencies to the package.json (without installing them)
   - see [add-dependencies#22](https://github.com/arfeo/npm-add-dependencies/pull/22)
