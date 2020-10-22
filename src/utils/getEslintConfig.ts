@@ -1,5 +1,5 @@
-import { EslintConfigAnswer } from './models/ChoiceAnswers';
-import { EslintPluginEntry } from './models/EslintPluginEntry';
+import { EslintConfigAnswer } from '../models/ChoiceAnswers';
+import { EslintPluginEntry } from '../models/EslintPluginEntry';
 
 const eslintConfigs: Record<EslintConfigAnswer, EslintPluginEntry> = {
   [EslintConfigAnswer.Noftalint]: {

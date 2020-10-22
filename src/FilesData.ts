@@ -1,7 +1,7 @@
 import { stripIndent } from 'common-tags';
-import getEslintConfigInfo from './getEslintConfig';
 import { EslintConfigAnswer } from './models/ChoiceAnswers';
 import { EslintPluginEntry } from './models/EslintPluginEntry';
+import getEslintConfigInfo from './utils/getEslintConfig';
 
 
 export default class FilesData {

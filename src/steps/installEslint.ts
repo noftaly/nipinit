@@ -4,11 +4,11 @@ import path from 'path';
 import { oneLine } from 'common-tags';
 
 import FilesData from '../FilesData';
-import getEslintConfigInfo from '../getEslintConfig';
 import { EslintConfigAnswer } from '../models/ChoiceAnswers';
 import { Paths } from '../models/Paths';
 import { GeneralAnswers } from '../models/PromptAnswers';
 import exec from '../utils/exec';
+import getEslintConfigInfo from '../utils/getEslintConfig';
 
 
 async function installEsLint(

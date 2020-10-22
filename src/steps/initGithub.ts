@@ -1,10 +1,10 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import getEslintConfigInfo from '../getEslintConfig';
 import { EslintConfigAnswer } from '../models/ChoiceAnswers';
 import { Paths } from '../models/Paths';
 import { GeneralAnswers } from '../models/PromptAnswers';
+import getEslintConfigInfo from '../utils/getEslintConfig';
 
 
 async function initGithub(paths: Paths, answers: GeneralAnswers): Promise<void> {
