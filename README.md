@@ -90,19 +90,15 @@ There are multiple options (flags) you can add when running nipinit.
 
 ## TO-DO
 
-- [x] Fix bug with overwriting of package.json causing to not having dependencies field
-- [x] Don't use babel-node in production, build the project instead.
-- [x] Use cross-env in scripts if selected
-- [x] Better split the project into multiple files/directory
 - [x] Change the project to TypeScript
 - [x] Add a class to manage/query Database
-- [x] Change the db type (move from JSON? Just change the lib?) (moved from 'lowdb' to 'conf')
 - [x] Lower the required node version (from >=14.8.0, to 14.0.0 or even 12.x.x).
 - [x] Improve error handling
+- [ ] Take into account the Node's version before asking for some features (ESModules in particular)
 - [ ] Add unit tests
 - [ ] Make `--no-modules` add dependencies to the package.json (without installing them)
+  - see [add-dependencies#22](https://github.com/arfeo/npm-add-dependencies/pull/22)
 - [ ] New screenshot in the README (smaller, less "bugged")
-- [ ] Fix build action
 
 
 ## License
