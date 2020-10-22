@@ -34,7 +34,7 @@ module.exports = {
 
     'node/shebang': ['error', {
       convertPath: {
-        'src/main.ts': ['^src/main.ts$', 'build/main.js'],
+        'src/main.ts': ['^src/main.ts$', 'build/src/main.js'],
       },
     }],
   },
