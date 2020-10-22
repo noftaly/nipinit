@@ -1,14 +1,14 @@
 {
   "name": "nipinit",
-  "version": "1.2.0",
+  "version": "2.0.0-beta",
   "description": "A command-line utility to easily create new NPM projects.",
-  "main": "src/main.js",
-  "type": "module",
+  "main": "src/main.ts",
   "scripts": {
+    "build": "rm -rf ./build && npx tsc",
     "lint": "eslint ."
   },
   "bin": {
-    "nipinit": "./src/main.js"
+    "nipinit": "./build/src/main.js"
   },
   "keywords": [
     "nipinit",
@@ -25,24 +25,30 @@
     "chalk": "^4.1.0",
     "commander": "^6.1.0",
     "common-tags": "^1.8.0",
+    "conf": "^7.1.2",
+    "delete": "^1.1.0",
     "edit-json-file": "^1.5.0",
     "inquirer": "^7.3.3",
-    "lowdb": "^1.0.0",
-    "ora": "^5.1.0"
+    "ora": "^5.1.0",
+    "update-notifier": "^5.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.1",
-    "@babel/eslint-parser": "^7.12.1",
-    "@babel/plugin-syntax-top-level-await": "^7.12.1",
-    "@babel/preset-env": "^7.12.1",
+    "@types/common-tags": "^1.8.0",
+    "@types/edit-json-file": "^1.4.0",
+    "@types/inquirer": "^7.3.1",
+    "@types/node": "^14.14.2",
+    "@types/update-notifier": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.5.0",
+    "@typescript-eslint/parser": "^4.5.0",
     "eslint": "^7.11.0",
-    "eslint-config-noftalint": "^1.11.0",
+    "eslint-config-noftalint": "^1.12.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-unicorn": "^22.0.0",
-    "nodemon": "^2.0.5"
+    "eslint-plugin-unicorn": "^23.0.0",
+    "nodemon": "^2.0.6",
+    "typescript": "^4.0.3"
   },
   "engines": {
-    "node": ">= 14.8.0"
+    "node": "^10.17.0 || >=12.0.0"
   }
 }

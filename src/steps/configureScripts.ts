@@ -1,6 +1,10 @@
-function configureScripts(editablePackageJson, answers) {
-  const prod = answers.extras.includes('cross-env') ? 'cross-env NODE_ENV=production' : '';
-  const dev = answers.extras.includes('cross-env') ? 'cross-env NODE_ENV=development' : '';
+import editJson from 'edit-json-file';
+import { ExtraModulesAnswer } from '../models/ChoiceAnswers';
+import { GeneralAnswers } from '../models/PromptAnswers';
+
+function configureScripts(editablePackageJson: editJson.JsonEditor, answers: GeneralAnswers): void {
+  const prod = answers.extras.includes(ExtraModulesAnswer.Crossenv) ? 'cross-env NODE_ENV=production' : '';
+  const dev = answers.extras.includes(ExtraModulesAnswer.Crossenv) ? 'cross-env NODE_ENV=development' : '';
 
   editablePackageJson.unset('scripts.test');
   if (answers.babel) {
@@ -10,7 +14,7 @@ function configureScripts(editablePackageJson, answers) {
     editablePackageJson.set('scripts.start', `${prod} node ./src/main.js`.replace(/\s+/g, ' ').trim());
   }
 
-  if (answers.extras.includes('nodemon'))
+  if (answers.extras.includes(ExtraModulesAnswer.Nodemon))
     editablePackageJson.set('scripts.dev:watch', `nodemon --exec ${dev} ${answers.babel ? 'babel-' : ''}node ./src/main.js`.replace(/\s+/g, ' '));
   editablePackageJson.set('scripts.dev', `${dev} ${answers.babel ? 'babel-' : ''}node ./src/main.js`.replace(/\s+/g, ' ').trim());
   editablePackageJson.set('scripts.lint', 'eslint .');

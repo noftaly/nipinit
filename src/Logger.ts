@@ -2,11 +2,15 @@ import chalk from 'chalk';
 
 
 class Logger {
+  empty(lines = 1) {
+    console.log('\n'.repeat(lines));
+  }
+
   /**
    * Logs a message with a prefix and the date
    * @param {string} msg - The message to log
    */
-  log(msg) {
+  log(msg: string) {
     console.log(msg);
   }
 
@@ -14,7 +18,7 @@ class Logger {
    * Shows an error with a prefix
    * @param {string} msg - The message to log
    */
-  error(msg) {
+  error(msg: string) {
     console.log(`${chalk.bgRed(' ✗ ')} ${msg}`);
   }
 
@@ -22,7 +26,7 @@ class Logger {
    * Shows a success message with a prefix
    * @param {string} msg - The message to log
    */
-  success(msg) {
+  success(msg: string) {
     console.log(`${chalk.bgGreen(' ✔ ')} ${msg}`);
   }
 
@@ -30,7 +34,7 @@ class Logger {
    * Shows an information message with a prefix
    * @param {string} msg - The message to log
    */
-  info(msg) {
+  info(msg: string) {
     console.log(`${chalk.black.bgCyan(' ℹ ')} ${msg}`);
   }
 }
