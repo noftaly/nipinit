@@ -3,7 +3,7 @@ import { stripIndent } from 'common-tags';
 
 import Logger from './Logger';
 import PresetManager from './PresetManager';
-import { EslintConfigAnswer } from './models/ChoiceAnswers';
+import { EslintConfigAnswer } from './types';
 
 
 export default class PresetCommand {

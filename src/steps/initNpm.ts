@@ -1,7 +1,6 @@
 import path from 'path';
 import editJson from 'edit-json-file';
-import { Paths } from '../models/Paths';
-import { GeneralAnswers } from '../models/PromptAnswers';
+import { Paths, GeneralAnswers } from '../types';
 import exec from '../utils/exec';
 
 

@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { Paths } from '../models/Paths';
+import { Paths } from '../types';
 
 
 const licenses = {

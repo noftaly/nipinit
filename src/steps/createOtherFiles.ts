@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import editJson from 'edit-json-file';
 import FilesData from '../FilesData';
-import { Paths } from '../models/Paths';
+import { Paths } from '../types';
 
 
 export default async function createOtherFiles(

@@ -6,7 +6,7 @@ import {
   ListQuestion,
   Question,
 } from 'inquirer';
-import { LicenseAnswer, EslintConfigAnswer, ExtraModulesAnswer } from '../models/ChoiceAnswers';
+import { LicenseAnswer, EslintConfigAnswer, ExtraModulesAnswer } from '../types';
 import getNodeVersion from '../utils/getNodeVersion';
 
 export const projectName: Question = {

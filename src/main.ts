@@ -5,14 +5,19 @@ import updateNotifier from 'update-notifier';
 
 import CLI from './CLI';
 import Logger from './Logger';
-import { CLIOptions } from './models/CLIOptions';
-
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const pkg = require('../package.json');
 
-updateNotifier({ pkg }).notify();
 
+type CLIOptions = {
+  preset: string,
+  modules: boolean,
+  dumpError: boolean,
+};
+
+
+updateNotifier({ pkg }).notify();
 const cli = new CLI();
 
 program

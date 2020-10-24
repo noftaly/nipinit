@@ -11,13 +11,17 @@ import FilesData from './FilesData';
 import Logger from './Logger';
 import PresetCommand from './PresetCommand';
 import PresetManager from './PresetManager';
-import { EslintConfigAnswer } from './models/ChoiceAnswers';
-import { Paths } from './models/Paths';
-import { StoredPreset } from './models/Preset';
-import { GeneralAnswers, PresetCreationAnswers, ProjectNameAnswers } from './models/PromptAnswers';
 import * as generalPrompts from './prompts/generalPrompts';
 import * as presetPrompts from './prompts/presetPrompts';
 import * as steps from './steps';
+import {
+  EslintConfigAnswer,
+  Paths,
+  StoredPreset,
+  GeneralAnswers,
+  PresetCreationAnswers,
+  ProjectNameAnswers,
+} from './types';
 import getPaths from './utils/getPaths';
 import structuredClone from './utils/structuredClone';
 

@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import FilesData from '../FilesData';
-import { Paths } from '../models/Paths';
+import { Paths } from '../types';
 import exec from '../utils/exec';
 
 

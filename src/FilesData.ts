@@ -1,6 +1,5 @@
 import { stripIndent } from 'common-tags';
-import { EslintConfigAnswer } from './models/ChoiceAnswers';
-import { EslintPluginEntry } from './models/EslintPluginEntry';
+import { EslintConfigAnswer, EslintPluginEntry } from './types';
 import getEslintConfigInfo from './utils/getEslintConfig';
 
 

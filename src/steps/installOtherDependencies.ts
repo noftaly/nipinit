@@ -2,9 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 import FilesData from '../FilesData';
-import { ExtraModulesAnswer } from '../models/ChoiceAnswers';
-import { Paths } from '../models/Paths';
-import { GeneralAnswers } from '../models/PromptAnswers';
+import { ExtraModulesAnswer, Paths, GeneralAnswers } from '../types';
 import exec from '../utils/exec';
 
 

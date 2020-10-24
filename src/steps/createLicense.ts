@@ -1,8 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import editJson from 'edit-json-file';
-import { Paths } from '../models/Paths';
-import { GeneralAnswers } from '../models/PromptAnswers';
+import { Paths, GeneralAnswers } from '../types';
 import getLicense from '../utils/getLicense';
 
 

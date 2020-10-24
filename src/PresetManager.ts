@@ -1,8 +1,9 @@
 import Conf from 'conf';
 
-import { StoredPreset, AnonymousPreset } from './models/Preset';
-import { GeneralAnswers } from './models/PromptAnswers';
+import { StoredPreset, GeneralAnswers } from './types';
 
+
+type AnonymousPreset = Omit<StoredPreset, 'userName' | 'name'>;
 
 export default class PresetManager {
   public readonly conf: Conf<Record<string, StoredPreset>>;
