@@ -4,7 +4,7 @@ import { StoredPreset, AnonymousPreset } from './models/Preset';
 import { GeneralAnswers } from './models/PromptAnswers';
 
 
-class PresetManager {
+export default class PresetManager {
   public readonly conf: Conf<Record<string, StoredPreset>>;
 
   constructor() {
@@ -72,5 +72,3 @@ class PresetManager {
     return possibleName;
   }
 }
-
-export default PresetManager;

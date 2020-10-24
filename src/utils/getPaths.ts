@@ -2,7 +2,7 @@ import path from 'path';
 import { Paths } from '../models/Paths';
 
 
-function getPaths(projectName: string): Paths {
+export default function getPaths(projectName: string): Paths {
   const project = path.join(process.cwd(), projectName);
   const dataDir = path.join(__dirname, '..', '..', 'data');
   const githubFolder = path.join(project, '.github');
@@ -24,5 +24,3 @@ function getPaths(projectName: string): Paths {
   };
   return paths;
 }
-
-export default getPaths;

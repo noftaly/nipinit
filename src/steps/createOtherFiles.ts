@@ -5,7 +5,7 @@ import FilesData from '../FilesData';
 import { Paths } from '../models/Paths';
 
 
-async function createOtherFiles(
+export default async function createOtherFiles(
   filesData: FilesData,
   paths: Paths,
   editablePackageJson: editJson.JsonEditor,
@@ -18,5 +18,3 @@ async function createOtherFiles(
   await fs.writeFile(path.join(paths.project, '.env'), '');
   await fs.writeFile(path.join(paths.project, '.env.example'), '');
 }
-
-export default createOtherFiles;

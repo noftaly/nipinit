@@ -7,7 +7,7 @@ import { GeneralAnswers } from '../models/PromptAnswers';
 import getEslintConfigInfo from '../utils/getEslintConfig';
 
 
-async function initGithub(paths: Paths, answers: GeneralAnswers): Promise<void> {
+export default async function initGithub(paths: Paths, answers: GeneralAnswers): Promise<void> {
   await fs.mkdir(paths.dest.githubFolder);
 
   // Create issue templates
@@ -49,5 +49,3 @@ async function initGithub(paths: Paths, answers: GeneralAnswers): Promise<void> 
     path.join(paths.project, 'CONTRIBUTING.md'),
   );
 }
-
-export default initGithub;

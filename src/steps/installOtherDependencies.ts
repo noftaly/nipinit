@@ -8,7 +8,7 @@ import { GeneralAnswers } from '../models/PromptAnswers';
 import exec from '../utils/exec';
 
 
-async function installOtherDependencies(
+export default async function installOtherDependencies(
   paths: Paths,
   answers: GeneralAnswers,
   install: boolean,
@@ -24,5 +24,3 @@ async function installOtherDependencies(
   if (answers.extras.includes(ExtraModulesAnswer.Concurrently) && install)
     await exec('npm i -D concurrently', { cwd: paths.project });
 }
-
-export default installOtherDependencies;

@@ -11,7 +11,7 @@ import exec from '../utils/exec';
 import getEslintConfigInfo from '../utils/getEslintConfig';
 
 
-async function installEsLint(
+export default async function installEsLint(
   answers: GeneralAnswers,
   paths: Paths,
   install: boolean,
@@ -49,5 +49,3 @@ async function installEsLint(
     filesData.getEslintConfig(),
   );
 }
-
-export default installEsLint;

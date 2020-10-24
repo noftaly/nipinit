@@ -2,7 +2,7 @@ import editJson from 'edit-json-file';
 import { ExtraModulesAnswer } from '../models/ChoiceAnswers';
 import { GeneralAnswers } from '../models/PromptAnswers';
 
-function configureScripts(editablePackageJson: editJson.JsonEditor, answers: GeneralAnswers): void {
+export default function configureScripts(editablePackageJson: editJson.JsonEditor, answers: GeneralAnswers): void {
   const prod = answers.extras.includes(ExtraModulesAnswer.Crossenv) ? 'cross-env NODE_ENV=production' : '';
   const dev = answers.extras.includes(ExtraModulesAnswer.Crossenv) ? 'cross-env NODE_ENV=development' : '';
 
@@ -20,5 +20,3 @@ function configureScripts(editablePackageJson: editJson.JsonEditor, answers: Gen
   editablePackageJson.set('scripts.lint', 'eslint .');
   editablePackageJson.set('scripts.lint:fix', 'eslint . --fix');
 }
-
-export default configureScripts;

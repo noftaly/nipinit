@@ -6,7 +6,7 @@ import { GeneralAnswers } from '../models/PromptAnswers';
 import getLicense from '../utils/getLicense';
 
 
-async function createLicense(
+export default async function createLicense(
   answers: GeneralAnswers,
   editablePackageJson: editJson.JsonEditor,
   paths: Paths,
@@ -15,5 +15,3 @@ async function createLicense(
   editablePackageJson.set('license', answers.license);
   await fs.writeFile(path.join(paths.project, 'LICENSE'), license);
 }
-
-export default createLicense;
