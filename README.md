@@ -85,7 +85,7 @@ There are multiple options (flags) you can add when running nipinit.
 
 ## Screenshots
 
-![Nipinit Screenshot where we can see all the prompts asked and the success messages](./assets/nipinit-screenshot.svg)
+![Nipinit Screenshot where we can see all the prompts asked and the success messages](./assets/nipinit-screenshot.png)
 
 
 ## TO-DO
@@ -95,10 +95,10 @@ There are multiple options (flags) you can add when running nipinit.
 - [x] Lower the required node version (from >=14.8.0, to 14.0.0 or even 12.x.x).
 - [x] Improve error handling
 - [x] Take into account the Node's version before asking for some features (ESModules in particular)
+- [x] New screenshot in the README (smaller, less "bugged")
 - [ ] Add unit tests
 - [ ] Make `--no-modules` add dependencies to the package.json (without installing them)
   - see [add-dependencies#22](https://github.com/arfeo/npm-add-dependencies/pull/22)
-- [ ] New screenshot in the README (smaller, less "bugged")
 
 
 ## License
