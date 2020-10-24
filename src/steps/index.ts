@@ -2,7 +2,6 @@ export { default as configureModule } from './configureModule';
 export { default as configureScripts } from './configureScripts';
 export { default as createLicense } from './createLicense';
 export { default as createOtherFiles } from './createOtherFiles';
-export { default as getPaths } from './getPaths';
 export { default as initGit } from './initGit';
 export { default as initGithub } from './initGithub';
 export { default as initNpm } from './initNpm';

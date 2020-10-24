@@ -18,11 +18,12 @@ import { GeneralAnswers, PresetCreationAnswers, ProjectNameAnswers } from './mod
 import * as generalPrompts from './prompts/generalPrompts';
 import * as presetPrompts from './prompts/presetPrompts';
 import * as steps from './steps';
+import getPaths from './utils/getPaths';
 import structuredClone from './utils/structuredClone';
 
 export default class CLI {
-  presetManager = new PresetManager();
-  presetCommand = new PresetCommand(this.presetManager);
+  public readonly presetManager = new PresetManager();
+  public readonly presetCommand = new PresetCommand(this.presetManager);
 
   get projectNameQuestions(): QuestionCollection<ProjectNameAnswers> {
     return [generalPrompts.projectName];
@@ -66,7 +67,7 @@ export default class CLI {
       answers.userName,
       answers.license,
     );
-    const paths: Paths = steps.getPaths(answers.projectName);
+    const paths: Paths = getPaths(answers.projectName);
 
     // Create project directory
     await fs.mkdir(paths.project);
