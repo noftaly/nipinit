@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import { Paths } from '../models/Paths';
 
 
 const licenses = {
@@ -8,9 +9,14 @@ const licenses = {
   ISC: 'isc.txt',
 };
 
-export default async function getLicense(license: string, userName: string, programName: string): Promise<string> {
+export default async function getLicense(
+  paths: Paths,
+  license: string,
+  userName: string,
+  programName: string,
+): Promise<string> {
   const licenseSlug = licenses[license];
-  const licensePath = path.resolve(__dirname, '..', 'data', 'licenses', licenseSlug);
+  const licensePath = path.resolve(paths.data.licenses, licenseSlug);
   const fullLicense = await fs.readFile(licensePath, { encoding: 'utf-8' });
 
   return fullLicense

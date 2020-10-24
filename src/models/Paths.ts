@@ -10,5 +10,6 @@ export type Paths = {
   data: {
     issueTemplateFolder: string,
     lintAction: string,
+    licenses: string,
   },
 };

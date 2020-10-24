@@ -11,7 +11,7 @@ async function createLicense(
   editablePackageJson: editJson.JsonEditor,
   paths: Paths,
 ): Promise<void> {
-  const license = await getLicense(answers.license, answers.userName, answers.projectName);
+  const license = await getLicense(paths, answers.license, answers.userName, answers.projectName);
   editablePackageJson.set('license', answers.license);
   await fs.writeFile(path.join(paths.project, 'LICENSE'), license);
 }

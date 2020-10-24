@@ -19,6 +19,7 @@ function getPaths(projectName: string): Paths {
     data: {
       issueTemplateFolder: path.join(dataDir, 'github', 'ISSUE_TEMPLATE'),
       lintAction: path.join(dataDir, 'github', 'workflows', 'lint.yml'),
+      licenses: path.join(dataDir, 'licenses'),
     },
   };
   return paths;
