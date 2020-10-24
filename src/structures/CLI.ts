@@ -7,13 +7,9 @@ import editJson from 'edit-json-file';
 import inquirer, { QuestionCollection } from 'inquirer';
 import ora from 'ora';
 
-import FilesData from './FilesData';
-import Logger from './Logger';
-import PresetCommand from './PresetCommand';
-import PresetManager from './PresetManager';
-import * as generalPrompts from './prompts/generalPrompts';
-import * as presetPrompts from './prompts/presetPrompts';
-import * as steps from './steps';
+import * as generalPrompts from '../prompts/generalPrompts';
+import * as presetPrompts from '../prompts/presetPrompts';
+import * as steps from '../steps';
 import {
   EslintConfigAnswer,
   Paths,
@@ -21,9 +17,13 @@ import {
   GeneralAnswers,
   PresetCreationAnswers,
   ProjectNameAnswers,
-} from './types';
-import getPaths from './utils/getPaths';
-import structuredClone from './utils/structuredClone';
+} from '../types';
+import getPaths from '../utils/getPaths';
+import structuredClone from '../utils/structuredClone';
+import FilesData from './FilesData';
+import Logger from './Logger';
+import PresetCommand from './PresetCommand';
+import PresetManager from './PresetManager';
 
 export default class CLI {
   public readonly presetManager = new PresetManager();

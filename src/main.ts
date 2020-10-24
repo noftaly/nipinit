@@ -3,8 +3,8 @@
 import { program } from 'commander';
 import updateNotifier from 'update-notifier';
 
-import CLI from './CLI';
-import Logger from './Logger';
+import CLI from './structures/CLI';
+import Logger from './structures/Logger';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const pkg = require('../package.json');

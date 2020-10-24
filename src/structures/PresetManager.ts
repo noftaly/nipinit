@@ -1,6 +1,6 @@
 import Conf from 'conf';
 
-import { StoredPreset, GeneralAnswers } from './types';
+import { StoredPreset, GeneralAnswers } from '../types';
 
 
 type AnonymousPreset = Omit<StoredPreset, 'userName' | 'name'>;

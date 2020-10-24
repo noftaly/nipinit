@@ -3,7 +3,7 @@ import path from 'path';
 
 import { oneLine } from 'common-tags';
 
-import FilesData from '../FilesData';
+import FilesData from '../structures/FilesData';
 import { EslintConfigAnswer, Paths, GeneralAnswers } from '../types';
 import exec from '../utils/exec';
 import getEslintConfigInfo from '../utils/getEslintConfig';

@@ -1,6 +1,6 @@
 import { stripIndent } from 'common-tags';
-import { EslintConfigAnswer, EslintPluginEntry } from './types';
-import getEslintConfigInfo from './utils/getEslintConfig';
+import { EslintConfigAnswer, EslintPluginEntry } from '../types';
+import getEslintConfigInfo from '../utils/getEslintConfig';
 
 
 export default class FilesData {

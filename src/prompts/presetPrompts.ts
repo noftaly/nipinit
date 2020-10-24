@@ -1,5 +1,5 @@
 import { Question } from 'inquirer';
-import PresetManager from '../PresetManager';
+import PresetManager from '../structures/PresetManager';
 import { GeneralAnswers, PresetCreationAnswers } from '../types';
 
 

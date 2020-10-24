@@ -1,9 +1,9 @@
 import chalk from 'chalk';
 import { stripIndent } from 'common-tags';
 
+import { EslintConfigAnswer } from '../types';
 import Logger from './Logger';
 import PresetManager from './PresetManager';
-import { EslintConfigAnswer } from './types';
 
 
 export default class PresetCommand {

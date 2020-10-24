@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import editJson from 'edit-json-file';
-import FilesData from '../FilesData';
+import FilesData from '../structures/FilesData';
 import { Paths } from '../types';
 
 
