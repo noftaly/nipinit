@@ -4,11 +4,11 @@
   "description": "A command-line utility to easily create new NPM projects.",
   "main": "src/main.ts",
   "scripts": {
-    "build": "rm -rf ./build && npx tsc",
+    "build": "rm -rf ./lib && npx tsc",
     "lint": "eslint ."
   },
   "bin": {
-    "nipinit": "./build/main.js"
+    "nipinit": "./lib/main.js"
   },
   "keywords": [
     "nipinit",

@@ -6,7 +6,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
   ],
-  ignorePatterns: ['node_modules/', 'playground/', 'build/', './**/*.d.ts'],
+  ignorePatterns: ['node_modules/', 'playground/', 'lib/', './**/*.d.ts'],
   rules: {
     'node/file-extension-in-import': 'off',
     'import/extensions': 'off',
@@ -34,7 +34,7 @@ module.exports = {
 
     'node/shebang': ['error', {
       convertPath: {
-        'src/main.ts': ['^src/main.ts$', 'build/main.js'],
+        'src/main.ts': ['^src/main.ts$', 'lib/main.js'],
       },
     }],
   },
