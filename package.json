@@ -8,7 +8,7 @@
     "lint": "eslint ."
   },
   "bin": {
-    "nipinit": "./build/src/main.js"
+    "nipinit": "./build/main.js"
   },
   "keywords": [
     "nipinit",

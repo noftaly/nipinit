@@ -3,11 +3,13 @@
 import { program } from 'commander';
 import updateNotifier from 'update-notifier';
 
-import * as pkg from '../package.json';
 import CLI from './CLI';
 import logger from './Logger';
 import { CLIOptions } from './models/CLIOptions';
 
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
+const pkg = require('../package.json');
 
 updateNotifier({ pkg }).notify();
 
@@ -52,15 +54,15 @@ const presetsCmd = program
 presetsCmd
   .command('ls')
   .description('List all existing presets')
-  .action(cli.presetCommand.showPresetList);
+  .action(cli.presetCommand.showPresetList.bind(cli));
 presetsCmd
   .command('info <preset>')
   .description('Get informations about a preset')
-  .action(cli.presetCommand.showPresetInfo);
+  .action(cli.presetCommand.showPresetInfo.bind(cli));
 presetsCmd
   .command('remove <preset>')
   .alias('rem')
   .description('Remove a preset')
-  .action(cli.presetCommand.removePreset);
+  .action(cli.presetCommand.removePreset.bind(cli));
 
 program.parse(process.argv);
