@@ -4,7 +4,7 @@ import { program } from 'commander';
 import updateNotifier from 'update-notifier';
 
 import CLI from './CLI';
-import logger from './Logger';
+import Logger from './Logger';
 import { CLIOptions } from './models/CLIOptions';
 
 
@@ -23,31 +23,31 @@ program
   .option('--no-color', 'Create a new project without showing colors in the CLI')
   .action(async (options: CLIOptions, command?: string) => {
     if (command && command !== 'presets') {
-      logger.error('Unkown argument. Run nipinit -h for help');
+      Logger.error('Unkown argument. Run nipinit -h for help');
     } else if (!command) {
       try {
         await cli.startPrompting(options.preset, options.modules);
       } catch (err) {
-        logger.empty(2);
-        logger.error('An error occured while using nipinit... More information are available below this message.');
-        logger.error('If you think this is a bug, please report it here: https://github.com/noftaly/nipinit, with the "bug" issue template filled correctly.');
+        Logger.empty(2);
+        Logger.error('An error occured while using nipinit... More information are available below this message.');
+        Logger.error('If you think this is a bug, please report it here: https://github.com/noftaly/nipinit, with the "bug" issue template filled correctly.');
         if (options.dumpError) {
           if (options.preset) {
             const preset = cli.presetManager.findByName(options.preset);
             const values = Object.entries(preset).map(([name, value]) => `${name}: ${value}`);
-            logger.info(`Used preset: ${values}`);
+            Logger.info(`Used preset: ${values}`);
           } else {
-            logger.info('Used preset: None');
+            Logger.info('Used preset: None');
           }
-          logger.info(`Install modules: ${options.modules || true}`);
-          logger.info(`Node version: ${process.version}`);
-          logger.info(`Nipinit version: ${pkg.version}`);
+          Logger.info(`Install modules: ${options.modules || true}`);
+          Logger.info(`Node version: ${process.version}`);
+          Logger.info(`Nipinit version: ${pkg.version}`);
           console.error(err);
         } else {
-          logger.error(err.message);
+          Logger.error(err.message);
           const stacks = err.stack.split('\n').slice(1, 3);
           for (const stack of stacks)
-            logger.error(stack);
+            Logger.error(stack);
         }
         process.exit(1);
       }

@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { stripIndent } from 'common-tags';
 
-import logger from './Logger';
+import Logger from './Logger';
 import PresetManager from './PresetManager';
 import { EslintConfigAnswer } from './models/ChoiceAnswers';
 
@@ -13,29 +13,29 @@ export default class PresetCommand {
     const presets = this.presetManager.getNames();
 
     if (presets.length === 0) {
-      logger.error('No presets found for nipinit.');
+      Logger.error('No presets found for nipinit.');
       return;
     }
 
-    logger.log(chalk.bold.underline(`Found ${presets.length} presets for nipinit:`));
+    Logger.log(chalk.bold.underline(`Found ${presets.length} presets for nipinit:`));
     for (const preset of presets)
-      logger.log(`  ${chalk.grey('-')} ${preset}`);
+      Logger.log(`  ${chalk.grey('-')} ${preset}`);
 
-    logger.log(chalk.italic(`You can have more informations about a preset with ${chalk.grey('nipinit presets info <preset>')}`));
+    Logger.log(chalk.italic(`You can have more informations about a preset with ${chalk.grey('nipinit presets info <preset>')}`));
   }
 
   showPresetInfo(name: string): void {
     const preset = this.presetManager.findByName(name);
 
     if (!preset) {
-      logger.error(`The preset ${name} does not exist.`);
+      Logger.error(`The preset ${name} does not exist.`);
       return;
     }
 
     const useEslint = preset.eslint !== EslintConfigAnswer.None;
     const yn = (val: unknown): string => (val ? chalk.green('Yes') : chalk.red('No'));
 
-    logger.log(stripIndent`
+    Logger.log(stripIndent`
       ${chalk.bold.underline(`Informations about the preset ${chalk.cyan(name)}:`)}
         ${chalk.grey('-')} User Name: ${chalk.cyan(preset.userName)}
         ${chalk.grey('-')} Init Git: ${yn(preset.git)}
@@ -52,8 +52,8 @@ export default class PresetCommand {
   removePreset(name: string): void {
     const existed = this.presetManager.remove(name);
     if (existed)
-      logger.success(`The presets ${name} was deleted successfully!`);
+      Logger.success(`The presets ${name} was deleted successfully!`);
     else
-      logger.error(`The preset ${name} does not exist.`);
+      Logger.error(`The preset ${name} does not exist.`);
   }
 }

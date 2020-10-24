@@ -8,7 +8,7 @@ import inquirer, { QuestionCollection } from 'inquirer';
 import ora from 'ora';
 
 import FilesData from './FilesData';
-import logger from './Logger';
+import Logger from './Logger';
 import PresetCommand from './PresetCommand';
 import PresetManager from './PresetManager';
 import { EslintConfigAnswer } from './models/ChoiceAnswers';
@@ -111,7 +111,7 @@ export default class CLI {
 
     spinner.succeed('Finished successfully!');
 
-    logger.log(stripIndent`
+    Logger.log(stripIndent`
       \n\n
       ${chalk.green.bold('➜')} ${chalk.underline.bold('Your project has been created successully!')}
       You can find it at ${chalk.cyan(`./${answers.projectName}/`)}!
@@ -131,8 +131,8 @@ export default class CLI {
     if (presetArgument) {
       const preset = this.presetManager.findByName(presetArgument);
       if (!preset) {
-        logger.error('This preset does not exist!');
-        logger.log(`    Run ${chalk.grey('nipinit presets ls')} to see all available presets.`);
+        Logger.error('This preset does not exist!');
+        Logger.log(`    Run ${chalk.grey('nipinit presets ls')} to see all available presets.`);
         return;
       }
 
@@ -143,10 +143,10 @@ export default class CLI {
 
       const samePreset: StoredPreset = this.presetManager.findSame(answers);
       if (samePreset) {
-        logger.log('');
-        logger.info(`The exact same preset is already saved under the name ${chalk.yellow(samePreset.name)}.`);
-        logger.log(`    Use ${chalk.grey(`nipinit -p ${samePreset.name}`)} to use it directly, next time!`);
-        logger.log('');
+        Logger.log('');
+        Logger.info(`The exact same preset is already saved under the name ${chalk.yellow(samePreset.name)}.`);
+        Logger.log(`    Use ${chalk.grey(`nipinit -p ${samePreset.name}`)} to use it directly, next time!`);
+        Logger.log('');
       } else {
         await this.createNewPreset(answers);
       }

@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 
 
-class Logger {
-  empty(lines = 1) {
+export default abstract class Logger {
+  static empty(lines = 1): void {
     console.log('\n'.repeat(lines));
   }
 
@@ -10,7 +10,7 @@ class Logger {
    * Logs a message with a prefix and the date
    * @param {string} msg - The message to log
    */
-  log(msg: string) {
+  static log(msg: string): void {
     console.log(msg);
   }
 
@@ -18,7 +18,7 @@ class Logger {
    * Shows an error with a prefix
    * @param {string} msg - The message to log
    */
-  error(msg: string) {
+  static error(msg: string): void {
     console.log(`${chalk.bgRed(' ✗ ')} ${msg}`);
   }
 
@@ -26,7 +26,7 @@ class Logger {
    * Shows a success message with a prefix
    * @param {string} msg - The message to log
    */
-  success(msg: string) {
+  static success(msg: string): void {
     console.log(`${chalk.bgGreen(' ✔ ')} ${msg}`);
   }
 
@@ -34,11 +34,7 @@ class Logger {
    * Shows an information message with a prefix
    * @param {string} msg - The message to log
    */
-  info(msg: string) {
+  static info(msg: string): void {
     console.log(`${chalk.black.bgCyan(' ℹ ')} ${msg}`);
   }
 }
-
-const logger = new Logger();
-
-export default logger;
