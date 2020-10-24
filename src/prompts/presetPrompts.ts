@@ -17,9 +17,10 @@ export const presetName = (presetManager: PresetManager, answers: GeneralAnswers
   default: () => presetManager.createName(answers.userName),
   when: (prefs: PresetCreationAnswers) => prefs.save,
   validate: (input) => {
-    if (input.length > 0)
+    if (input.length === 0)
       return 'The preset name has to contain at least 1 character.';
-    if (!presetManager.findByName(input))
+    if (presetManager.findByName(input))
       return 'A preset with this name is already taken.';
+    return true;
   },
 });
