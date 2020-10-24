@@ -1,9 +1,9 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
-title: Feature Request
-labels: your_labels
-assignees: your_username
+about: Suggest an idea for nipinit
+title: Feature - ...
+labels: enhancement
+assignees: noftaly
 
 ---
 

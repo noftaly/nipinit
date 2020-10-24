@@ -1,9 +1,9 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: your_title
-labels: your_label
-assignees: your_username
+title: Bug - ...
+labels: bug, unverified
+assignees: noftaly
 
 ---
 
@@ -22,11 +22,12 @@ A clear and concise description of what you expected to happen.
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
+Please try to run the command again, but with the `--dump-error`.
 
 **Versions:**
- - NodeJS version:
- - NPM Version:
- - Nipinit Version:
+ - NodeJS version (`node -v`):
+ - NPM Version (`npm -v`):
+ - Nipinit Version (`nipinit -v`):
 
 **Additional context**
 Add any other context about the problem here.
