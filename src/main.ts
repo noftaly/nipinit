@@ -17,7 +17,7 @@ type CLIOptions = {
 };
 
 
-updateNotifier({ pkg }).notify();
+updateNotifier({ pkg }).notify({ isGlobal: true });
 const cli = new CLI();
 
 program
