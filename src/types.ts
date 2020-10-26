@@ -26,7 +26,7 @@ export enum ExtraModulesAnswer {
 // which respectively add the projectName and name (the preset name) properties
 export interface Configuration {
   userName: string;
-  git: boolean,
+  git: boolean;
   github: boolean | null;
   license: LicenseAnswer;
   module: boolean;
@@ -47,7 +47,7 @@ export interface PresetCreationAnswers extends Answers {
 }
 
 export interface StoredPreset extends Configuration {
-  name: string,
+  name: string;
 }
 
 export type EslintPluginEntry = {
@@ -56,17 +56,17 @@ export type EslintPluginEntry = {
 }
 
 export type Paths = {
-  project: string,
-  dataDir: string,
+  project: string;
+  dataDir: string;
   dest: {
-    gitignore: string,
-    githubFolder: string,
-    issueTemplateFolder: string,
-    lintAction: string,
-  },
+    gitignore: string;
+    githubFolder: string;
+    issueTemplateFolder: string;
+    lintAction: string;
+  };
   data: {
-    issueTemplateFolder: string,
-    lintAction: string,
-    licenses: string,
-  },
+    issueTemplateFolder: string;
+    lintAction: string;
+    licenses: string;
+  };
 };
