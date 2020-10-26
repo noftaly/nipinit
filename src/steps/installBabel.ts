@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import FilesData from '../structures/FilesData';
-import { Paths } from '../types';
+import type FilesData from '../structures/FilesData';
+import type { Paths } from '../types';
 import exec from '../utils/exec';
 
 

@@ -1,6 +1,6 @@
-import { Question } from 'inquirer';
-import PresetManager from '../structures/PresetManager';
-import { GeneralAnswers, PresetCreationAnswers } from '../types';
+import type { Question } from 'inquirer';
+import type PresetManager from '../structures/PresetManager';
+import type { GeneralAnswers, PresetCreationAnswers } from '../types';
 
 
 export const save: Question = {
@@ -9,14 +9,13 @@ export const save: Question = {
   message: 'Do you want to save this preset?',
 };
 
-
 export const presetName = (presetManager: PresetManager, answers: GeneralAnswers): Question => ({
   type: 'input',
   name: 'presetName',
   message: 'What name do you want to give to this preset?',
-  default: () => presetManager.createName(answers.userName),
-  when: (prefs: PresetCreationAnswers) => prefs.save,
-  validate: (input) => {
+  default: (): string => presetManager.createName(answers.userName),
+  when: (prefs: PresetCreationAnswers): boolean => prefs.save,
+  validate: (input: string): string | boolean | Promise<string | boolean> => {
     if (input.length === 0)
       return 'The preset name has to contain at least 1 character.';
     if (presetManager.findByName(input))

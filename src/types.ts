@@ -1,4 +1,4 @@
-import { Answers } from 'inquirer';
+import type { Answers } from 'inquirer';
 
 
 export enum LicenseAnswer {
@@ -50,12 +50,12 @@ export interface StoredPreset extends Configuration {
   name: string;
 }
 
-export type EslintPluginEntry = {
+export interface EslintPluginEntry {
   extends: string;
   plugins: string[];
 }
 
-export type Paths = {
+export interface Paths {
   project: string;
   dataDir: string;
   dest: {
@@ -69,4 +69,4 @@ export type Paths = {
     lintAction: string;
     licenses: string;
   };
-};
+}

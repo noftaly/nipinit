@@ -4,24 +4,25 @@ import path from 'path';
 import chalk from 'chalk';
 import { stripIndent } from 'common-tags';
 import editJson from 'edit-json-file';
-import inquirer, { QuestionCollection } from 'inquirer';
+import type { QuestionCollection } from 'inquirer';
+import inquirer from 'inquirer';
 import ora from 'ora';
 
 import * as generalPrompts from '../prompts/generalPrompts';
 import * as presetPrompts from '../prompts/presetPrompts';
 import * as steps from '../steps';
-import {
-  EslintConfigAnswer,
+import type {
   Paths,
   StoredPreset,
   GeneralAnswers,
   PresetCreationAnswers,
   ProjectNameAnswers,
 } from '../types';
+import { EslintConfigAnswer } from '../types';
 import getPaths from '../utils/getPaths';
 import structuredClone from '../utils/structuredClone';
 import FilesData from './FilesData';
-import Logger from './Logger';
+import * as Logger from './Logger';
 import PresetCommand from './PresetCommand';
 import PresetManager from './PresetManager';
 
@@ -29,11 +30,11 @@ export default class CLI {
   public readonly presetManager = new PresetManager();
   public readonly presetCommand = new PresetCommand(this.presetManager);
 
-  get projectNameQuestions(): QuestionCollection<ProjectNameAnswers> {
+  public get projectNameQuestions(): QuestionCollection<ProjectNameAnswers> {
     return [generalPrompts.projectName];
   }
 
-  get generalQuestions(): QuestionCollection<GeneralAnswers> {
+  public get generalQuestions(): QuestionCollection<GeneralAnswers> {
     return [
       generalPrompts.projectName,
       generalPrompts.userName,
@@ -47,7 +48,7 @@ export default class CLI {
     ];
   }
 
-  async createNewPreset(generalAnswers: GeneralAnswers): Promise<void> {
+  public async createNewPreset(generalAnswers: GeneralAnswers): Promise<void> {
     const questions: QuestionCollection<PresetCreationAnswers> = [
       presetPrompts.save,
       presetPrompts.presetName(this.presetManager, generalAnswers),
@@ -60,7 +61,7 @@ export default class CLI {
     }
   }
 
-  async generateProject(answers: GeneralAnswers, install: boolean): Promise<void> {
+  public async generateProject(answers: GeneralAnswers, install: boolean): Promise<void> {
     const spinner = ora('Creating directory').start();
 
     const filesData = new FilesData(
@@ -130,7 +131,7 @@ export default class CLI {
     `);
   }
 
-  async startPrompting(presetArgument: string, installArgument: boolean): Promise<void> {
+  public async startPrompting(presetArgument: string, installArgument: boolean): Promise<void> {
     // If a preset is provided, we try to find it and create the project with it
     if (presetArgument) {
       const preset = this.presetManager.findByName(presetArgument);

@@ -3,8 +3,9 @@ import path from 'path';
 
 import { oneLine } from 'common-tags';
 
-import FilesData from '../structures/FilesData';
-import { EslintConfigAnswer, Paths, GeneralAnswers } from '../types';
+import type FilesData from '../structures/FilesData';
+import type { Paths, GeneralAnswers } from '../types';
+import { EslintConfigAnswer } from '../types';
 import exec from '../utils/exec';
 import getEslintConfigInfo from '../utils/getEslintConfig';
 
@@ -36,7 +37,7 @@ export default async function installEsLint(
             | command sed 's/[\{\},]//g ; s/: /@/g'
             | xargs npm install --save-dev "${fullName}@latest"
           `;
-      exec(command, { cwd: paths.project });
+      await exec(command, { cwd: paths.project });
     }
     if (useBabelParser)
       await exec('npm i -D @babel/eslint-parser', { cwd: paths.project });

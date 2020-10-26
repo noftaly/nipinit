@@ -1,7 +1,7 @@
-type NodeVersion = {
-  major: number,
-  minor: number,
-  patch: number,
+interface NodeVersion {
+  major: number;
+  minor: number;
+  patch: number;
 }
 
 /**

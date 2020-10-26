@@ -1,7 +1,8 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import { EslintConfigAnswer, Paths, GeneralAnswers } from '../types';
+import type { Paths, GeneralAnswers } from '../types';
+import { EslintConfigAnswer } from '../types';
 import getEslintConfigInfo from '../utils/getEslintConfig';
 
 

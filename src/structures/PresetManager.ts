@@ -1,6 +1,6 @@
 import Conf from 'conf';
 
-import { StoredPreset, GeneralAnswers } from '../types';
+import type { StoredPreset, GeneralAnswers } from '../types';
 
 
 type AnonymousPreset = Omit<StoredPreset, 'userName' | 'name'>;
@@ -12,15 +12,15 @@ export default class PresetManager {
     this.conf = new Conf<Record<string, StoredPreset>>();
   }
 
-  addPreset(preset: StoredPreset): void {
+  public addPreset(preset: StoredPreset): void {
     this.conf.set(preset.name, preset);
   }
 
-  findByName(name: string): StoredPreset {
+  public findByName(name: string): StoredPreset {
     return this.conf.get(name);
   }
 
-  findSame(answers: GeneralAnswers): StoredPreset | null {
+  public findSame(answers: GeneralAnswers): StoredPreset | null {
     const allPresets: StoredPreset[] = this.getList();
     const allAnonymousPreset: AnonymousPreset[] = allPresets.map(({ userName, name, ...keep }) => keep);
 
@@ -44,15 +44,15 @@ export default class PresetManager {
     return null;
   }
 
-  getList(): StoredPreset[] {
+  public getList(): StoredPreset[] {
     return Object.values(this.conf.store);
   }
 
-  getNames(): string[] {
+  public getNames(): string[] {
     return Object.keys(this.conf.store);
   }
 
-  remove(name: string): boolean {
+  public remove(name: string): boolean {
     if (!this.conf.get(name))
       return false;
 
@@ -60,7 +60,7 @@ export default class PresetManager {
     return true;
   }
 
-  createName(userName: string): string {
+  public createName(userName: string): string {
     const allNames = this.getNames();
 
     let suffix = 1;

@@ -1,7 +1,8 @@
-import { exec as execSync, ExecException, ExecOptions } from 'child_process';
+import type { ExecException, ExecOptions } from 'child_process';
+import { exec as execSync } from 'child_process';
 
 
-export default function exec(cmd: string, options?: ExecOptions): Promise<string | ExecException> {
+export default async function exec(cmd: string, options?: ExecOptions): Promise<string | ExecException> {
   return new Promise((resolve, reject) => {
     execSync(cmd, options, (error, stdout, stderr) => {
       if (error)

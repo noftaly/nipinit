@@ -2,15 +2,15 @@ import chalk from 'chalk';
 import { stripIndent } from 'common-tags';
 
 import { EslintConfigAnswer } from '../types';
-import Logger from './Logger';
-import PresetManager from './PresetManager';
+import * as Logger from './Logger';
+import type PresetManager from './PresetManager';
 
 
 export default class PresetCommand {
-  constructor(private presetManager: PresetManager) {}
+  constructor(private readonly _presetManager: PresetManager) {}
 
-  showPresetList(): void {
-    const presets = this.presetManager.getNames();
+  public showPresetList(): void {
+    const presets = this._presetManager.getNames();
 
     if (presets.length === 0) {
       Logger.error('No presets found for nipinit.');
@@ -24,8 +24,8 @@ export default class PresetCommand {
     Logger.log(chalk.italic(`You can have more informations about a preset with ${chalk.grey('nipinit presets info <preset>')}`));
   }
 
-  showPresetInfo(name: string): void {
-    const preset = this.presetManager.findByName(name);
+  public showPresetInfo(name: string): void {
+    const preset = this._presetManager.findByName(name);
 
     if (!preset) {
       Logger.error(`The preset ${name} does not exist.`);
@@ -49,9 +49,9 @@ export default class PresetCommand {
     `);
   }
 
-  removePreset(name: string): void {
-    const existed = this.presetManager.remove(name);
-    if (existed)
+  public removePreset(name: string): void {
+    const isValid = this._presetManager.remove(name);
+    if (isValid)
       Logger.success(`The presets ${name} was deleted successfully!`);
     else
       Logger.error(`The preset ${name} does not exist.`);

@@ -1,8 +1,8 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import editJson from 'edit-json-file';
-import FilesData from '../structures/FilesData';
-import { Paths } from '../types';
+import type editJson from 'edit-json-file';
+import type FilesData from '../structures/FilesData';
+import type { Paths } from '../types';
 
 
 export default async function createOtherFiles(

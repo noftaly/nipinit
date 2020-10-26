@@ -1,5 +1,5 @@
 import { stripIndent } from 'common-tags';
-import { EslintConfigAnswer, EslintPluginEntry } from '../types';
+import type { EslintConfigAnswer, EslintPluginEntry } from '../types';
 import getEslintConfigInfo from '../utils/getEslintConfig';
 
 
@@ -9,23 +9,23 @@ export default class FilesData {
   // eslint-disable-next-line max-params
   constructor(
     eslintConfigAnswer: EslintConfigAnswer,
-    private useBabel: boolean,
-    private useEsModules: boolean,
-    private projectName: string,
-    private userName: string,
-    private license: string,
+    private readonly _useBabel: boolean,
+    private readonly _useEsModules: boolean,
+    private readonly _projectName: string,
+    private readonly _userName: string,
+    private readonly _license: string,
   ) {
     this.eslintConfig = getEslintConfigInfo(eslintConfigAnswer);
   }
 
-  getGitIgnore(): string {
+  public getGitIgnore(): string {
     return stripIndent`
       node_modules/
-      ${this.useBabel && 'dist/'}
+      ${this._useBabel && 'dist/'}
     `;
   }
 
-  getBabelConfig(): string {
+  public getBabelConfig(): string {
     return stripIndent`
       {
         "presets": ["@babel/preset-env"]
@@ -33,12 +33,12 @@ export default class FilesData {
     `;
   }
 
-  getEslintConfig(): string {
+  public getEslintConfig(): string {
     return stripIndent`
       module.exports = {
         extends: '${this.eslintConfig.extends}',
-        ${this.useBabel ? "parser: '@babel/eslint-parser'," : ''}
-        ignorePatterns: ['.eslintrc.${this.useEsModules ? 'c' : ''}js', 'node_modules/'],
+        ${this._useBabel ? "parser: '@babel/eslint-parser'," : ''}
+        ignorePatterns: ['.eslintrc.${this._useEsModules ? 'c' : ''}js', 'node_modules/'],
         rules: {},
         env: {
           node: true,
@@ -47,7 +47,7 @@ export default class FilesData {
     `;
   }
 
-  getNodemon(): string {
+  public getNodemon(): string {
     return stripIndent`
       {
         "verbose": false,
@@ -57,7 +57,7 @@ export default class FilesData {
     `;
   }
 
-  getEditorConfig(): string {
+  public getEditorConfig(): string {
     return stripIndent`
       # http://editorconfig.org
 
@@ -73,17 +73,17 @@ export default class FilesData {
     `;
   }
 
-  getReadme(): string {
+  public getReadme(): string {
     return stripIndent`
-      # ${this.projectName}
+      # ${this._projectName}
 
-      A NodeJS Program made by ${this.userName}
+      A NodeJS Program made by ${this._userName}
 
       ## Table of Contents
       - [Usage](#usage)
       - [Screenshots](#screenshots)
       - [TO-DO](#to-do)
-      - [License](#license)
+      - [License](#_license)
 
       ## Usage
       🚧 WIP
@@ -96,11 +96,11 @@ export default class FilesData {
       - [x] Initialise the needed file
 
       ## License
-      Copyright © ${new Date().getFullYear()} ${this.userName}. Licensed under the ${this.license} license, see [the license](./LICENSE)
+      Copyright © ${new Date().getFullYear()} ${this._userName}. Licensed under the ${this._license} _license, see [the _license](./LICENSE)
     `;
   }
 
-  getMainjs(): string {
+  public getMainjs(): string {
     return stripIndent`
       // main.js
     `;

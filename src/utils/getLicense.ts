@@ -1,9 +1,10 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { Paths } from '../types';
+import type { LicenseAnswer, Paths } from '../types';
 
 
 const licenses = {
+  /* eslint-disable @typescript-eslint/naming-convention */
   MIT: 'mit.txt',
   'GPL-v3.0-only': 'gpl.txt',
   ISC: 'isc.txt',
@@ -11,7 +12,7 @@ const licenses = {
 
 export default async function getLicense(
   paths: Paths,
-  license: string,
+  license: LicenseAnswer,
   userName: string,
   programName: string,
 ): Promise<string> {

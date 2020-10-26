@@ -1,26 +1,31 @@
 import fsSync from 'fs';
 import path from 'path';
-import {
+import type {
   CheckboxQuestion,
   ChoiceOptions,
   ListQuestion,
   Question,
 } from 'inquirer';
-import { LicenseAnswer, EslintConfigAnswer, ExtraModulesAnswer } from '../types';
+import {
+  LicenseAnswer,
+  EslintConfigAnswer,
+  ExtraModulesAnswer,
+} from '../types';
+import type { GeneralAnswers } from '../types';
 import getNodeVersion from '../utils/getNodeVersion';
 
 export const projectName: Question = {
   type: 'input',
   name: 'projectName',
   message: 'What is your project name?',
-  validate(input: string) {
-    const done = this.async();
-    if (input.length === 0)
-      return done('The project name has to contain at least 1 character.');
-    if (fsSync.existsSync(path.join(process.cwd(), input)))
-      return done('This folder already exist.');
-    return done(null, true);
-  },
+  validate: async (input: string) => new Promise((resolve, _reject) => {
+      if (input.length === 0)
+        resolve('The project name has to contain at least 1 character.');
+      else if (fsSync.existsSync(path.join(process.cwd(), input)))
+        resolve('This folder already exist.');
+      else
+        resolve();
+    }),
 };
 
 export const userName: Question = {
@@ -42,7 +47,7 @@ export const github: Question = {
   name: 'github',
   message: "Would you like to add github's files? (.github folder)",
   default: true,
-  when: answers => answers.git,
+  when: (answers: GeneralAnswers) => answers.git,
 };
 
 const licenseChoice: ChoiceOptions[] = [

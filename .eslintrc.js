@@ -1,10 +1,10 @@
 module.exports = {
+  root: true,
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   extends: [
     'noftalint',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:import/typescript',
+    'noftalint/typescript',
   ],
   ignorePatterns: ['node_modules/', 'playground/', 'lib/', './**/*.d.ts'],
   rules: {
@@ -15,39 +15,12 @@ module.exports = {
     'node/no-sync': 'off',
     'node/no-process-exit': 'off',
 
-    // We have to disable/change all these rules because we are using TypeScript
-    'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
-
-    'no-shadow': 'off',
-    '@typescript-eslint/no-shadow': 'error',
-
-    'no-useless-constructor': 'off',
-    '@typescript-eslint/no-useless-constructor': 'error',
-
-    'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': ['error', {
-      vars: 'all',
-      args: 'after-used',
-      argsIgnorePattern: '^_',
-      ignoreRestSiblings: true,
-    }],
-
+    // We have to change this rule because we are using TypeScript
     'node/shebang': ['error', {
       convertPath: {
         'src/main.ts': ['^src/main.ts$', 'lib/main.js'],
       },
     }],
   },
-  env: {
-    node: true,
-  },
-  overrides: [{
-    files: ['.eslintrc.js'],
-    rules: {
-      'import/no-commonjs': 'off',
-    },
-  }],
-  settings: {
-    node: { tryExtensions: ['.ts', '.d.ts', '.js'] },
-  },
+  env: { node: true },
 };

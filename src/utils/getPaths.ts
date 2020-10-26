@@ -1,5 +1,5 @@
 import path from 'path';
-import { Paths } from '../types';
+import type { Paths } from '../types';
 
 
 export default function getPaths(projectName: string): Paths {

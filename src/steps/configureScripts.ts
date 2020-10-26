@@ -1,5 +1,6 @@
-import editJson from 'edit-json-file';
-import { ExtraModulesAnswer, GeneralAnswers } from '../types';
+import type editJson from 'edit-json-file';
+import type { GeneralAnswers } from '../types';
+import { ExtraModulesAnswer } from '../types';
 
 export default function configureScripts(editablePackageJson: editJson.JsonEditor, answers: GeneralAnswers): void {
   const prod = answers.extras.includes(ExtraModulesAnswer.Crossenv) ? 'cross-env NODE_ENV=production' : '';

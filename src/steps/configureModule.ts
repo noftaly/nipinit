@@ -1,4 +1,4 @@
-import editJson from 'edit-json-file';
+import type editJson from 'edit-json-file';
 
 export default function configureModule(editablePackageJson: editJson.JsonEditor): void {
   editablePackageJson.set('type', 'module');
