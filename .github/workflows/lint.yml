@@ -18,7 +18,7 @@ jobs:
         run: npm install -g eslint@7
 
       - name: Install ESLint Configs and Plugins
-        run: npm install -D @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-config-noftalint eslint-plugin-import eslint-plugin-node eslint-plugin-unicorn
+        run: npm install -D @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-config-noftalint@beta eslint-plugin-import eslint-plugin-node eslint-plugin-unicorn
 
       - name: Run ESLint
         run: npm run lint
