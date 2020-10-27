@@ -24,7 +24,7 @@ export const projectName: Question = {
       else if (fsSync.existsSync(path.join(process.cwd(), input)))
         resolve('This folder already exist.');
       else
-        resolve();
+        resolve(true);
     }),
 };
 
