@@ -1,13 +1,10 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import { oneLine } from 'common-tags';
-
 import type FilesData from '../structures/FilesData';
 import type { Paths, GeneralAnswers } from '../types';
-import { EslintConfigAnswer } from '../types';
-import exec from '../utils/exec';
 import getEslintConfigInfo from '../utils/getEslintConfig';
+import installDependencies from '../utils/installDependencies';
 
 
 export default async function installEsLint(
@@ -19,29 +16,11 @@ export default async function installEsLint(
   const useBabelParser = answers.babel;
   const useModules = answers.module;
 
-  if (install) {
-    if (answers.eslint === EslintConfigAnswer.Recommended) {
-      await exec('npm i -D eslint', { cwd: paths.project });
-    } else {
-      const fullName = `eslint-config-${getEslintConfigInfo(answers.eslint).extends}`;
+  const dependencies = new Set(['eslint', ...getEslintConfigInfo(answers.eslint).plugins]);
+  if (useBabelParser)
+    dependencies.add('@babel/eslint-parser');
 
-      // FIXME: Find a better way to install peer-dependencies
-      const command = process.platform === 'win32'
-        ? oneLine`
-            npm i -D install-peerdeps
-            && npx install-peerdeps --dev ${fullName}
-            && npm uninstall install-peerdeps
-          `
-        : oneLine`
-            npm info "${fullName}@latest" peerDependencies --json
-            | command sed 's/[\{\},]//g ; s/: /@/g'
-            | xargs npm install --save-dev "${fullName}@latest"
-          `;
-      await exec(command, { cwd: paths.project });
-    }
-    if (useBabelParser)
-      await exec('npm i -D @babel/eslint-parser', { cwd: paths.project });
-  }
+  await installDependencies(install, paths.project, dependencies);
 
   await fs.writeFile(
     path.join(paths.project, `.eslintrc.${useModules ? 'c' : ''}js`),

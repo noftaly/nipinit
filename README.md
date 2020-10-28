@@ -11,6 +11,7 @@
 
 
 ## Table of Content
+
 - [Installation](#installation)
 - [Features](#features)
 - [Usage](#usage)
@@ -89,9 +90,8 @@ There are multiple options (flags) you can add when running nipinit.
 
 ## TO-DO
 
+- [x] Make `--no-modules` add dependencies to the package.json (without installing them)
 - [ ] Add unit tests
-- [ ] Make `--no-modules` add dependencies to the package.json (without installing them)
-  - see [add-dependencies#22](https://github.com/arfeo/npm-add-dependencies/pull/22)
 
 
 ## License

@@ -4,7 +4,7 @@ import path from 'path';
 import type FilesData from '../structures/FilesData';
 import type { Paths, GeneralAnswers } from '../types';
 import { ExtraModulesAnswer } from '../types';
-import exec from '../utils/exec';
+import installDependencies from '../utils/installDependencies';
 
 
 export default async function installOtherDependencies(
@@ -13,13 +13,16 @@ export default async function installOtherDependencies(
   install: boolean,
   filesData: FilesData,
 ): Promise<void> {
+  const dependencies: Set<string> = new Set();
+
   if (answers.extras.includes(ExtraModulesAnswer.Nodemon)) {
-    if (install)
-      await exec('npm i -D nodemon', { cwd: paths.project });
     await fs.writeFile(path.join(paths.project, 'nodemon.json'), filesData.getNodemon());
+    dependencies.add('nodemon');
   }
-  if (answers.extras.includes(ExtraModulesAnswer.Crossenv) && install)
-    await exec('npm i -D cross-env', { cwd: paths.project });
-  if (answers.extras.includes(ExtraModulesAnswer.Concurrently) && install)
-    await exec('npm i -D concurrently', { cwd: paths.project });
+  if (answers.extras.includes(ExtraModulesAnswer.Crossenv))
+    dependencies.add('cross-env');
+  if (answers.extras.includes(ExtraModulesAnswer.Concurrently))
+    dependencies.add('concurrently');
+
+  await installDependencies(install, paths.project, dependencies);
 }
