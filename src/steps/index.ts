@@ -3,7 +3,6 @@ export { default as configureScripts } from './configureScripts';
 export { default as createLicense } from './createLicense';
 export { default as createOtherFiles } from './createOtherFiles';
 export { default as initGit } from './initGit';
-export { default as initGithub } from './initGithub';
 export { default as initNpm } from './initNpm';
 export { default as installBabel } from './installBabel';
 export { default as installEslint } from './installEslint';

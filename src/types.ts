@@ -27,7 +27,6 @@ export enum ExtraModulesAnswer {
 export interface Configuration {
   userName: string;
   git: boolean;
-  github: boolean | null;
   license: LicenseAnswer;
   module: boolean;
   babel: boolean;

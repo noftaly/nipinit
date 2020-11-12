@@ -39,7 +39,6 @@ export default class PresetCommand {
       ${chalk.bold.underline(`Informations about the preset ${chalk.cyan(name)}:`)}
         ${chalk.grey('-')} User Name: ${chalk.cyan(preset.userName)}
         ${chalk.grey('-')} Init Git: ${yn(preset.git)}
-          ${preset.git ? `${chalk.grey('-')} Init Github files: ${yn(preset.github)}` : ''}
         ${chalk.grey('-')} License: ${chalk.cyan(preset.license)}
         ${chalk.grey('-')} Use ES Modules: ${yn(preset.module)}
         ${chalk.grey('-')} Use babel: ${yn(preset.babel)}

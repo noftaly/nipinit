@@ -26,7 +26,6 @@ export default class PresetManager {
 
     const currentConfiguration: AnonymousPreset = {
       git: answers.git,
-      github: answers.github,
       license: answers.license,
       module: answers.module,
       babel: answers.babel,

@@ -11,7 +11,6 @@ import {
   EslintConfigAnswer,
   ExtraModulesAnswer,
 } from '../types';
-import type { GeneralAnswers } from '../types';
 import getNodeVersion from '../utils/getNodeVersion';
 
 export const projectName: Question = {
@@ -40,14 +39,6 @@ export const git: Question = {
   name: 'git',
   message: 'Would you like to init a git repository?',
   default: true,
-};
-
-export const github: Question = {
-  type: 'confirm',
-  name: 'github',
-  message: "Would you like to add github's files? (.github folder)",
-  default: true,
-  when: (answers: GeneralAnswers) => answers.git,
 };
 
 const licenseChoice: ChoiceOptions[] = [

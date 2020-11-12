@@ -39,7 +39,6 @@ export default class CLI {
       generalPrompts.projectName,
       generalPrompts.userName,
       generalPrompts.git,
-      generalPrompts.github,
       generalPrompts.license,
       generalPrompts.module,
       generalPrompts.babel,
@@ -79,11 +78,7 @@ export default class CLI {
 
     spinner.text = 'Initializing git';
     if (answers.git)
-      await steps.initGit(paths, filesData);
-
-    spinner.text = 'Creating github files';
-    if (answers.github)
-      await steps.initGithub(paths, answers);
+      await steps.initGit(paths, filesData, answers);
 
     spinner.text = 'Initializing NPM';
     let editablePackageJson = await steps.initNpm(paths, answers);
