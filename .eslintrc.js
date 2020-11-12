@@ -15,12 +15,6 @@ module.exports = {
     'node/no-sync': 'off',
     'node/no-process-exit': 'off',
 
-    // These rules seem to currently have many false positive.
-    '@typescript-eslint/no-unsafe-assignment': 'off',
-    '@typescript-eslint/no-unsafe-call': 'off',
-    '@typescript-eslint/no-unsafe-member-access': 'off',
-    '@typescript-eslint/no-unsafe-return': 'off',
-
     // We have to change this rule because we are using TypeScript
     'node/shebang': ['error', {
       convertPath: {
