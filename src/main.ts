@@ -72,15 +72,15 @@ const presetsCmd = program
 presetsCmd
   .command('ls')
   .description('List all existing presets')
-  .action(cli.presetCommand.showPresetList.bind(cli));
+  .action(cli.presetCommand.showPresetList.bind(cli.presetCommand));
 presetsCmd
   .command('info <preset>')
   .description('Get informations about a preset')
-  .action(cli.presetCommand.showPresetInfo.bind(cli));
+  .action(cli.presetCommand.showPresetInfo.bind(cli.presetCommand));
 presetsCmd
   .command('remove <preset>')
   .alias('rem')
   .description('Remove a preset')
-  .action(cli.presetCommand.removePreset.bind(cli));
+  .action(cli.presetCommand.removePreset.bind(cli.presetCommand));
 
 program.parse(process.argv);
