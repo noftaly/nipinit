@@ -5,6 +5,7 @@
   "main": "src/main.ts",
   "scripts": {
     "build": "rm -rf ./lib && npx tsc",
+    "dev": "npm run build && npm i -g",
     "lint": "eslint ."
   },
   "bin": {
