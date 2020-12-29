@@ -85,7 +85,7 @@ There are multiple options (flags) you can add when running nipinit.
 
 ## Screenshots
 
-![Nipinit Screenshot where we can see all the prompts asked and the success messages](./assets/nipinit-screenshot.png)
+![Nipinit Screenshot where we can see all the prompts asked and the success messages](./screenshots/nipinit-screenshot.png)
 
 
 ## TO-DO
