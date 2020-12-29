@@ -7,6 +7,7 @@ export const save: Question = {
   type: 'confirm',
   name: 'save',
   message: 'Do you want to save this preset?',
+  default: false,
 };
 
 export const presetName = (presetManager: PresetManager, answers: GeneralAnswers): Question => ({
@@ -15,11 +16,13 @@ export const presetName = (presetManager: PresetManager, answers: GeneralAnswers
   message: 'What name do you want to give to this preset?',
   default: (): string => presetManager.createName(answers.userName),
   when: (prefs: PresetCreationAnswers): boolean => prefs.save,
-  validate: (input: string): string | boolean | Promise<string | boolean> => {
+  validate: (input: string): string | boolean => {
     if (input.length === 0)
       return 'The preset name has to contain at least 1 character.';
     if (presetManager.findByName(input))
       return 'A preset with this name is already taken.';
+    if (input === '__nipinit__')
+      return 'You cannot use this name, as it is reserved.';
     return true;
   },
 });
