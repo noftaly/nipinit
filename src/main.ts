@@ -51,8 +51,8 @@ program
             Logger.info('Used preset: None');
           }
           Logger.info(`Install modules: ${options.modules || true}`);
-          Logger.info(`Node version: ${process.version}`);
-          Logger.info(`Nipinit version: ${pkg.version}`);
+          Logger.info(`Node.js version: ${process.version}`);
+          Logger.info(`nipinit version: ${pkg.version}`);
           console.error(error);
         } else {
           Logger.error(error.message);

@@ -1,13 +1,13 @@
-# Nipinit
+# nipinit
 
 ![David](https://img.shields.io/david/noftaly/nipinit)
 ![npm-dl](https://img.shields.io/npm/dm/nipinit)
 ![npm-ver](https://img.shields.io/npm/v/nipinit)
 ![node-current](https://img.shields.io/node/v/nipinit)
 
-> 💻 A command-line utility to easily create new NPM projects.
+> 💻 A command-line utility to easily create new node projects.
 
-:warning: As of 2.0.0, you can use nipinit with NodeJS v10.17.0 or higher. If you're still using v1.x.x, you have to use NodeJS v14.8.0 or higher.
+:warning: As of 2.0.0, you __can__ use nipinit with Node.js v10.17.0 or higher. If you're still using v1.x.x, you have to use Node.js v14.8.0 or higher.
 
 
 ## Table of Content
@@ -33,11 +33,11 @@ $ npm i -g nipinit
 
 ## Features
 
-- Initialize an NPM project
+- Initialize an npm project
 - Initialize Git & .gitignore
-- Create Github's file (templates, changelog, contributing, and some actions (lint/build))
+- Create GitHub's file (templates, changelog, contributing, and some actions (lint/build))
 - Set a license (choose between MIT, ISC and GPL-v3)
-- Use ES Modules (NodeJS' ES Modules, not Babel's)
+- Use ES Modules (Node.js' ES Modules, not Babel's)
 - Install & configure Babel
 - Install & configure ESLint (choose between my configuration (noftalint), airbnb, recommended and standard)
 - Install nodemon, cross-env and concurrently
@@ -49,11 +49,11 @@ $ npm i -g nipinit
 
 ### Requirements
 
-- You need to have NodeJS v10.17.0 or newer to use nipinit. You can check your NodeJS' version with `node -v`.
+- You need to have Node.js v10.17.0 or newer to use nipinit. You can check your Node.js' version with `node -v`.
 
 ### Fresh start
 
-To start a new NPM project with nipinit, go to the directory you want in your terminal, and type:
+To start a new node project with nipinit, go to the directory you want in your terminal, and type:
 ```shell
 $ nipinit
 ```
@@ -92,6 +92,13 @@ There are multiple options (flags) you can add when running nipinit.
 
 - [x] Make `--no-modules` add dependencies to the package.json (without installing them)
 - [ ] Add unit tests
+- [ ] Add an option to create the project with TypeScript
+  - [ ] Use the `.ts` extension
+  - [ ] Add the default dependencies (`typescript`, `@types/node`)
+  - [ ] Add the other needed dependencies (for ESLint, such as `@typescript-eslint/parser` and `@typescript-eslint/eslint-plugin`)
+  - [ ] Show only ESLint configurations that supports TypeScript
+  - [ ] Create other TypeScript files (`tsconfig.json`, `types.ts`...)
+  - [ ] And more...
 
 
 ## License

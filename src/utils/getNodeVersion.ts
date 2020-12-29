@@ -5,7 +5,7 @@ interface NodeVersion {
 }
 
 /**
- * Returns an array of 3 integers, the NodeJS's major, minor and patch versions.
+ * Returns an array of 3 integers, the Node.js's major, minor and patch versions.
  */
 export default function getNodeVersion(): NodeVersion {
   const versions: number[] = process.version.slice(1).split('.').map(num => Number.parseInt(num, 10));

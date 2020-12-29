@@ -80,7 +80,7 @@ export default class CLI {
     if (answers.git)
       await steps.initGit(paths, filesData, answers);
 
-    spinner.text = 'Initializing NPM';
+    spinner.text = 'Initializing npm';
     let editablePackageJson = await steps.initNpm(paths, answers);
 
     spinner.text = 'Create the license';

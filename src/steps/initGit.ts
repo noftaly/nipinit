@@ -13,7 +13,7 @@ export default async function initGit(paths: Paths, filesData: FilesData, answer
   await exec('git init', { cwd: paths.project });
   await fs.writeFile(paths.dest.gitignore, filesData.getGitIgnore());
 
-  // --- Init Github ---
+  // --- Init GitHub ---
   await fs.mkdir(paths.dest.githubFolder);
 
   // Create issue templates

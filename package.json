@@ -1,7 +1,7 @@
 {
   "name": "nipinit",
   "version": "2.1.0",
-  "description": "A command-line utility to easily create new NPM projects.",
+  "description": "A command-line utility to easily create new node projects.",
   "main": "src/main.ts",
   "scripts": {
     "build": "rm -rf ./lib && npx tsc",

@@ -25,9 +25,9 @@ If applicable, add screenshots to help explain your problem.
 Please try to run the command again, but with the `--dump-error`.
 
 **Versions:**
- - NodeJS version (`node -v`):
- - NPM Version (`npm -v`):
- - Nipinit Version (`nipinit -v`):
+ - Node.js version (`node -v`): v`x.x.x`
+ - npm version (`npm -v`): v`x.x.x`
+ - nipinit version (`nipinit -v`): v`x.x.x`
 
 **Additional context**
 Add any other context about the problem here.
