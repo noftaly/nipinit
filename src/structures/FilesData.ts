@@ -21,7 +21,7 @@ export default class FilesData {
   public getGitIgnore(): string {
     return stripIndent`
       node_modules/
-      ${this._useBabel && 'dist/'}
+      ${this._useBabel ? 'dist/' : ''}
     `;
   }
 
@@ -38,11 +38,7 @@ export default class FilesData {
       module.exports = {
         extends: '${this.eslintConfig.extends}',
         ${this._useBabel ? "parser: '@babel/eslint-parser'," : ''}
-        ignorePatterns: ['.eslintrc.${this._useEsModules ? 'c' : ''}js', 'node_modules/'],
-        rules: {},
-        env: {
-          node: true,
-        },
+        ignorePatterns: ['node_modules/'],
       };
     `;
   }
@@ -77,26 +73,33 @@ export default class FilesData {
     return stripIndent`
       # ${this._projectName}
 
-      A NodeJS Program made by ${this._userName}
+      > ⚡️ A Node.js program made by ${this._userName}.
+
+      :warning: ${this._projectName} is still under early development! Use with caution.
 
       ## Table of Contents
+
       - [Usage](#usage)
       - [Screenshots](#screenshots)
       - [TO-DO](#to-do)
-      - [License](#_license)
+      - [License](#license)
 
       ## Usage
+
       🚧 WIP
 
       ## Screenshots
+
       🚧 WIP
 
       ## TO-DO
+
       - [ ] Start writing code
-      - [x] Initialise the needed file
+      - [x] Initialise the needed files
 
       ## License
-      Copyright © ${new Date().getFullYear()} ${this._userName}. Licensed under the ${this._license} _license, see [the _license](./LICENSE)
+
+      Copyright © ${new Date().getFullYear()} ${this._userName}. Licensed under the ${this._license} license, see [the license](./LICENSE).
     `;
   }
 

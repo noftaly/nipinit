@@ -1,9 +1,9 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: your_title
-labels: your_label
-assignees: your_username
+title: REPLACE_WITH_YOUR_TITLE
+labels: REPLACE_WITH_YOUR_LABEL
+assignees: REPLACE_WITH_YOUR_USERNAME
 
 ---
 

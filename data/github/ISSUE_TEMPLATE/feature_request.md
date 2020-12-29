@@ -2,8 +2,8 @@
 name: Feature request
 about: Suggest an idea for this project
 title: Feature Request
-labels: your_labels
-assignees: your_username
+labels: REPLACE_WITH_YOUR_LABEL
+assignees: REPLACE_WITH_YOUR_USERNAME
 
 ---
 
