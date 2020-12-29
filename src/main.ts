@@ -33,14 +33,14 @@ program
   .option('--no-color', 'Create a new project without showing colors in the CLI')
   .action(async (options: CLIOptions, command?: string) => {
     if (command && command !== 'presets') {
-      Logger.error('Unkown argument. Run nipinit -h for help');
+      Logger.error('Unknown argument. Run nipinit -h for help');
     } else if (!command) {
       try {
         await cli.startPrompting(options.preset, options.modules);
       } catch (unknownError: unknown) {
         const error = unknownError as Error;
         Logger.empty(2);
-        Logger.error('An error occured while using nipinit... More information are available below this message.');
+        Logger.error('An error occurred while using nipinit... More information are available below this message.');
         Logger.error('If you think this is a bug, please report it here: https://github.com/noftaly/nipinit, with the "bug" issue template filled correctly.');
         if (options.dumpError) {
           if (options.preset) {
