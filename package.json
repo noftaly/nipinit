@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rm -rf ./lib && npx tsc",
     "dev": "npm run build && npm i -g",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "bin": {
     "nipinit": "./lib/main.js"
