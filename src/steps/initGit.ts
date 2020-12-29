@@ -39,7 +39,7 @@ export default async function initGit(paths: Paths, filesData: FilesData, answer
     let lintActionContent: string = await fs.readFile(paths.data.lintAction, { encoding: 'utf-8' });
     lintActionContent = dependencies.length > 0
       ? lintActionContent.replace('<PLUGINS_LIST>', dependencies.join(' '))
-      : lintActionContent.replace(/^ *- name: Install ESLint Configs and Plugins(.|\n)*<PLUGINS_LIST>\n\n/gimu, '');
+      : lintActionContent.replace(/^ *- name: Install ESLint Configs and Plugins(?:.|\n)*<PLUGINS_LIST>\n\n/gimu, '');
     await fs.writeFile(paths.dest.lintAction, lintActionContent);
   }
 
