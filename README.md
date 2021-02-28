@@ -92,12 +92,6 @@ There are multiple options (flags) you can add when running nipinit.
 
 - [x] Make `--no-modules` add dependencies to the package.json (without installing them)
 - [x] Add an option to create the project with TypeScript
-  - [x] Use the `.ts` extension
-  - [x] Add the default dependencies (`typescript`, `@types/node`)
-  - [x] Add the other needed dependencies (for ESLint, such as `@typescript-eslint/parser` and `@typescript-eslint/eslint-plugin`)
-  - [x] Show only ESLint configurations that supports TypeScript
-  - [x] Create other TypeScript files (`tsconfig.json`, `types.ts`...)
-  - [x] And more...
 - [ ] Add unit tests
 
 
