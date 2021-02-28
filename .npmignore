@@ -3,3 +3,7 @@
 node_modules/
 playground/
 .github/
+.editorconfig
+.eslintrc.js
+tsconfig.json
+tsconfig.eslint.json
