@@ -15,10 +15,12 @@ export default function getPaths(projectName: string): Paths {
       githubFolder,
       issueTemplateFolder: path.join(githubFolder, 'ISSUE_TEMPLATE'),
       lintAction: path.join(githubFolder, 'workflows', 'lint.yml'),
+      buildAction: path.join(githubFolder, 'workflows', 'build.yml'),
     },
     data: {
       issueTemplateFolder: path.join(dataDir, 'github', 'ISSUE_TEMPLATE'),
       lintAction: path.join(dataDir, 'github', 'workflows', 'lint.yml'),
+      buildAction: path.join(dataDir, 'github', 'workflows', 'build.yml'),
       licenses: path.join(dataDir, 'licenses'),
     },
   };

@@ -16,12 +16,12 @@ export const presetName = (presetManager: PresetManager, answers: GeneralAnswers
   message: 'What name do you want to give to this preset?',
   default: (): string => presetManager.createName(answers.userName),
   when: (prefs: PresetCreationAnswers): boolean => prefs.save,
-  validate: (input: string): string | boolean => {
+  validate: (input: string): boolean | string => {
     if (input.length === 0)
       return 'The preset name has to contain at least 1 character.';
     if (presetManager.findByName(input))
       return 'A preset with this name is already taken.';
-    if (input === '__nipinit__')
+    if (input === '__internal__')
       return 'You cannot use this name, as it is reserved.';
     return true;
   },

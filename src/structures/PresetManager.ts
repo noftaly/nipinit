@@ -1,15 +1,33 @@
 import Conf from 'conf';
 
-import type { StoredPreset, GeneralAnswers } from '../types';
+import type { GeneralAnswers, StoredPreset } from '../types';
+import { LanguageAnswer } from '../types';
 
 
-type AnonymousPreset = Omit<StoredPreset, 'userName' | 'name'>;
+type AnonymousPreset = Omit<StoredPreset, 'name' | 'userName'>;
 
 export default class PresetManager {
   public readonly conf: Conf<Record<string, StoredPreset>>;
 
   constructor() {
-    this.conf = new Conf<Record<string, StoredPreset>>();
+    this.conf = new Conf<Record<string, StoredPreset>>({
+      migrations: {
+        '>=2.2.0': (store): void => {
+          for (const [name, config] of Object.entries(store.store)) {
+            /* eslint-disable @typescript-eslint/dot-notation */
+            if ('module' in config && config['module'] === true)
+              store.set(`${name}.language`, LanguageAnswer.Modules);
+            else if ('babel' in config && config['babel'] === true)
+              store.set(`${name}.language`, LanguageAnswer.Babel);
+            else
+              store.set(`${name}.language`, LanguageAnswer.Vanilla);
+            store.delete(`${name}.module`);
+            store.delete(`${name}.babel`);
+            /* eslint-enable @typescript-eslint/dot-notation */
+          }
+        },
+      },
+    });
   }
 
   public addPreset(preset: StoredPreset): void {
@@ -17,6 +35,8 @@ export default class PresetManager {
   }
 
   public findByName(name: string): StoredPreset {
+    if (name === '__internal__')
+      return null;
     return this.conf.get(name);
   }
 
@@ -27,8 +47,7 @@ export default class PresetManager {
     const currentConfiguration: AnonymousPreset = {
       git: answers.git,
       license: answers.license,
-      module: answers.module,
-      babel: answers.babel,
+      language: answers.language,
       eslint: answers.eslint,
       extras: answers.extras,
     };
@@ -48,7 +67,7 @@ export default class PresetManager {
   }
 
   public getNames(): string[] {
-    return Object.keys(this.conf.store);
+    return Object.keys(this.conf.store).filter(preset => preset !== '__internal__');
   }
 
   public remove(name: string): boolean {

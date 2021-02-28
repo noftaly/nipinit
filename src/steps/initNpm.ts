@@ -1,6 +1,6 @@
 import path from 'path';
 import editJson from 'edit-json-file';
-import type { Paths, GeneralAnswers } from '../types';
+import type { GeneralAnswers, Paths } from '../types';
 import exec from '../utils/exec';
 
 

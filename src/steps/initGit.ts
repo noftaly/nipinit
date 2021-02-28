@@ -2,10 +2,12 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 import type FilesData from '../structures/FilesData';
-import type { Paths, GeneralAnswers } from '../types';
-import { EslintConfigAnswer } from '../types';
+import type { GeneralAnswers, Paths } from '../types';
+import { EslintConfigAnswer, LanguageAnswer } from '../types';
+
 import exec from '../utils/exec';
 import getEslintConfigInfo from '../utils/getEslintConfig';
+import noop from '../utils/noop';
 
 
 export default async function initGit(paths: Paths, filesData: FilesData, answers: GeneralAnswers): Promise<void> {
@@ -41,6 +43,14 @@ export default async function initGit(paths: Paths, filesData: FilesData, answer
       ? lintActionContent.replace('<PLUGINS_LIST>', dependencies.join(' '))
       : lintActionContent.replace(/^ *- name: Install ESLint Configs and Plugins(?:.|\n)*<PLUGINS_LIST>\n\n/gimu, '');
     await fs.writeFile(paths.dest.lintAction, lintActionContent);
+  }
+
+  // Create build action
+  if (answers.language === LanguageAnswer.Typecript || answers.language === LanguageAnswer.Babel) {
+    await fs.mkdir(path.join(paths.dest.githubFolder, 'workflows')).catch(noop);
+
+    const buildActionContent: string = await fs.readFile(paths.data.buildAction, { encoding: 'utf-8' });
+    await fs.writeFile(paths.dest.buildAction, buildActionContent);
   }
 
   // Create CHANGELOG.md

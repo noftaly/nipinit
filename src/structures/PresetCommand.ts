@@ -40,8 +40,7 @@ export default class PresetCommand {
         ${chalk.grey('-')} User Name: ${chalk.cyan(preset.userName)}
         ${chalk.grey('-')} Init Git: ${yn(preset.git)}
         ${chalk.grey('-')} License: ${chalk.cyan(preset.license)}
-        ${chalk.grey('-')} Use ES Modules: ${yn(preset.module)}
-        ${chalk.grey('-')} Use babel: ${yn(preset.babel)}
+        ${chalk.grey('-')} Language used: ${chalk.cyan(preset.language)}
         ${chalk.grey('-')} Use ESLint: ${yn(useEslint)}
           ${useEslint ? `${chalk.grey('-')} ESLint preset: ${chalk.cyan(preset.eslint)}` : ''}
         ${chalk.grey('-')} Other dependencies: ${chalk.cyan(preset.extras.join(', ')) || chalk.red('None')}

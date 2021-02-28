@@ -4,7 +4,11 @@ import type { EslintPluginEntry } from '../types';
 const eslintConfigs: Record<EslintConfigAnswer, EslintPluginEntry> = {
   [EslintConfigAnswer.Noftalint]: {
     extends: 'noftalint',
-    plugins: ['eslint-config-noftalint', 'eslint-plugin-import', 'eslint-plugin-node', 'eslint-plugin-unicorn'],
+    plugins: ['eslint-config-noftalint', ...['import', 'node', 'unicorn'].map(pl => `eslint-plugin-${pl}`)],
+  },
+  [EslintConfigAnswer.NoftalintTypescript]: {
+    extends: 'noftalint/typescript',
+    plugins: ['eslint-config-noftalint', ...['import', 'node', 'unicorn'].map(pl => `eslint-plugin-${pl}`)],
   },
   [EslintConfigAnswer.Airbnb]: {
     extends: 'airbnb-base',
@@ -12,10 +16,14 @@ const eslintConfigs: Record<EslintConfigAnswer, EslintPluginEntry> = {
   },
   [EslintConfigAnswer.Standard]: {
     extends: 'standard',
-    plugins: ['eslint-config-standard', 'eslint-plugin-import', 'eslint-plugin-standard', 'eslint-plugin-promise', 'eslint-plugin-node'],
+    plugins: ['eslint-config-standard', ...['import', 'standard', 'promise', 'node'].map(pl => `eslint-plugin-${pl}`)],
   },
   [EslintConfigAnswer.Recommended]: {
     extends: 'eslint:recommended',
+    plugins: [],
+  },
+  [EslintConfigAnswer.TypescriptRecommended]: {
+    extends: 'plugin:@typescript-eslint/recommended',
     plugins: [],
   },
   [EslintConfigAnswer.None]: {

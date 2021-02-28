@@ -38,9 +38,9 @@ $ npm i -g nipinit
 - Create GitHub's file (templates, changelog, contributing, and actions (lint/build))
 - Set a license (choose between MIT, ISC and GPL-v3)
 - Use ES Modules (Node.js' ES Modules, not Babel's)
-- Install & configure Babel
+- Install & configure Babel or TypeScript
 - Install & configure ESLint (choose between my configuration (noftalint), airbnb, recommended and standard)
-- Install nodemon, cross-env and concurrently
+- Install nodemon, dotenv cross-env and concurrently
 - Create a README and a .editorconfig
 - Save & use presets
 
@@ -91,14 +91,14 @@ There are multiple options (flags) you can add when running nipinit.
 ## TO-DO
 
 - [x] Make `--no-modules` add dependencies to the package.json (without installing them)
+- [x] Add an option to create the project with TypeScript
+  - [x] Use the `.ts` extension
+  - [x] Add the default dependencies (`typescript`, `@types/node`)
+  - [x] Add the other needed dependencies (for ESLint, such as `@typescript-eslint/parser` and `@typescript-eslint/eslint-plugin`)
+  - [x] Show only ESLint configurations that supports TypeScript
+  - [x] Create other TypeScript files (`tsconfig.json`, `types.ts`...)
+  - [x] And more...
 - [ ] Add unit tests
-- [ ] Add an option to create the project with TypeScript
-  - [ ] Use the `.ts` extension
-  - [ ] Add the default dependencies (`typescript`, `@types/node`)
-  - [ ] Add the other needed dependencies (for ESLint, such as `@typescript-eslint/parser` and `@typescript-eslint/eslint-plugin`)
-  - [ ] Show only ESLint configurations that supports TypeScript
-  - [ ] Create other TypeScript files (`tsconfig.json`, `types.ts`...)
-  - [ ] And more...
 
 
 ## License

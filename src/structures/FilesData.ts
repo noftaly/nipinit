@@ -1,16 +1,15 @@
 import { stripIndent } from 'common-tags';
 import type { EslintConfigAnswer, EslintPluginEntry } from '../types';
+import { LanguageAnswer } from '../types';
 import getEslintConfigInfo from '../utils/getEslintConfig';
 
 
 export default class FilesData {
   public eslintConfig: EslintPluginEntry;
 
-  // eslint-disable-next-line max-params
   constructor(
     eslintConfigAnswer: EslintConfigAnswer,
-    private readonly _useBabel: boolean,
-    private readonly _useEsModules: boolean,
+    private readonly _language: LanguageAnswer,
     private readonly _projectName: string,
     private readonly _userName: string,
     private readonly _license: string,
@@ -21,7 +20,11 @@ export default class FilesData {
   public getGitIgnore(): string {
     return stripIndent`
       node_modules/
-      ${this._useBabel ? 'dist/' : ''}
+      ${this._language === LanguageAnswer.Babel || this._language === LanguageAnswer.Typecript ? 'dist/' : ''}
+      .idea/
+      .vscode/
+      .env
+      .DS_Store
     `;
   }
 
@@ -33,14 +36,88 @@ export default class FilesData {
     `;
   }
 
+  public getTsConfig(): string {
+    return stripIndent`
+      {
+        "compilerOptions": {
+          "allowSyntheticDefaultImports": true,
+          "baseUrl": "./",
+          "checkJs": true,
+          "declaration": true,
+          "emitDecoratorMetadata": true,
+          "experimentalDecorators": true,
+          "incremental": true,
+          "module": "commonjs",
+          "noImplicitAny": true,
+          "outDir": "./dist",
+          "pretty": false,
+          "removeComments": true,
+          "resolveJsonModule": true,
+          "sourceMap": true,
+          "target": "es2017"
+        },
+        "include": ["./src/**/*.ts", "./test/**/*.ts"],
+        "exclude": ["node_modules/", "typings/"]
+      }
+    `;
+  }
+
+  public getTsEslintConfig(): string {
+    return stripIndent`
+      {
+        "extends": "./tsconfig.json",
+        "include": [
+          "src/**/*.ts",
+          "**/*.d.ts",
+          ".eslintrc.js",
+        ]
+      }
+    `;
+  }
+
   public getEslintConfig(): string {
     return stripIndent`
       module.exports = {
         extends: '${this.eslintConfig.extends}',
-        ${this._useBabel ? "parser: '@babel/eslint-parser'," : ''}
+        ${this._language ? "parser: '@babel/eslint-parser'," : ''}
         ignorePatterns: ['node_modules/'],
       };
     `;
+  }
+
+  public getEslintTypescriptConfig(): string {
+    let baseConfig = stripIndent`
+      module.exports = {
+        root: true,
+        parser: '@typescript-eslint/parser',
+        plugins: ['@typescript-eslint'],
+        extends: ['${this.eslintConfig.extends}'],
+        ignorePatterns: ['node_modules/', 'dist/'],
+        reportUnusedDisableDirectives: true,
+        parserOptions: {
+          project: './tsconfig.eslint.json',
+        },
+    `;
+
+    if (this.eslintConfig.plugins.includes('eslint-plugin-import')) {
+      baseConfig += stripIndent`
+        rules: {
+          'import/extensions': ['error', 'never', { ts: 'never', json: 'always' }],
+        },
+        settings: {
+          'import/parsers': {
+            '@typescript-eslint/parser': ['.ts', '.tsx'],
+          },
+          'import/resolver': {
+            typescript: {
+              alwaysTryTypes: true,
+            },
+          },
+        },
+      `;
+    }
+    baseConfig += '\n};\n';
+    return baseConfig;
   }
 
   public getNodemon(): string {
@@ -48,7 +125,7 @@ export default class FilesData {
       {
         "verbose": false,
         "ignore": ["node_modules/*"],
-        "ext": "js,json"
+        "ext": "js,ts,json"
       }
     `;
   }
@@ -103,9 +180,9 @@ export default class FilesData {
     `;
   }
 
-  public getMainjs(): string {
+  public getMain(): string {
     return stripIndent`
-      // main.js
+      // Main file
     `;
   }
 }

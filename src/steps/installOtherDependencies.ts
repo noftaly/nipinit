@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 import type FilesData from '../structures/FilesData';
-import type { Paths, GeneralAnswers } from '../types';
+import type { GeneralAnswers, Paths } from '../types';
 import { ExtraModulesAnswer } from '../types';
 import installDependencies from '../utils/installDependencies';
 

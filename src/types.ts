@@ -9,16 +9,26 @@ export enum LicenseAnswer {
 
 export enum EslintConfigAnswer {
   Noftalint = 'noftalint',
+  NoftalintTypescript = 'noftalint/typescript',
   Airbnb = 'airbnb',
   Standard = 'standard',
   Recommended = 'recommended',
+  TypescriptRecommended = 'typescript-recommended',
   None = 'none',
 }
 
 export enum ExtraModulesAnswer {
   Nodemon = 'nodemon',
+  Dotenv = 'dotenv',
   Crossenv = 'cross-env',
   Concurrently = 'concurrently',
+}
+
+export enum LanguageAnswer {
+  Vanilla = 'vanilla',
+  Modules = 'modules',
+  Babel = 'babel',
+  Typecript = 'typescript',
 }
 
 // A configuration is what the user responded, but without project-specific informations
@@ -28,8 +38,7 @@ export interface Configuration {
   userName: string;
   git: boolean;
   license: LicenseAnswer;
-  module: boolean;
-  babel: boolean;
+  language: LanguageAnswer;
   eslint: EslintConfigAnswer;
   extras: ExtraModulesAnswer[];
 }
@@ -62,10 +71,12 @@ export interface Paths {
     githubFolder: string;
     issueTemplateFolder: string;
     lintAction: string;
+    buildAction: string;
   };
   data: {
     issueTemplateFolder: string;
     lintAction: string;
+    buildAction: string;
     licenses: string;
   };
 }

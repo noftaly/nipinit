@@ -12,13 +12,14 @@ import * as generalPrompts from '../prompts/generalPrompts';
 import * as presetPrompts from '../prompts/presetPrompts';
 import * as steps from '../steps';
 import type {
-  Paths,
-  StoredPreset,
   GeneralAnswers,
+  Paths,
   PresetCreationAnswers,
   ProjectNameAnswers,
+  StoredPreset,
 } from '../types';
-import { EslintConfigAnswer } from '../types';
+import { EslintConfigAnswer, LanguageAnswer } from '../types';
+
 import getPaths from '../utils/getPaths';
 import structuredClone from '../utils/structuredClone';
 import FilesData from './FilesData';
@@ -40,8 +41,7 @@ export default class CLI {
       generalPrompts.userName,
       generalPrompts.git,
       generalPrompts.license,
-      generalPrompts.module,
-      generalPrompts.babel,
+      generalPrompts.language,
       generalPrompts.eslint,
       generalPrompts.extras,
     ];
@@ -65,8 +65,7 @@ export default class CLI {
 
     const filesData = new FilesData(
       answers.eslint,
-      answers.babel,
-      answers.module,
+      answers.language,
       answers.projectName,
       answers.userName,
       answers.license,
@@ -86,9 +85,11 @@ export default class CLI {
     spinner.text = 'Create the license';
     await steps.createLicense(answers, editablePackageJson, paths);
 
-    spinner.text = 'Installing babel';
-    if (answers.babel)
+    spinner.text = 'Installing parser';
+    if (answers.language === LanguageAnswer.Babel)
       await steps.installBabel(paths, install, filesData);
+    else if (answers.language === LanguageAnswer.Typecript)
+      await steps.installTypescript(paths, install, filesData);
 
     spinner.text = 'Installing ESLint and its dependencies';
     if (answers.eslint !== EslintConfigAnswer.None)
@@ -100,10 +101,10 @@ export default class CLI {
     editablePackageJson = editJson(path.join(paths.project, 'package.json'), { autosave: true });
 
     spinner.text = 'Adding the last files';
-    await steps.createOtherFiles(filesData, paths, editablePackageJson);
+    await steps.createOtherFiles(answers, filesData, paths, editablePackageJson);
 
     spinner.text = 'Configuring modules';
-    if (answers.module)
+    if (answers.language === LanguageAnswer.Modules)
       steps.configureModule(editablePackageJson);
 
     spinner.text = 'Configuring scripts';
