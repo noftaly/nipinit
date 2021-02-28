@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: Feature Request
+title: Feature Request:
 labels: REPLACE_WITH_YOUR_LABEL
 assignees: REPLACE_WITH_YOUR_USERNAME
 
