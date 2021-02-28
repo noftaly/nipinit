@@ -11,6 +11,8 @@ module.exports = {
     'node/file-extension-in-import': 'off',
     'import/extensions': 'off',
 
+    'class-methods-use-this': 'off',
+
     // We have disable these rules because it is a CLT
     'node/no-sync': 'off',
     'node/no-process-exit': 'off',
