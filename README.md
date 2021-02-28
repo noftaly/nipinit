@@ -5,10 +5,7 @@
 ![npm-ver](https://img.shields.io/npm/v/nipinit)
 ![node-current](https://img.shields.io/node/v/nipinit)
 
-> 💻 A command-line utility to easily create new node projects.
-
-:warning: As of 2.0.0, you __can__ use nipinit with Node.js v10.17.0 or higher. If you're still using v1.x.x, you have to use Node.js v14.8.0 or higher.
-
+> 💻 A command-line utility to easily create new Node.js projects.
 
 ## Table of Content
 
@@ -26,6 +23,9 @@
 
 ## Installation
 
+You need Node.js v10.17.0 or higher.\
+Then, simply install nipinit globally like this:
+
 ```shell
 $ npm i -g nipinit
 ```
@@ -35,7 +35,7 @@ $ npm i -g nipinit
 
 - Initialize an npm project
 - Initialize Git & .gitignore
-- Create GitHub's file (templates, changelog, contributing, and some actions (lint/build))
+- Create GitHub's file (templates, changelog, contributing, and actions (lint/build))
 - Set a license (choose between MIT, ISC and GPL-v3)
 - Use ES Modules (Node.js' ES Modules, not Babel's)
 - Install & configure Babel
@@ -103,4 +103,4 @@ There are multiple options (flags) you can add when running nipinit.
 
 ## License
 
-Copyright © 2020 Elliot 'noftaly' Maisl. Licensed under the MIT license, see [the license](./LICENSE).
+Copyright © 2021 Elliot 'noftaly' Maisl. Licensed under the MIT license, see [the license](./LICENSE).

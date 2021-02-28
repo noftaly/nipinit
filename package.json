@@ -1,11 +1,11 @@
 {
   "name": "nipinit",
   "version": "2.1.1",
-  "description": "A command-line utility to easily create new node projects.",
+  "description": "A command-line utility to easily create new Node.js projects.",
   "main": "src/main.ts",
   "scripts": {
     "build": "rm -rf ./lib && npx tsc",
-    "dev": "npm run build && npm i -g",
+    "dev": "npm run build && npm link",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
