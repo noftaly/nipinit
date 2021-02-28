@@ -16,6 +16,8 @@
     "nipinit",
     "cli",
     "boilerplate",
+    "template",
+    "scaffold",
     "generator",
     "noftaly"
   ],
