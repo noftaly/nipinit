@@ -19,14 +19,13 @@ export const projectName: Question = {
   type: 'input',
   name: 'projectName',
   message: 'What is your project name?',
-  validate: async (input: string) => new Promise((resolve, _reject) => {
-      if (input.length === 0)
-        resolve('The project name has to contain at least 1 character.');
-      else if (fsSync.existsSync(path.join(process.cwd(), input)))
-        resolve('This folder already exist.');
-      else
-        resolve(true);
-    }),
+  validate: (input: string): string | true => {
+    if (input.length === 0)
+      return 'The project name has to contain at least 1 character.';
+    if (fsSync.existsSync(path.join(process.cwd(), input)))
+      return 'This folder already exist.';
+    return true;
+  },
 };
 
 export const userName: Question = {
@@ -90,11 +89,10 @@ export const eslint: ListQuestion = {
   type: 'list',
   name: 'eslint',
   message: 'What ESLint configuration do you want?',
-  choices(answers: GeneralAnswers): ChoiceOptions[] {
-    return answers.language === LanguageAnswer.Typecript
+  choices: (answers: GeneralAnswers): ChoiceOptions[] =>
+    (answers.language === LanguageAnswer.Typecript
       ? eslintTypescriptConfigChoice
-      : eslintJavascriptConfigChoice;
-  },
+      : eslintJavascriptConfigChoice),
   default: 1,
 };
 

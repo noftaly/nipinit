@@ -12,6 +12,7 @@ module.exports = {
     'import/extensions': 'off',
 
     'class-methods-use-this': 'off',
+    'implicit-arrow-linebreak': 'off',
 
     // We have disable these rules because it is a CLT
     'node/no-sync': 'off',
