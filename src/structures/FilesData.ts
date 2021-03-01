@@ -2,6 +2,7 @@ import { stripIndent } from 'common-tags';
 import type { EslintConfigAnswer, EslintPluginEntry } from '../types';
 import { LanguageAnswer } from '../types';
 import getEslintConfigInfo from '../utils/getEslintConfig';
+import keepOneIndent from '../utils/keepOneIndent';
 
 
 export default class FilesData {
@@ -100,7 +101,8 @@ export default class FilesData {
     `;
 
     if (this.eslintConfig.plugins.includes('eslint-plugin-import')) {
-      baseConfig += stripIndent`
+      baseConfig += '\n';
+      baseConfig += keepOneIndent`
         rules: {
           'import/extensions': ['error', 'never', { ts: 'never', json: 'always' }],
         },
