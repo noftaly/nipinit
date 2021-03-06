@@ -22,7 +22,6 @@ import { EslintConfigAnswer, LanguageAnswer } from '../types';
 
 import getPaths from '../utils/getPaths';
 import structuredClone from '../utils/structuredClone';
-import FilesData from './FilesData';
 import * as Logger from './Logger';
 import PresetCommand from './PresetCommand';
 import PresetManager from './PresetManager';
@@ -61,23 +60,14 @@ export default class CLI {
   }
 
   public async generateProject(answers: GeneralAnswers, install: boolean): Promise<void> {
-    const spinner = ora('Creating directory').start();
-
-    const filesData = new FilesData(
-      answers.eslint,
-      answers.language,
-      answers.projectName,
-      answers.userName,
-      answers.license,
-    );
-    const paths: Paths = getPaths(answers.projectName);
-
     // Create project directory
+    const spinner = ora('Creating directory').start();
+    const paths: Paths = getPaths(answers.projectName);
     await fs.mkdir(paths.project);
 
     spinner.text = 'Initializing git';
     if (answers.git)
-      await steps.initGit(paths, filesData, answers);
+      await steps.initGit(paths, answers);
 
     spinner.text = 'Initializing npm';
     let editablePackageJson = await steps.initNpm(paths, answers);
@@ -87,21 +77,21 @@ export default class CLI {
 
     spinner.text = 'Installing parser';
     if (answers.language === LanguageAnswer.Babel)
-      await steps.installBabel(paths, install, filesData);
+      await steps.installBabel(paths, install);
     else if (answers.language === LanguageAnswer.Typecript)
-      await steps.installTypescript(paths, install, filesData);
+      await steps.installTypescript(paths, install);
 
     spinner.text = 'Installing ESLint and its dependencies';
     if (answers.eslint !== EslintConfigAnswer.None)
-      await steps.installEslint(answers, paths, install, filesData);
+      await steps.installEslint(answers, paths, install);
 
     spinner.text = 'Installing other dependencies';
-    await steps.installOtherDependencies(paths, answers, install, filesData);
+    await steps.installOtherDependencies(paths, answers, install);
 
     editablePackageJson = editJson(path.join(paths.project, 'package.json'), { autosave: true });
 
     spinner.text = 'Adding the last files';
-    await steps.createOtherFiles(answers, filesData, paths, editablePackageJson);
+    await steps.createOtherFiles(answers, paths, editablePackageJson);
 
     spinner.text = 'Configuring modules';
     if (answers.language === LanguageAnswer.Modules)

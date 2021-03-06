@@ -63,7 +63,7 @@ export default class PresetManager {
   }
 
   public getList(): StoredPreset[] {
-    return Object.values(this.conf.store);
+    return Object.values(this.conf.store).filter(preset => preset.name !== '__internal__');
   }
 
   public getNames(): string[] {

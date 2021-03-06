@@ -1,0 +1,33 @@
+module.exports = {
+  extends: '<%- eslintExtends %>',
+  <%_ if (!typescript) { _%>
+  <%_ if (babel) { _%>
+  parser: '@babel/eslint-parser',
+  <%_ } -%>
+  ignorePatterns: ['node_modules/'],
+  <%_ } else { _%>
+  root: true,
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  ignorePatterns: ['node_modules/', 'dist/'],
+  reportUnusedDisableDirectives: true,
+  parserOptions: {
+    project: './tsconfig.eslint.json',
+  },
+  <%_ if (plugins.includes('eslint-plugin-import')) { _%>
+  rules: {
+    'import/extensions': ['error', 'never', { ts: 'never', json: 'always' }],
+  },
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+      },
+    },
+  },
+  <%_ } -%>
+  <%_ } -%>
+};

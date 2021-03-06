@@ -1,7 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-
-import type FilesData from '../structures/FilesData';
+import ejs from 'ejs';
 import type { GeneralAnswers, Paths } from '../types';
 import { LanguageAnswer } from '../types';
 import getEslintConfigInfo from '../utils/getEslintConfig';
@@ -12,13 +11,13 @@ export default async function installEsLint(
   answers: GeneralAnswers,
   paths: Paths,
   install: boolean,
-  filesData: FilesData,
 ): Promise<void> {
   const useBabelParser = answers.language === LanguageAnswer.Babel;
   const useTypescript = answers.language === LanguageAnswer.Typecript;
   const useModules = answers.language === LanguageAnswer.Modules;
 
-  const dependencies = new Set(['eslint', ...getEslintConfigInfo(answers.eslint).plugins]);
+  const eslintInfos = getEslintConfigInfo(answers.eslint);
+  const dependencies = new Set(['eslint', ...eslintInfos.plugins]);
   if (useBabelParser) {
     dependencies.add('@babel/eslint-parser');
   } else if (useTypescript) {
@@ -28,9 +27,15 @@ export default async function installEsLint(
   }
 
   await installDependencies(install, paths.project, dependencies);
-
+  const template = await fs.readFile(path.join(paths.dataDir, 'eslintrc.ejs'));
+  const rendered = ejs.render(template.toString(), {
+    babel: useBabelParser,
+    typescript: useTypescript,
+    eslintExtends: eslintInfos.extends,
+    plugins: eslintInfos.plugins,
+  });
   await fs.writeFile(
     path.join(paths.project, `.eslintrc.${useModules ? 'c' : ''}js`),
-    useTypescript ? filesData.getEslintTypescriptConfig() : filesData.getEslintConfig(),
+    rendered,
   );
 }
