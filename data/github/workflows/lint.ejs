@@ -27,10 +27,10 @@ jobs:
       - name: Install ESLint
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm install -g eslint
-
+<% if (dependencies.length > 0) { %>
       - name: Install ESLint Configs and Plugins
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm install <PLUGINS_LIST>
-
+        run: npm install <%- dependencies.join(' ') %>
+<% } %>
       - name: Run ESLint
         run: npm run lint

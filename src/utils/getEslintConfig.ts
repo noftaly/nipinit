@@ -10,7 +10,7 @@ const eslintConfigs: Record<EslintConfigAnswer, EslintPluginEntry> = {
   },
   [EslintConfigAnswer.NoftalintTypescript]: {
     extends: 'noftalint/typescript',
-    plugins: ['eslint-config-noftalint', ...plugins('import', 'node', 'unicorn')],
+    plugins: ['eslint-config-noftalint', '@typescript-eslint/eslint-plugin', ...plugins('import', 'node', 'unicorn')],
   },
   [EslintConfigAnswer.Airbnb]: {
     extends: 'airbnb-base',
