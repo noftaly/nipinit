@@ -27,8 +27,8 @@ export default async function installEsLint(
   }
 
   await installDependencies(install, paths.project, dependencies);
-  const template = await fs.readFile(path.join(paths.dataDir, 'eslintrc.ejs'));
-  const rendered = ejs.render(template.toString(), {
+  const template = await fs.readFile(path.join(paths.dataDir, 'eslintrc.ejs'), { encoding: 'utf-8' });
+  const rendered = ejs.render(template, {
     babel: useBabelParser,
     typescript: useTypescript,
     eslintExtends: eslintInfos.extends,

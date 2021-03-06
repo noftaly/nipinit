@@ -12,8 +12,8 @@ export default async function createOtherFiles(
   editablePackageJson: editJson.JsonEditor,
 ): Promise<void> {
   // Generate README.md
-  const template = await fs.readFile(path.join(paths.dataDir, 'readme.ejs'));
-  const rendered = ejs.render(template.toString(), { ...answers });
+  const template = await fs.readFile(path.join(paths.dataDir, 'readme.ejs'), { encoding: 'utf-8' });
+  const rendered = ejs.render(template, { ...answers });
   await fs.writeFile(path.join(paths.project, 'README.md'), rendered);
 
   // Generate .editorconfig

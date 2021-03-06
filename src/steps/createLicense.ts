@@ -18,8 +18,8 @@ export default async function createLicense(
   paths: Paths,
 ): Promise<void> {
   const licensePath = path.resolve(paths.data.licenses, licenses[answers.license]);
-  const template = await fs.readFile(licensePath);
-  const rendered = ejs.render(template.toString(), { fullname: answers.userName, program: answers.projectName });
+  const template = await fs.readFile(licensePath, { encoding: 'utf-8' });
+  const rendered = ejs.render(template, { fullname: answers.userName, program: answers.projectName });
   await fs.writeFile(path.join(paths.project, 'LICENSE'), rendered);
 
   editablePackageJson.set('license', answers.license);

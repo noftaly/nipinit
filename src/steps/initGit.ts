@@ -17,8 +17,8 @@ export default async function initGit(paths: Paths, answers: GeneralAnswers): Pr
 
   // Generate .gitignore
   const hasBuildDir = answers.language === LanguageAnswer.Babel || answers.language === LanguageAnswer.Typecript;
-  const template = await fs.readFile(path.join(paths.dataDir, 'gitignore.ejs'));
-  const rendered = ejs.render(template.toString(), { hasBuildDir });
+  const template = await fs.readFile(path.join(paths.dataDir, 'gitignore.ejs'), { encoding: 'utf-8' });
+  const rendered = ejs.render(template, { hasBuildDir });
   await fs.writeFile(paths.dest.gitignore, rendered);
 
   // Generate .gitattributes
@@ -48,13 +48,11 @@ export default async function initGit(paths: Paths, answers: GeneralAnswers): Pr
     const dependencies = [
       ...getEslintConfigInfo(answers.eslint).plugins,
       ...(answers.language === LanguageAnswer.Babel ? ['@babel/eslint-parser', '@babel/core'] : []),
+      ...(answers.language === LanguageAnswer.Typecript ? ['@typescript-eslint/parser', 'typescript'] : []),
     ];
 
-    let lintActionContent: string = await fs.readFile(paths.data.lintAction, { encoding: 'utf-8' });
-    lintActionContent = dependencies.length > 0
-      ? lintActionContent.replace('<PLUGINS_LIST>', dependencies.join(' '))
-      : lintActionContent.replace(/^ *- name: Install ESLint Configs and Plugins(?:.|\n)*<PLUGINS_LIST>\n\n/gimu, '');
-    await fs.writeFile(paths.dest.lintAction, lintActionContent);
+    const lintActionContent = await fs.readFile(paths.data.lintAction, { encoding: 'utf-8' });
+    await fs.writeFile(paths.dest.lintAction, ejs.render(lintActionContent, { dependencies }));
   }
 
   // Generate build action
