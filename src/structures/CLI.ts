@@ -4,7 +4,7 @@ import path from 'path';
 import chalk from 'chalk';
 import { stripIndent } from 'common-tags';
 import editJson from 'edit-json-file';
-import type { QuestionCollection } from 'inquirer';
+import type { Question } from 'inquirer';
 import inquirer from 'inquirer';
 import ora from 'ora';
 
@@ -30,11 +30,11 @@ export default class CLI {
   public readonly presetManager = new PresetManager();
   public readonly presetCommand = new PresetCommand(this.presetManager);
 
-  public get projectNameQuestions(): QuestionCollection<ProjectNameAnswers> {
+  public get projectNameQuestions(): Array<Question<ProjectNameAnswers>> {
     return [generalPrompts.projectName];
   }
 
-  public get generalQuestions(): QuestionCollection<GeneralAnswers> {
+  public get generalQuestions(): Array<Question<GeneralAnswers>> {
     return [
       generalPrompts.projectName,
       generalPrompts.userName,
@@ -46,21 +46,44 @@ export default class CLI {
     ];
   }
 
-  public async createNewPreset(generalAnswers: GeneralAnswers): Promise<void> {
-    const questions: QuestionCollection<PresetCreationAnswers> = [
-      presetPrompts.save,
-      presetPrompts.presetName(this.presetManager, generalAnswers),
-    ];
-    const answers: PresetCreationAnswers = await inquirer.prompt(questions);
-    if (answers.save) {
-      // Exclude the project name from the answer, to create a preset.
-      const { projectName, ...configuration } = structuredClone<GeneralAnswers>(generalAnswers);
-      this.presetManager.addPreset({ ...configuration, name: answers.presetName });
+  public async startPrompting(presetArgument: string, installArgument: boolean): Promise<void> {
+    // If a preset is provided, we try to find it and create the project with it
+    if (presetArgument) {
+      const preset = this.presetManager.findByName(presetArgument);
+      if (!preset) {
+        Logger.error('This preset does not exist!');
+        Logger.log(`    Run ${chalk.grey('nipinit presets ls')} to see all available presets.`);
+        return;
+      }
+
+      const answers: ProjectNameAnswers = await inquirer.prompt(this.projectNameQuestions);
+      await this.generateProject({ ...preset, projectName: answers.projectName }, installArgument);
+    } else {
+      const generalAnswers: GeneralAnswers = await inquirer.prompt(this.generalQuestions);
+
+      const samePreset: StoredPreset = this.presetManager.findSame(generalAnswers);
+      if (samePreset) {
+        Logger.log('');
+        Logger.info(`The exact same preset is already saved under the name ${chalk.yellow(samePreset.name)}.`);
+        Logger.log(`    Use ${chalk.grey(`nipinit -p ${samePreset.name}`)} to use it directly, next time!`);
+        Logger.log('');
+      } else {
+        const questions: Array<Question<PresetCreationAnswers>> = [
+          presetPrompts.save,
+          presetPrompts.presetName(this.presetManager, generalAnswers),
+        ];
+        const presetCreationAnswers = await inquirer.prompt(questions);
+        if (presetCreationAnswers.save) {
+          const { projectName, ...configuration } = structuredClone<GeneralAnswers>(generalAnswers);
+          this.presetManager.addPreset({ ...configuration, name: presetCreationAnswers.presetName });
+        }
+      }
+
+      await this.generateProject(generalAnswers, installArgument);
     }
   }
 
   public async generateProject(answers: GeneralAnswers, install: boolean): Promise<void> {
-    // Create project directory
     const spinner = ora('Creating directory').start();
     const paths: Paths = getPaths(answers.projectName);
     await fs.mkdir(paths.project);
@@ -115,34 +138,5 @@ export default class CLI {
 
       ${chalk.green('Happy coding!')}
     `);
-  }
-
-  public async startPrompting(presetArgument: string, installArgument: boolean): Promise<void> {
-    // If a preset is provided, we try to find it and create the project with it
-    if (presetArgument) {
-      const preset = this.presetManager.findByName(presetArgument);
-      if (!preset) {
-        Logger.error('This preset does not exist!');
-        Logger.log(`    Run ${chalk.grey('nipinit presets ls')} to see all available presets.`);
-        return;
-      }
-
-      const answers: ProjectNameAnswers = await inquirer.prompt(this.projectNameQuestions);
-      await this.generateProject({ ...preset, projectName: answers.projectName }, installArgument);
-    } else {
-      const answers: GeneralAnswers = await inquirer.prompt(this.generalQuestions);
-
-      const samePreset: StoredPreset = this.presetManager.findSame(answers);
-      if (samePreset) {
-        Logger.log('');
-        Logger.info(`The exact same preset is already saved under the name ${chalk.yellow(samePreset.name)}.`);
-        Logger.log(`    Use ${chalk.grey(`nipinit -p ${samePreset.name}`)} to use it directly, next time!`);
-        Logger.log('');
-      } else {
-        await this.createNewPreset(answers);
-      }
-
-      await this.generateProject(answers, installArgument);
-    }
   }
 }

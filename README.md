@@ -34,13 +34,13 @@ $ npm i -g nipinit
 ## Features
 
 - Initialize an npm project
-- Initialize Git & .gitignore
-- Create GitHub's file (templates, changelog, contributing, and actions (lint/build))
-- Set a license (choose between MIT, ISC and GPL-v3)
-- Use ES Modules (Node.js' ES Modules, not Babel's)
+- Initialize Git, .gitignore and .gitattributes
+- Create GitHub's file (Issue/PR templates, changelog, contributing and actions (lint & build))
+- Set a license (either MIT, ISC or GPL-v3)
+- Possibility to use ES Modules (Node.js' ES Modules, not Babel's)
 - Install & configure Babel or TypeScript
 - Install & configure ESLint (choose between my configuration (noftalint), airbnb, recommended and standard)
-- Install nodemon, dotenv cross-env and concurrently
+- Install nodemon *(+ configure)*, dotenv *(+ initialize)*, cross-env *(+ use in npm scripts)* and concurrently
 - Create a README, a .editorconfig and a basic file structure (`src/main.{js/ts}`)
 - Save & use presets
 
@@ -53,7 +53,7 @@ $ npm i -g nipinit
 
 ### Fresh start
 
-To start a new node project with nipinit, go to the directory you want in your terminal, and type:
+To start a new node project with nipinit, go in the parent directory of the location you want in your terminal, and type:
 ```shell
 $ nipinit
 ```

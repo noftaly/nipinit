@@ -2,17 +2,13 @@ module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
-  extends: [
-    'noftalint',
-    'noftalint/typescript',
-  ],
+  extends: 'noftalint/typescript',
   ignorePatterns: ['node_modules/', 'playground/', 'lib/', './**/*.d.ts'],
   rules: {
     'node/file-extension-in-import': 'off',
     'import/extensions': 'off',
 
     'class-methods-use-this': 'off',
-    'implicit-arrow-linebreak': 'off',
 
     // We have disable these rules because it is a CLT
     'node/no-sync': 'off',
