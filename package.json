@@ -30,6 +30,7 @@
     "commander": "^6.2.1",
     "common-tags": "^1.8.0",
     "conf": "^9.0.2",
+    "deep-equal": "^2.0.5",
     "edit-json-file": "^1.6.0",
     "ejs": "^3.1.6",
     "inquirer": "^8.0.0",
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "@types/common-tags": "^1.8.0",
+    "@types/deep-equal": "^1.0.1",
     "@types/edit-json-file": "^1.4.0",
     "@types/ejs": "^3.0.6",
     "@types/inquirer": "^7.3.1",

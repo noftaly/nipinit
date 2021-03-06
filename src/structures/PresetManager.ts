@@ -1,4 +1,5 @@
 import Conf from 'conf';
+import deepEqual from 'deep-equal';
 
 import type { GeneralAnswers, StoredPreset } from '../types';
 import { LanguageAnswer } from '../types';
@@ -41,25 +42,17 @@ export default class PresetManager {
   }
 
   public findSame(answers: GeneralAnswers): StoredPreset | null {
-    const allPresets: StoredPreset[] = this.getList();
-    const allAnonymousPreset: AnonymousPreset[] = allPresets.map(({ userName, name, ...keep }) => keep);
-
-    const currentConfiguration: AnonymousPreset = {
+    const currentPreset: AnonymousPreset = {
       git: answers.git,
       license: answers.license,
       language: answers.language,
       eslint: answers.eslint,
       extras: answers.extras,
     };
-    const stringifiedCurrent: string = JSON.stringify(currentConfiguration).replace(/\s/g, '');
 
-    for (const [i, preset] of allAnonymousPreset.entries()) {
-      const stringifiedPreset = JSON.stringify(preset).replace(/\s/g, '');
-      if (stringifiedPreset === stringifiedCurrent)
-        return allPresets[i];
-    }
-
-    return null;
+    return this
+      .getList()
+      .find(({ userName, name, ...anonPreset }) => deepEqual(currentPreset, anonPreset));
   }
 
   public getList(): StoredPreset[] {
