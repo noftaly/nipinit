@@ -41,7 +41,7 @@ $ npm i -g nipinit
 - Install & configure Babel or TypeScript
 - Install & configure ESLint (choose between my configuration (noftalint), airbnb, recommended and standard)
 - Install nodemon, dotenv cross-env and concurrently
-- Create a README and a .editorconfig
+- Create a README, a .editorconfig and a basic file structure (`src/main.{js/ts}`)
 - Save & use presets
 
 

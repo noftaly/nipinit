@@ -113,7 +113,7 @@ export default class CLI {
           ${chalk.grey('-')} Add/fill/update some package.json entries, such as the repo, the description, keywords...
           ${chalk.grey('-')} Update the TO-DO in README.md
 
-      ${chalk.green('Have fun!')}
+      ${chalk.green('Happy coding!')}
     `);
   }
 

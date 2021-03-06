@@ -50,7 +50,7 @@ program
           } else {
             Logger.info('Used preset: None');
           }
-          Logger.info(`Install modules: ${options.modules || true}`);
+          Logger.info(`Install modules: ${options.modules ?? true}`);
           Logger.info(`Node.js version: ${process.version}`);
           Logger.info(`nipinit version: ${pkg.version}`);
           console.error(error);
