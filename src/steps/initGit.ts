@@ -47,7 +47,7 @@ export default async function initGit(paths: Paths, answers: GeneralAnswers): Pr
 
     const dependencies = [
       ...getEslintConfigInfo(answers.eslint).plugins,
-      ...(answers.babel ? ['@babel/eslint-parser', '@babel/core'] : []),
+      ...(answers.language === LanguageAnswer.Babel ? ['@babel/eslint-parser', '@babel/core'] : []),
     ];
 
     let lintActionContent: string = await fs.readFile(paths.data.lintAction, { encoding: 'utf-8' });

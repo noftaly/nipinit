@@ -20,9 +20,10 @@ export default function configureScripts(editablePackageJson: editJson.JsonEdito
     editablePackageJson.set('scripts.start', `${prod} node ./src/main.js`.replace(/\s+/g, ' ').trim());
   }
 
+  const useBabel = answers.language === LanguageAnswer.Babel;
   if (answers.extras.includes(ExtraModulesAnswer.Nodemon))
-    editablePackageJson.set('scripts.dev:watch', `nodemon --exec ${dev}${answers.babel ? 'babel-' : ''}node ./src/main.js`.replace(/\s+/g, ' '));
-  editablePackageJson.set('scripts.dev', `${dev}${answers.babel ? 'babel-' : ''}node ./src/main.js`.replace(/\s+/g, ' ').trim());
+    editablePackageJson.set('scripts.dev:watch', `nodemon --exec ${dev}${useBabel ? 'babel-' : ''}node ./src/main.js`.replace(/\s+/g, ' '));
+  editablePackageJson.set('scripts.dev', `${dev}${useBabel ? 'babel-' : ''}node ./src/main.js`.replace(/\s+/g, ' ').trim());
   editablePackageJson.set('scripts.lint', 'eslint .');
   editablePackageJson.set('scripts.lint:fix', 'eslint . --fix');
 }
