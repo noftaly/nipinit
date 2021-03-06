@@ -1,0 +1,6 @@
+<%_ if (dotenv && vanilla) { _%>
+require('dotenv').config();
+<%_ } else if (dotenv) { _%>
+import 'dotenv/config';
+<%_ } -%>
+// Your main file

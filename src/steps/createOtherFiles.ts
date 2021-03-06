@@ -3,7 +3,7 @@ import path from 'path';
 import type editJson from 'edit-json-file';
 import ejs from 'ejs';
 import type { GeneralAnswers, Paths } from '../types';
-import { LanguageAnswer } from '../types';
+import { ExtraModulesAnswer, LanguageAnswer } from '../types';
 
 
 export default async function createOtherFiles(
@@ -12,9 +12,9 @@ export default async function createOtherFiles(
   editablePackageJson: editJson.JsonEditor,
 ): Promise<void> {
   // Generate README.md
-  const template = await fs.readFile(path.join(paths.dataDir, 'readme.ejs'), { encoding: 'utf-8' });
-  const rendered = ejs.render(template, { ...answers });
-  await fs.writeFile(path.join(paths.project, 'README.md'), rendered);
+  const templateReadme = await fs.readFile(path.join(paths.dataDir, 'readme.ejs'), { encoding: 'utf-8' });
+  const renderedReadme = ejs.render(templateReadme, { ...answers });
+  await fs.writeFile(path.join(paths.project, 'README.md'), renderedReadme);
 
   // Generate .editorconfig
   await fs.copyFile(
@@ -23,12 +23,15 @@ export default async function createOtherFiles(
   );
 
   // Create src/ and generate main.js/main.ts
-  const mainFile = `main.${answers.language === LanguageAnswer.Typecript ? 'ts' : 'js'}`;
   await fs.mkdir(path.join(paths.project, 'src'));
-  await fs.copyFile(
-    path.join(paths.dataDir, 'main.js'),
-    path.join(paths.project, 'src', mainFile),
-  );
+
+  const mainFile = `main.${answers.language === LanguageAnswer.Typecript ? 'ts' : 'js'}`;
+  const templateMain = await fs.readFile(path.join(paths.dataDir, 'main.ejs'), { encoding: 'utf-8' });
+  const renderedMain = ejs.render(templateMain, {
+    dotenv: answers.extras.includes(ExtraModulesAnswer.Dotenv),
+    vanilla: answers.language === LanguageAnswer.Vanilla,
+  });
+  await fs.writeFile(path.join(paths.project, 'src', mainFile), renderedMain);
 
   // Update main file in package.json
   editablePackageJson.set('main', `./src/${mainFile}`);
