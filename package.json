@@ -1,6 +1,6 @@
 {
   "name": "nipinit",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "A command-line utility to easily create new Node.js projects.",
   "main": "src/main.ts",
   "scripts": {
