@@ -1,11 +1,10 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
 import ejs from 'ejs';
 import type { GeneralAnswers, Paths } from '../types';
 import { LanguageAnswer } from '../types';
 import getEslintConfigInfo from '../utils/getEslintConfig';
 import installDependencies from '../utils/installDependencies';
-
 
 export default async function installEsLint(
   answers: GeneralAnswers,
@@ -27,7 +26,7 @@ export default async function installEsLint(
   }
 
   await installDependencies(install, paths.project, dependencies);
-  const template = await fs.readFile(path.join(paths.dataDir, 'eslintrc.ejs'), { encoding: 'utf-8' });
+  const template = await fs.readFile(path.join(paths.dataDir, 'eslintrc.ejs'), { encoding: 'utf8' });
   const rendered = ejs.render(template, {
     babel: useBabelParser,
     typescript: useTypescript,

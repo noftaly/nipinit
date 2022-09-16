@@ -1,6 +1,5 @@
 import chalk from 'chalk';
 
-
 /**
  * Logs a empty lines
  * @param {number} lines - Defaults to 1. Number of lines to print

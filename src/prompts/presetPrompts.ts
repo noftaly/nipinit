@@ -2,7 +2,6 @@ import type { Question } from 'inquirer';
 import type PresetManager from '../structures/PresetManager';
 import type { GeneralAnswers, PresetCreationAnswers } from '../types';
 
-
 export const save: Question = {
   type: 'confirm',
   name: 'save',

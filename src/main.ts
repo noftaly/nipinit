@@ -14,13 +14,11 @@ interface PackageJson {
 // eslint-disable-next-line import/no-commonjs
 const pkg: PackageJson = require('../package.json') as PackageJson;
 
-
 interface CLIOptions {
   preset: string;
   modules: boolean;
   dumpError: boolean;
 }
-
 
 updateNotifier({ pkg }).notify({ isGlobal: true });
 const cli = new CLI();
@@ -69,6 +67,7 @@ const presetsCmd = program
   .command('presets')
   .description('Manage presets');
 
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 presetsCmd
   .command('ls')
   .description('List all existing presets')

@@ -1,6 +1,5 @@
 import type { Answers } from 'inquirer';
 
-
 export enum LicenseAnswer {
   MIT = 'MIT',
   GPL = 'GPL-v3.0-only',

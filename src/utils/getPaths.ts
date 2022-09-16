@@ -1,6 +1,5 @@
-import path from 'path';
+import path from 'node:path';
 import type { Paths } from '../types';
-
 
 export default function getPaths(projectName: string): Paths {
   const project = path.join(process.cwd(), projectName);

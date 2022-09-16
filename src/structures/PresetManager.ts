@@ -4,7 +4,6 @@ import deepEqual from 'deep-equal';
 import type { GeneralAnswers, StoredPreset } from '../types';
 import { LanguageAnswer } from '../types';
 
-
 type AnonymousPreset = Omit<StoredPreset, 'name' | 'userName'>;
 
 export default class PresetManager {
@@ -13,6 +12,7 @@ export default class PresetManager {
   constructor() {
     this.conf = new Conf<Record<string, StoredPreset>>({
       migrations: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         '>=2.2.0': (store): void => {
           for (const [name, config] of Object.entries(store.store)) {
             /* eslint-disable @typescript-eslint/dot-notation */

@@ -5,7 +5,6 @@ import { EslintConfigAnswer } from '../types';
 import * as Logger from './Logger';
 import type PresetManager from './PresetManager';
 
-
 export default class PresetCommand {
   constructor(private readonly _presetManager: PresetManager) {}
 

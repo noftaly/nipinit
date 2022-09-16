@@ -1,5 +1,5 @@
-import fsSync from 'fs';
-import path from 'path';
+import fsSync from 'node:fs';
+import path from 'node:path';
 import type {
   CheckboxQuestion,
   ChoiceOptions,
@@ -13,7 +13,6 @@ import {
   LanguageAnswer,
   LicenseAnswer,
 } from '../types';
-
 
 export const projectName: Question = {
   type: 'input',

@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import SoftAddDependencies, { SaveMode } from 'soft-add-dependencies';
 import exec from './exec';
 

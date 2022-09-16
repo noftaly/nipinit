@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
 
 import ejs from 'ejs';
 
@@ -10,14 +10,13 @@ import exec from '../utils/exec';
 import getEslintConfigInfo from '../utils/getEslintConfig';
 import noop from '../utils/noop';
 
-
 export default async function initGit(paths: Paths, answers: GeneralAnswers): Promise<void> {
   // --- Init GIT ---
   await exec('git init', { cwd: paths.project });
 
   // Generate .gitignore
   const hasBuildDir = answers.language === LanguageAnswer.Babel || answers.language === LanguageAnswer.Typecript;
-  const template = await fs.readFile(path.join(paths.dataDir, 'gitignore.ejs'), { encoding: 'utf-8' });
+  const template = await fs.readFile(path.join(paths.dataDir, 'gitignore.ejs'), { encoding: 'utf8' });
   const rendered = ejs.render(template, { hasBuildDir });
   await fs.writeFile(paths.dest.gitignore, rendered);
 
@@ -51,7 +50,7 @@ export default async function initGit(paths: Paths, answers: GeneralAnswers): Pr
       ...(answers.language === LanguageAnswer.Typecript ? ['@typescript-eslint/parser', 'typescript'] : []),
     ];
 
-    const lintActionContent = await fs.readFile(paths.data.lintAction, { encoding: 'utf-8' });
+    const lintActionContent = await fs.readFile(paths.data.lintAction, { encoding: 'utf8' });
     await fs.writeFile(paths.dest.lintAction, ejs.render(lintActionContent, { dependencies }));
   }
 
@@ -59,7 +58,7 @@ export default async function initGit(paths: Paths, answers: GeneralAnswers): Pr
   if (answers.language === LanguageAnswer.Typecript || answers.language === LanguageAnswer.Babel) {
     await fs.mkdir(path.join(paths.dest.githubFolder, 'workflows')).catch(noop);
 
-    const buildActionContent: string = await fs.readFile(paths.data.buildAction, { encoding: 'utf-8' });
+    const buildActionContent: string = await fs.readFile(paths.data.buildAction, { encoding: 'utf8' });
     await fs.writeFile(paths.dest.buildAction, buildActionContent);
   }
 
